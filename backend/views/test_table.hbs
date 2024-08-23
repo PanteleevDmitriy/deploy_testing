@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <title>Изучение JS</title>
+</head>
+<body>
+    <h1>Test table page</h1>
+    <br>
+    <p>email</p>
+    <input type="text" id="loginText">
+    <br>
+    <p>password</p>
+    <input type="text" id="password">
+    <br>
+    <br>
+    <button id="loginButton">! login !</button>
+    <br>
+    <h2>Result:</h2>
+    <p id="loginResult">login: <span id="loginValue"></span></p>
+    <p id="passwordResult">password: <span id="passwordValue"></span></p>
+    <script> 
+    const loginTextEl = document.querySelector('#loginText');
+    const passwordEl = document.querySelector('#password');
+    const loginButtonEl = document.querySelector('#loginButton');
+    const loginValueEl = document.querySelector('#loginValue');
+    const passwordValueEl = document.querySelector('#passwordValue');
+
+    loginButtonEl.addEventListener('click', login);
+    function login() {
+        if (loginTextEl.value !== "" && passwordEl.value !== "") {
+
+            loginValueEl.textContent = loginTextEl.value;
+            passwordValueEl.textContent = passwordEl.value;
+            const data = {
+                    email: loginTextEl.value,
+                    password: passwordEl.value
+                };
+        }
+
+        console.log(data);
+        fetch('https://seawindtravel.ru/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // Обработка ответа от сервера
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+    }
+    </script>
+</body>
+</html>

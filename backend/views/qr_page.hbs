@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <title>Изучение JS - QRcode generator</title>
+</head>
+<body>
+    <h1>QR-code generator</h1>
+    <h2>{{ message }}</h2>
+    <p>Input data of your QR-code (text, link or other)</p>
+    <input type="text" id="text">
+    <br>
+    <p>width image</p>
+    <input type="text" id="width" value="200">
+    <br>
+    <p>height image</p>
+    <input type="text" id="height" value="200">
+    <br>
+    <p>choose main color</p>
+    <input type="color" id="dark" value="#000000">
+    <br>
+    <p>choose background color</p>
+    <input type="color" id="light" value="#ffffff">
+    <br>
+    <br>
+    <button id="generate">! Generate QR !</button>
+    <br>
+    <br>
+    <div id="qrcode"></div>
+    <br>
+    <a id="download" style="display: none;">Download PNG image</a>
+    <script src="https://cdn.jsdelivr.net/npm/davidshimjs-qrcodejs@0.0.2/qrcode.min.js"></script>
+    <script> 
+    const qrcodeEl = document.querySelector('#qrcode');
+    const textEl = document.querySelector('#text');
+    const generateEl = document.querySelector('#generate');
+    const widthEl = document.querySelector('#width');
+    const heightEl = document.querySelector('#height');
+    const darkEl = document.querySelector('#dark');
+    const lightEl = document.querySelector('#light');
+    const downloadEl = document.querySelector('#download');
+
+    generateEl.addEventListener('click', generate);
+
+    function generate() {
+        if (textEl.value != "") {
+            qrcodeEl.innerHTML = ``;
+                new QRCode(qrcodeEl, {
+                    text: textEl.value,
+                    width: widthEl.value,
+                    height: heightEl.value,
+                    colorDark: darkEl.value,
+                    colorLight: lightEl.value
+                });
+        }
+
+    download();
+    }
+
+    function download() {
+    const canvasEl = qrcodeEl.querySelector('canvas');
+    let data = canvasEl.toDataURL('image/png');
+
+    downloadEl.setAttribute('href', data);
+    downloadEl.setAttribute('download', 'qrcode.png');
+    downloadEl.style.display = 'inline-block';
+    }
+    </script>
+</body>
+</html>
+
