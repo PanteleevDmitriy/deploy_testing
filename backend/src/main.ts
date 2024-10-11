@@ -42,7 +42,10 @@ async function bootstrap() {
     secret: 'my-secret-cookie-qwerty'
   });
   app.register(cors, {
-    origin: ['http://localhost:3000', 'http://seawindtravel.ru'], // Разрешить запросы от всех источников
+    origin: [
+      'http://localhost:3000', 
+      'http://62.217.182.84',
+    ], // Разрешить запросы от всех источников
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Если куки или аутентификация
     optionsSuccessStatus: 204, // Некоторые браузеры ожидают статус 204

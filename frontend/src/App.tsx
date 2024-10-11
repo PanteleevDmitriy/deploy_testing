@@ -6,7 +6,7 @@ import { Users } from './components/Users';
 function App() {
   const [users, setUsers] = useState<IUser[]>([])
   async function fetchUsers() {
-    const response = await axios.get<IUser[]>('http://localhost:5000/users', { withCredentials: true })
+    const response = await axios.get<IUser[]>('http://localhost:5000/api/users', { withCredentials: true })
     setUsers(response.data)
   }
   useEffect(() => {
