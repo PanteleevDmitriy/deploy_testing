@@ -45,7 +45,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000', 
       'http://seawindtravel.ru',
-    ], // Разрешить запросы от всех источников
+    ], // Разрешить запросы
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Если куки или аутентификация
     optionsSuccessStatus: 204, // Некоторые браузеры ожидают статус 204
