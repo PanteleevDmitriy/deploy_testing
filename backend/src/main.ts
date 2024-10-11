@@ -44,7 +44,7 @@ async function bootstrap() {
   app.register(cors, {
     origin: [
       'http://localhost:3000', 
-      'http://62.217.182.84',
+      'http://seawindtravel.ru',
     ], // Разрешить запросы от всех источников
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Если куки или аутентификация
