@@ -4,7 +4,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 const path = require('path')
 const fs = require('fs')
  
-@Controller('/api')
+@Controller('api')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
