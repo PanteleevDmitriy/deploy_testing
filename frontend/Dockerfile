@@ -8,15 +8,17 @@ COPY . .
 
 RUN npm run build
 
-# Этап с Nginx
-FROM nginx:stable-alpine
+FROM node:alpine
 
-# Копируем статические файлы из сборки
-COPY --from=build /.next /usr/share/nginx/html
-COPY --from=build /nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Открываем стандартный порт для Nginx
-EXPOSE 80
+# Копируем файлы с этапа сборки
+COPY --from=build /app /app
 
-# Запускаем Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Устанавливаем pm2 для управления процессами
+RUN npm install -g pm2
+
+EXPOSE 3000
+
+# Запускаем приложение
+CMD ["pm2-runtime", "start", "npm", "--", "run", "start"]
