@@ -13,12 +13,7 @@ RUN npm run build
 FROM node:alpine
 
 # Копируем файлы из этапа сборки
-# COPY --from=build . .
-
-# Копирование собранного проекта
-COPY --from=build /.next ./.next
-COPY --from=build /public ./public
-COPY --from=build /package*.json ./
+COPY --from=build . .
 
 # Устанавливаем pm2 для управления процессами
 RUN npm install -g pm2
