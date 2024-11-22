@@ -13,7 +13,9 @@ RUN npm run build
 FROM node:alpine
 
 # Копируем файлы из этапа сборки
-COPY --from=build . .
+
+COPY --from=build /dist /usr/share/nginx/html
+COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
 
 # Устанавливаем pm2 для управления процессами
 RUN npm install -g pm2
