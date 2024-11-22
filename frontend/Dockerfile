@@ -6,6 +6,7 @@ RUN npm install
 
 # Копируем оставшиеся файлы
 COPY . .  
+RUN ls -l /app
 RUN ls -l /app/nginx.conf
 RUN npm run build
 
@@ -17,6 +18,8 @@ WORKDIR /app
 # Копируем только необходимые файлы
 COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 
+COPY --from=build /app/package.json /app/
+COPY --from=build /app/package-lock.json /app/
 COPY --from=build /app/.next /app/.next
 COPY --from=build /app/public /app/public
 
