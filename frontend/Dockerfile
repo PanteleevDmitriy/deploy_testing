@@ -18,8 +18,8 @@ COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=build /app/package.json /app/
 COPY --from=build /app/package-lock.json /app/
-COPY --from=build /app/.next /app/.next
-# COPY --from=build /app/public /app/public
+COPY --from=build /app/.next /app/_next
+COPY --from=build /app/public /app/public
 COPY --from=build /app/node_modules /app/node_modules
 
 # Устанавливаем pm2 для управления процессами
