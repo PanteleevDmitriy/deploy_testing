@@ -54,5 +54,6 @@ services:
 
 volumes:
   pgdata:
+  next-app-volume:
   
   
