@@ -5,9 +5,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Копируем оставшиеся файлы
-COPY . .  
-RUN ls -l /app
-RUN ls -l /app/nginx.conf
+COPY . .
 RUN npm run build
 
 # Этап выполнения
@@ -22,6 +20,7 @@ COPY --from=build /app/package.json /app/
 COPY --from=build /app/package-lock.json /app/
 COPY --from=build /app/.next /app/.next
 COPY --from=build /app/public /app/public
+COPY --from=build /app/node_modules /app/node_modules
 
 # Устанавливаем pm2 для управления процессами
 RUN npm install -g pm2
