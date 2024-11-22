@@ -14,7 +14,7 @@ FROM node:alpine
 
 # Копируем файлы из этапа сборки
 
-COPY --from=build /dist /usr/share/nginx/html
+COPY --from=build /.next /usr/share/nginx/html
 COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
 
 # Устанавливаем pm2 для управления процессами
