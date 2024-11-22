@@ -7,7 +7,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf    # Примонтировать nginx конфиг
       - ./frontend/.next:/frontend/_next      # Примонтировать файлы .next
-      - ./frontend/public:/frontend/static   # Примонтировать файлы static
+      - ./frontend/public:/frontend/public   # Примонтировать файлы public
     ports:
       - "80:80"
       - "443:443"
