@@ -1,6 +1,6 @@
 # Этап сборки приложения
 FROM node:alpine AS build
-
+WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
@@ -12,10 +12,13 @@ RUN npm run build
 # Этап выполнения
 FROM node:alpine
 
-# Копируем файлы из этапа сборки
+WORKDIR /app
 
-COPY --from=build /.next /usr/share/nginx/html
-COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
+# Копируем только необходимые файлы
+COPY --from=build /app/package.json /app/package-lock.json /app/
+COPY --from=build /app/.next /app/.next
+COPY --from=build /app/public /app/public
+COPY --from=build /app/node_modules /app/node_modules
 
 # Устанавливаем pm2 для управления процессами
 RUN npm install -g pm2
