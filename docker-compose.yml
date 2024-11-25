@@ -46,6 +46,9 @@ services:
       - backend
     networks:
       - dev
+    volumes:
+      - ./frontend:/app  # Только для разработки, в продакшене удалите
+
 
 volumes:
   pgdata:
