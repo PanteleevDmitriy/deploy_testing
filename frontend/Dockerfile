@@ -19,7 +19,7 @@ COPY --from=build /app ./
 # Устанавливаем pm2 для управления процессами
 RUN npm install -g pm2
 
-EXPOSE 3000
+# EXPOSE 3000
 
 # Запускаем приложение
 CMD ["pm2-runtime", "npm", "--", "run", "start"]
