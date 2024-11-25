@@ -5,10 +5,9 @@ services:
   nginx:
     image: nginx:stable-alpine
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf    # Примонтировать nginx конфиг
-      - ./frontend/.next:/frontend/_next      # Примонтировать файлы .next
-      - ./frontend/public:/frontend/public   # Примонтировать файлы public
-    ports:
+      - ./frontend:/app  # Монтируем папку frontend в контейнер NGINX
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      ports:
       - "80:80"
       - "443:443"
     depends_on:

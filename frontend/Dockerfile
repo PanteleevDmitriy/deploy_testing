@@ -13,14 +13,8 @@ FROM node:alpine
 
 WORKDIR /app
 
-# Копируем только необходимые файлы
-COPY --from=build /app/nginx.conf /etc/nginx/conf.d/default.conf
-
-COPY --from=build /app/package.json /app/
-COPY --from=build /app/package-lock.json /app/
-COPY --from=build /app/.next /usr/share/nginx/html
-COPY --from=build /app/public /app/public
-COPY --from=build /app/node_modules /app/node_modules
+# Копируем файлы
+COPY --from=build /app ./
 
 # Устанавливаем pm2 для управления процессами
 RUN npm install -g pm2
