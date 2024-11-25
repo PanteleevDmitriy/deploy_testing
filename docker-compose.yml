@@ -7,12 +7,23 @@ services:
     volumes:
       - ./frontend:/app  # Монтируем папку frontend в контейнер NGINX
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/letsencrypt:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     ports:
       - "80:80"
       - "443:443"
     depends_on:
       - backend
       - frontend
+    networks:
+      - dev
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certbot/letsencrypt:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 2073600; done'"
     networks:
       - dev
 
