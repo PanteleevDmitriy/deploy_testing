@@ -1,6 +1,6 @@
 import { Controller, Get, Render, UseGuards } from '@nestjs/common';
 import { AppService } from '../app.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('others') 
 @Controller('test')
@@ -17,6 +17,14 @@ export class TestController {
     @Get('/testing')
     getData() {
         return this.appService.getData()
+    }
+
+    @ApiOperation({ summary: 'приветствие' })
+    @ApiResponse({ status: 200 })
+    @Render('qr_page')
+    @Get('/qr')
+    getQrPage() {
+        return
     }
 
 }

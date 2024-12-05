@@ -8,6 +8,7 @@ export class AppService {
   getData() {
     return {
       name: "string_html",
-      value: "<h1>QR-code generator</h1>"}
+      value: "<h1>QR-code generator</h1>"
+    }
   }
 }
