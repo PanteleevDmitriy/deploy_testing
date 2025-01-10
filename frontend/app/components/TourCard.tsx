@@ -54,7 +54,7 @@ export default function TourCard({ id, title, description, price, images, onExpa
             <h3 className="text-xl font-semibold">{title}</h3>
             <p className="text-gray-600">{description}</p>
           </div>
-          <Link href="/book-tour" className="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">
+          <Link href="/book-tour" className="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700 text-xs lg:text-base">
             Заказать тур
           </Link>
         </div>
@@ -69,7 +69,7 @@ export default function TourCard({ id, title, description, price, images, onExpa
         )}
         <button 
           onClick={() => onExpand(id)}
-          className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 w-full"
+          className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 w-full text-xs lg:text-base"
         >
           {isExpanded ? 'Свернуть' : 'Подробнее'}
         </button>
