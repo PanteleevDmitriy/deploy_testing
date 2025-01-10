@@ -54,20 +54,22 @@ export default function TourCard({ id, title, description, price, images, onExpa
             <h3 className="text-xl font-semibold">{title}</h3>
             <p className="text-gray-600">{description}</p>
           </div>
-          <Link href="/book-tour" className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+          <Link href="/book-tour" className="bg-green-600 text-white px-4 py-2 rounded-full hover:bg-green-700">
             Заказать тур
           </Link>
         </div>
-        <p className="text-lg font-bold mb-4">{price} $</p>
         {isExpanded && (
-          <p className="text-gray-600 mb-4">
-            Подробное описание тура. Здесь может быть расширенная информация о маршруте, 
-            достопримечательностях, продолжительности экскурсии и т.д.
-          </p>
+          <div>
+            <p className="text-gray-600 mb-4">
+              Подробное описание тура. Здесь может быть расширенная информация о маршруте, 
+              достопримечательностях, продолжительности экскурсии и т.д.
+            </p>
+            <p className="text-lg font-bold mb-4">Цена за одного человека от {price} $</p>
+          </div>
         )}
         <button 
           onClick={() => onExpand(id)}
-          className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 w-full"
+          className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 w-full"
         >
           {isExpanded ? 'Свернуть' : 'Подробнее'}
         </button>
