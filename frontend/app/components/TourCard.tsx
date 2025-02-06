@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface TourCardProps {
   id: number
@@ -25,18 +26,19 @@ export default function TourCard({ id, title, description, price, images, onExpa
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="relative w-full h-[333px] sm:h-[500px]">
-        <img src={images[currentImageIndex] || "/placeholder.svg"} alt={title} className="w-full h-full object-cover" />
+        <Image src={images[currentImageIndex] || "/placeholder.svg"} alt={title} layout="fill" objectFit="contain" />
       </div>
       {isExpanded && (
         <div className="p-4 border-t overflow-x-auto">
           <div className="flex h-[200px] space-x-2">
             {images.map((img, index) => (
               <div key={index} className="flex-shrink-0 cursor-pointer h-full">
-                <img
+                <Image
                   src={img || "/placeholder.svg"}
                   alt={`${title} image ${index + 1}`}
-                  className="h-full w-auto object-cover"
-                  loading="lazy"
+                  width={200}
+                  height={200}
+                  objectFit="contain"
                   onClick={() => setCurrentImageIndex(index)}
                 />
               </div>
