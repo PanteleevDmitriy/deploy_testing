@@ -17,15 +17,15 @@ export default function Home() {
 
   return (
     <div className="pt-32">
-      <section className="bg-white py-8 sm:py-16">
+      <section className="bg-white py-4 sm:py-8">
         <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-8 md:mb-0">
+          <div className="md:w-1/2 mb-4 md:mb-8">
             <Image
               src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
               alt="SEAWIND travel Logo"
-              width={300}
-              height={300}
-              className="mx-auto"
+              width={200}
+              height={200}
+              className="mx-auto h-[100px] w-auto object-contain sm:h-auto"
             />
           </div>
           <div className="md:w-1/2">

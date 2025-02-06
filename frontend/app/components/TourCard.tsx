@@ -24,12 +24,8 @@ export default function TourCard({ id, title, description, price, images, onExpa
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="relative w-full h-[500px]">
-        <img
-          src={images[currentImageIndex] || "/placeholder.svg"}
-          alt={title}
-          className="w-full h-full object-contain"
-        />
+      <div className="relative w-full h-[333px] sm:h-[500px]">
+        <img src={images[currentImageIndex] || "/placeholder.svg"} alt={title} className="w-full h-full object-cover" />
       </div>
       {isExpanded && (
         <div className="p-4 border-t overflow-x-auto">
