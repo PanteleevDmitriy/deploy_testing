@@ -40,7 +40,7 @@ export default function Header() {
           <div className="flex-grow flex justify-center items-center">
             <Link
               href="/"
-              className="text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
+              className="hidden sm:block text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
             >
               SEAWIND travel
             </Link>
