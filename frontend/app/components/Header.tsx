@@ -25,8 +25,8 @@ export default function Header() {
               <Image
                 src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
                 alt="SEAWIND travel Logo"
-                width={124}
-                height={124}
+                width={100}
+                height={100}
                 className="object-contain h-[100px]"
               />
             </Link>
