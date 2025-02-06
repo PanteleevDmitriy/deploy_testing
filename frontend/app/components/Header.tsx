@@ -25,39 +25,48 @@ export default function Header() {
               <Image
                 src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
                 alt="SEAWIND travel Logo"
-                width={100}
-                height={100}
+                width={124}
+                height={124}
                 className="object-contain h-[100px]"
               />
             </Link>
           </div>
           <button
-            className="ml-4 text-white text-lg py-2 px-6 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300"
+            className="ml-4 text-white text-lg py-2 px-6 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300 sm:text-base"
             onClick={toggleMenu}
           >
-            Меню сайта
+            Меню
           </button>
           <div className="flex-grow flex justify-center">
             <Link
               href="/"
-              className="text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
+              className="hidden sm:block text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
             >
               SEAWIND travel
+            </Link>
+            <Link href="/" className="sm:hidden">
+              <Image
+                src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
+                alt="SEAWIND travel Logo"
+                width={80}
+                height={80}
+                className="object-contain h-[80px]"
+              />
             </Link>
           </div>
           <div className="flex items-center space-x-4">
             <a href="https://t.me/Dm_Pn" target="_blank" rel="noopener noreferrer">
-              <FaTelegram className="text-white hover:text-teal-100 transition duration-300" size={30} />
+              <FaTelegram className="text-white hover:text-teal-100 transition duration-300 w-[30px] h-[30px] sm:w-[15px] sm:h-[15px]" />
             </a>
             <a href="https://www.instagram.com/sea.wind.travel/" target="_blank" rel="noopener noreferrer">
-              <FaInstagram className="text-white hover:text-teal-100 transition duration-300" size={30} />
+              <FaInstagram className="text-white hover:text-teal-100 transition duration-300 w-[30px] h-[30px] sm:w-[15px] sm:h-[15px]" />
             </a>
             <a href="https://vk.com/seawind_travel" target="_blank" rel="noopener noreferrer">
-              <FaVk className="text-white hover:text-teal-100 transition duration-300" size={30} />
+              <FaVk className="text-white hover:text-teal-100 transition duration-300 w-[30px] h-[30px] sm:w-[15px] sm:h-[15px]" />
             </a>
             <Link
               href="/auth"
-              className="bg-white text-black px-3 py-1 rounded-full hover:bg-teal-100 transition duration-300 text-sm"
+              className="bg-white text-black px-3 py-1 rounded-full hover:bg-teal-100 transition duration-300 text-sm sm:text-xs sm:px-2 sm:py-0.5"
             >
               Войти
             </Link>
