@@ -26,19 +26,19 @@ export default function TourCard({ id, title, description, price, images, onExpa
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
       <div className="relative w-full h-[333px] sm:h-[500px]">
-        <Image src={images[currentImageIndex] || "/placeholder.svg"} alt={title} layout="fill" objectFit="contain" />
+        <Image src={images[currentImageIndex] || "/placeholder.svg"} alt={title} layout="fill" objectFit="cover" />
       </div>
       {isExpanded && (
         <div className="p-4 border-t overflow-x-auto">
-          <div className="flex h-[200px] space-x-2">
+          <div className="flex space-x-2">
             {images.map((img, index) => (
-              <div key={index} className="flex-shrink-0 cursor-pointer h-full">
+              <div key={index} className="flex-shrink-0 cursor-pointer">
                 <Image
                   src={img || "/placeholder.svg"}
                   alt={`${title} image ${index + 1}`}
                   width={200}
                   height={200}
-                  objectFit="contain"
+                  objectFit="cover"
                   onClick={() => setCurrentImageIndex(index)}
                 />
               </div>

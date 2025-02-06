@@ -20,7 +20,7 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-teal-500 to-blue-500 shadow-md z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[100px]">
-          <div className="hidden sm:flex items-center">
+          <div className="flex items-center">
             <Link href="/">
               <Image
                 src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
@@ -30,26 +30,17 @@ export default function Header() {
                 className="object-contain h-[100px]"
               />
             </Link>
+            <button
+              className="text-white text-xs py-1 px-3 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300 sm:text-lg sm:py-2 sm:px-6 ml-4"
+              onClick={toggleMenu}
+            >
+              Меню
+            </button>
           </div>
-          <button
-            className="text-white text-xs py-1 px-3 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300 sm:text-lg sm:py-2 sm:px-6"
-            onClick={toggleMenu}
-          >
-            Меню
-          </button>
           <div className="flex-grow flex justify-center items-center">
-            <Link href="/" className="sm:hidden">
-              <Image
-                src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
-                alt="SEAWIND travel Logo"
-                width={100}
-                height={100}
-                className="object-contain h-[100px]"
-              />
-            </Link>
             <Link
               href="/"
-              className="hidden sm:block text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
+              className="text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
             >
               SEAWIND travel
             </Link>

@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import TourCard from "./components/TourCard"
 import Link from "next/link"
 import { tours } from "./data/tours"
@@ -18,27 +17,16 @@ export default function Home() {
   return (
     <div className="pt-32">
       <section className="bg-white py-4 sm:py-8">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-4 md:mb-8">
-            <Image
-              src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
-              alt="SEAWIND travel Logo"
-              width={200}
-              height={200}
-              className="mx-auto h-[100px] w-auto object-contain sm:h-auto"
-            />
-          </div>
-          <div className="md:w-1/2">
-            <h1 className="text-3xl sm:text-4xl font-bold mb-4">
-              Экскурсии по Вьетнаму
-              <br />
-              город Нячанг
-            </h1>
-            <p className="text-lg sm:text-xl mb-4">Добро пожаловать на сайт компании SEAWIND!</p>
-            <p className="mb-4">
-              Мы проводим экскурсии по всем направлениям, у нас русские гиды и огромный опыт в туризме.
-            </p>
-          </div>
+        <div className="container mx-auto px-4">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center">
+            Экскурсии по Вьетнаму
+            <br />
+            город Нячанг
+          </h1>
+          <p className="text-lg sm:text-xl mb-4 text-center">Добро пожаловать на сайт компании SEAWIND!</p>
+          <p className="mb-4 text-center">
+            Мы проводим экскурсии по всем направлениям, у нас русские гиды и огромный опыт в туризме.
+          </p>
         </div>
       </section>
 
