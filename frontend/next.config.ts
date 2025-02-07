@@ -38,6 +38,11 @@ const nextConfig: NextConfig = {
         hostname: 'psv4.userapi.com',  // Добавляем домен
         pathname: '/s/v1/d/**',        // Указываем путь, который будет разрешен
       },
+      {
+        protocol: 'https',
+        hostname: 'biznes-lanch.com',  // Добавляем домен
+        pathname: '/**',        // Указываем путь, который будет разрешен
+      },
     ],
   },
 };

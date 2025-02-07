@@ -1,9 +1,8 @@
 import Image from "next/image"
 
 const fruitImages = [
-  "https://kochevnik.digital/wp-content/uploads/2024/06/passion-fruit.jpg",
-  "https://kochevnik.digital/wp-content/uploads/2024/06/dragon-fruit.jpg",
-]
+  "https://biznes-lanch.com/wa-data/public/photos/36/06/636/636.970.jpeg",
+  "https://biznes-lanch.com/wa-data/public/shop/products/42/68/16842/images/18621/18621.970.jpg",]
 
 export default function ExoticFruitsArticle() {
   const fruits = [
