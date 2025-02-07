@@ -19,8 +19,8 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-teal-500 to-blue-500 shadow-md z-50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center h-[100px]">
-          <div className="flex items-center">
+        <div className="flex items-center h-[100px] justify-between">
+          <div className="hidden sm:flex items-center">
             <Link href="/">
               <Image
                 src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
@@ -37,14 +37,23 @@ export default function Header() {
               Меню
             </button>
           </div>
-          <div className="flex-grow flex justify-center items-center">
+          <div className="hidden sm:block flex-grow text-center">
             <Link
               href="/"
-              className="hidden sm:block text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
+              className="text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
             >
               SEAWIND travel
             </Link>
           </div>
+          <Link href="/" className="sm:hidden">
+            <Image
+              src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
+              alt="SEAWIND travel Logo"
+              width={100}
+              height={100}
+              className="object-contain h-[100px]"
+            />
+          </Link>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <a href="https://t.me/Dm_Pn" target="_blank" rel="noopener noreferrer">
               <FaTelegram className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[30px] sm:h-[30px]" />
