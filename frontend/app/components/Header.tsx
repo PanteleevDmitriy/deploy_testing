@@ -20,6 +20,14 @@ export default function Header() {
     <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-teal-500 to-blue-500 shadow-md z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[100px] justify-between">
+          <div className="flex items-center sm:hidden">
+            <button
+              className="text-white text-xs py-1 px-3 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300"
+              onClick={toggleMenu}
+            >
+              Меню
+            </button>
+          </div>
           <div className="hidden sm:flex items-center">
             <Link href="/">
               <Image
@@ -31,19 +39,11 @@ export default function Header() {
               />
             </Link>
             <button
-              className="text-white text-xs py-1 px-3 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300 sm:text-lg sm:py-2 sm:px-6 ml-4"
+              className="text-white text-lg py-2 px-6 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300 ml-4"
               onClick={toggleMenu}
             >
               Меню
             </button>
-          </div>
-          <div className="hidden sm:block flex-grow text-center">
-            <Link
-              href="/"
-              className="text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
-            >
-              SEAWIND travel
-            </Link>
           </div>
           <Link href="/" className="sm:hidden">
             <Image
@@ -54,6 +54,14 @@ export default function Header() {
               className="object-contain h-[100px]"
             />
           </Link>
+          <div className="hidden sm:block flex-grow text-center">
+            <Link
+              href="/"
+              className="text-xl sm:text-2xl lg:text-3xl font-bold text-white hover:text-teal-100 transition duration-300"
+            >
+              SEAWIND travel
+            </Link>
+          </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <a href="https://t.me/Dm_Pn" target="_blank" rel="noopener noreferrer">
               <FaTelegram className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[30px] sm:h-[30px]" />
