@@ -47,7 +47,7 @@ export default function Header() {
           </div>
           <Link href="/" className="sm:hidden">
             <Image
-              src="https://psv4.userapi.com/s/v1/d/YR8cNgC8nAY5n_Xv2jQZd41-Kw7eK41gBksJKHN2tqdXzhAAVVC9NfgaCRO899UjnMQO4rHyLx3cUNYIqUIy-rUl-HVWqNelKv4JWHOXaOFP27LsPvix5A/logoz.jpg"
+              src="https://psv4.userapi.com/s/v1/d/NK_p_rgrKlsS0P8drTT4cuN083R7REHcl87RzlSI46kymLdByjgOOwKsDpS5vwwNeFgCxW7rGkhmvuymwPY5RQ2OGnCGEhMokfXef4U7JDuI4G5MGHN1qA/logo_fon.png"
               alt="SEAWIND travel Logo"
               width={100}
               height={100}
