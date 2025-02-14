@@ -13,8 +13,8 @@ export default function ExoticFruitsArticle() {
       season: "Март – июнь (пик сезона), доступны круглый год.",
       price: "В сезон – 25,000-30,000 VND/кг, вне сезона – до 50,000 VND/кг.",
       images: [
-        "https://biznes-lanch.com/wa-data/public/photos/36/06/636/636.970.jpeg",
-        "https://biznes-lanch.com/wa-data/public/shop/products/42/68/16842/images/18621/18621.970.jpg",
+        "https://downloader.disk.yandex.ru/preview/1c00a3ad11710a42da5c50585341d4850a12dd64bb356f5757e2d0b23497dbe4/67af01bf/0PuB1GZ2pK0fnLISZc29R71EDSVE_vUj0H3rI-kc9ZPp2aedaPN1iM-IEjkSm7fgUM_VbV56E2525ZvU24Ug-w%3D%3D?uid=0&filename=IMG_4348.JPG&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=3388x1906",
+        "https://downloader.disk.yandex.ru/preview/1c00a3ad11710a42da5c50585341d4850a12dd64bb356f5757e2d0b23497dbe4/67af01bf/0PuB1GZ2pK0fnLISZc29R71EDSVE_vUj0H3rI-kc9ZPp2aedaPN1iM-IEjkSm7fgUM_VbV56E2525ZvU24Ug-w%3D%3D?uid=0&filename=IMG_4348.JPG&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=0&tknv=v2&size=3388x1906",
       ],
     },
     {
@@ -304,7 +304,7 @@ export default function ExoticFruitsArticle() {
           дополнением к вашему рациону во время путешествия.
         </p>
       </div>
-      <div className="text-center">
+      <div className="mt-16 text-center">
         <Link
           href="/articles"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"

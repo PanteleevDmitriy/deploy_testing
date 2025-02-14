@@ -21,7 +21,7 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[100px] justify-between">
           <button
-            className="text-white text-xs sm:text-lg py-1 px-3 bg-teal-600 rounded-full shadow-md hover:bg-teal-700 transition duration-300"
+            className="bg-white text-black px-2 py-0.5 rounded-full hover:bg-teal-100 transition duration-300 text-xs sm:text-lg sm:px-6 sm:py-2"
             onClick={toggleMenu}
           >
             Меню
@@ -39,17 +39,17 @@ export default function Header() {
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <a href="https://t.me/Dm_Pn" target="_blank" rel="noopener noreferrer">
-              <FaTelegram className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[30px] sm:h-[30px]" />
+              <FaTelegram className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[48px] sm:h-[48px]" />
             </a>
             <a href="https://www.instagram.com/sea.wind.travel/" target="_blank" rel="noopener noreferrer">
-              <FaInstagram className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[30px] sm:h-[30px]" />
+              <FaInstagram className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[48px] sm:h-[48px]" />
             </a>
             <a href="https://vk.com/seawind_travel" target="_blank" rel="noopener noreferrer">
-              <FaVk className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[30px] sm:h-[30px]" />
+              <FaVk className="text-white hover:text-teal-100 transition duration-300 w-[15px] h-[15px] sm:w-[48px] sm:h-[48px]" />
             </a>
             <Link
               href="/auth"
-              className="bg-white text-black px-2 py-0.5 rounded-full hover:bg-teal-100 transition duration-300 text-xs sm:text-sm sm:px-3 sm:py-1"
+              className="bg-white text-black px-2 py-0.5 rounded-full hover:bg-teal-100 transition duration-300 text-xs sm:text-lg sm:px-6 sm:py-2"
             >
               Войти
             </Link>

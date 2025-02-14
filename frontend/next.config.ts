@@ -43,8 +43,17 @@ const nextConfig: NextConfig = {
         hostname: 'biznes-lanch.com',  // Добавляем домен
         pathname: '/**',        // Указываем путь, который будет разрешен
       },
+      {
+        protocol: 'https',
+        hostname: 'disk.yandex.ru',  // Добавляем домен
+        pathname: '/**',        // Указываем путь, который будет разрешен
+      },
+      {
+        protocol: 'https',
+        hostname: 'downloader.disk.yandex.ru',  // Добавляем домен
+        pathname: '/**',        // Указываем путь, который будет разрешен
+      },
     ],
   },
 };
-
 export default nextConfig;
