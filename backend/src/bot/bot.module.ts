@@ -8,7 +8,7 @@ import { BotUpdate } from './bot.update';
 @Module({
   imports: [
     TelegrafModule.forRoot({
-      token: process.env.BOT_TOKEN,
+      token: "6904873460:AAGIuR0LoLMXsknJk4jx1mAoeDCWJG2StGk",
       middlewares: [
         session(),
         new LocalSession({ database: 'sessions_db.json' }).middleware(),
