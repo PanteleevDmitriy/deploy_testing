@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/users.model';
 import { AuthModule } from './auth/auth.module';
+import { BotModule } from './bot/bot.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { AuthModule } from './auth/auth.module';
       autoLoadModels: true
     }),
     UsersModule,
-    forwardRef( () => AuthModule)
+    forwardRef( () => AuthModule),
+    BotModule
   ],
   controllers: [AppController, TestController],
   providers: [AppService],
