@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TelegrafModule } from 'nestjs-telegraf';
 import { BotService } from './bot.service';
 import { session } from 'telegraf';
-import LocalSession from 'telegraf-session-local';
+import * as LocalSession from 'telegraf-session-local';
 import { BotUpdate } from './bot.update';
 
 @Module({
