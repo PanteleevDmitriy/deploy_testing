@@ -11,6 +11,7 @@ const cors = require('@fastify/cors');
 
 
 const PORT = process.env.PORT || 3001
+const SECRET = process.env.SECRET || "SEKRETA_NET"
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -39,7 +40,7 @@ async function bootstrap() {
   SwaggerModule.setup('/swagger_doc', app, document)
 
   await app.register(fastifyCookie, {
-    secret: 'my-secret-cookie-qwerty'
+    secret: SECRET
   });
   app.register(cors, {
     origin: [
