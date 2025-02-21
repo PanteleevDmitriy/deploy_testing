@@ -4,25 +4,24 @@ import { BotService } from './bot.service';
 import { BotUpdate } from './bot.update';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users/users.module'; 
-import { UsersService } from '../users/users.service';
 import LocalSession = require('telegraf-session-local');
 
 @Module({
   imports: [
-    ConfigModule, // ✅ Добавили ConfigModule для работы с .env
-    forwardRef(() => UsersModule), // ✅ Подключили UsersModule
+    ConfigModule,
+    forwardRef(() => UsersModule),
     TelegrafModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
-        token: configService.get<string>('BOT_TOKEN'), // ✅ Загружаем токен из .env
+        token: configService.get<string>('BOT_TOKEN'),
         middlewares: [
           new LocalSession({ database: 'sessions_db.json' }).middleware(),
         ],
       }),
-      inject: [ConfigService], // ✅ Внедряем ConfigService
+      inject: [ConfigService],
     }),
   ],
-  providers: [BotService, BotUpdate, UsersService], // ✅ Добавили UsersService
-  exports: [BotService], // ✅ Экспортируем BotService, если нужно
+  providers: [BotService, BotUpdate],
+  exports: [BotService],
 })
 export class BotModule {}
