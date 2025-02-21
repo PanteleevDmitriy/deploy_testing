@@ -10,7 +10,6 @@ export class BotUpdate {
   ) {}
   @Start()
   async onStart(ctx: Context) {
-    //ctx.session.counter = ctx.session.counter || 0;
     await ctx.reply(`Привет!`);
   }
 }
