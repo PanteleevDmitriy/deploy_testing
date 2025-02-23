@@ -4,13 +4,13 @@ import { ConfigService } from '@nestjs/config';
 
 const configService = new ConfigService();
 const WEATHER_TOKEN = configService.get<string>('WEATHER_TOKEN');
-console.log(WEATHER_TOKEN);
+console.log("WEATHER_TOKEN = " + WEATHER_TOKEN);
 
 const lat = 12.24197;
 const lon = 109.19487;
 
-async function getWeather1(weatherToken: string) {
-    if (!weatherToken) {
+async function getWeather1(WEATHER_TOKEN: string) {
+    if (!WEATHER_TOKEN) {
         throw new Error("❌ API-ключ для погоды отсутствует!");
     }
     try {
