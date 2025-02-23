@@ -1,32 +1,27 @@
 import axios from 'axios';
 import moment from 'moment';
-import { ConfigService } from '@nestjs/config';
-
-const configService = new ConfigService();
-const WEATHER_TOKEN = configService.get<string>('WEATHER_TOKEN');
-console.log("WEATHER_TOKEN = " + WEATHER_TOKEN);
 
 const lat = 12.24197;
 const lon = 109.19487;
 
-async function getWeather1(WEATHER_TOKEN: string) {
-    if (!WEATHER_TOKEN) {
+async function getWeather1(weatherToken) {
+    if (!weatherToken) {
         throw new Error("❌ API-ключ для погоды отсутствует!");
     }
+    
     try {
         const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
             params: {
                 lat,
                 lon,
-                appid: WEATHER_TOKEN,
+                appid: weatherToken,
                 units: 'metric',
                 lang: 'ru'
             }
         });
 
         const data = response.data;
-        console.log(response);
-
+        
         return {
             time: moment.unix(data.dt).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
             temp: parseFloat(data.main.temp.toFixed(1)),
