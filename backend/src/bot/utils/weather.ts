@@ -47,4 +47,4 @@ async function getWeather1() {
 }
 
 // Экспортируем функцию
-module.exports = { getWeather1 };
+export { getWeather1 };

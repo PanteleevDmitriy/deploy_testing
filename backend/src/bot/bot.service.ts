@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { MoneyCourse, Weather } from './bot.model';
 import { WeatherDto } from './dto/weather.dto';
 import { MoneyCourseDto } from './dto/money-course.dto';
+import { getWeather1 } from './utils/weather';
 
 @Injectable()
 export class BotService implements OnModuleInit {
