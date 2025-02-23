@@ -1,18 +1,19 @@
-const axios = require('axios');
-const moment = require('moment');
+import axios from 'axios';
+import moment from 'moment';
+import { ConfigService } from '@nestjs/config';
 
-const WEATHER_TOKEN = process.env.WEATHER_TOKEN;
-console.log(WEATHER_TOKEN);
+const configService = new ConfigService();
+const WEATHER_TOKEN = configService.get<string>('WEATHER_TOKEN');
 
 const lat = 12.24197;
 const lon = 109.19487;
 
 async function getWeather1() {
     try {
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather`, {
+        const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
             params: {
-                lat: lat,
-                lon: lon,
+                lat,
+                lon,
                 appid: WEATHER_TOKEN,
                 units: 'metric',
                 lang: 'ru'
@@ -39,12 +40,10 @@ async function getWeather1() {
             sunrise: moment.unix(data.sys.sunrise).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
             sunset: moment.unix(data.sys.sunset).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
         };
-
     } catch (error) {
         console.error('Ошибка получения данных о погоде:', error.message);
         return null;
     }
 }
 
-// Экспортируем функцию
 export { getWeather1 };

@@ -4,15 +4,20 @@ import { MoneyCourse, Weather } from './bot.model';
 import { WeatherDto } from './dto/weather.dto';
 import { MoneyCourseDto } from './dto/money-course.dto';
 import { getWeather1 } from './utils/weather';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class BotService implements OnModuleInit {
     private isWeatherRunning = false; // Флаг для управления циклом
-
+    private weatherToken: string;
+    
     constructor(
         @InjectModel(MoneyCourse) private moneyRepository: typeof MoneyCourse,
         @InjectModel(Weather) private weatherRepository: typeof Weather,
-    ) {}
+        private configService: ConfigService
+    ) {
+        this.weatherToken = this.configService.get<string>('WEATHER_TOKEN');
+    }
 
     async updateWeatherData(dto: WeatherDto) {
         return await this.weatherRepository.upsert(dto);
