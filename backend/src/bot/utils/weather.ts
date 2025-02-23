@@ -9,7 +9,10 @@ console.log(WEATHER_TOKEN);
 const lat = 12.24197;
 const lon = 109.19487;
 
-async function getWeather1() {
+async function getWeather1(weatherToken: string) {
+    if (!weatherToken) {
+        throw new Error("❌ API-ключ для погоды отсутствует!");
+    }
     try {
         const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
             params: {

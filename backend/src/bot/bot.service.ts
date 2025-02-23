@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 export class BotService implements OnModuleInit {
     private isWeatherRunning = false; // Флаг для управления циклом
     private weatherToken: string;
-    
+
     constructor(
         @InjectModel(MoneyCourse) private moneyRepository: typeof MoneyCourse,
         @InjectModel(Weather) private weatherRepository: typeof Weather,
@@ -29,7 +29,7 @@ export class BotService implements OnModuleInit {
 
         while (this.isWeatherRunning) {
             try {
-                const weatherRawData = await getWeather1(); // Получаем данные
+                const weatherRawData = await getWeather1(this.weatherToken);
                 console.log(weatherRawData);
 
                 // ✅ Преобразуем данные в `WeatherDto`
