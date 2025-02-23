@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 
 const configService = new ConfigService();
 const WEATHER_TOKEN = configService.get<string>('WEATHER_TOKEN');
+console.log(WEATHER_TOKEN);
 
 const lat = 12.24197;
 const lon = 109.19487;
@@ -21,7 +22,7 @@ async function getWeather1() {
         });
 
         const data = response.data;
-        console.log(data);
+        console.log(response);
 
         return {
             time: moment.unix(data.dt).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
