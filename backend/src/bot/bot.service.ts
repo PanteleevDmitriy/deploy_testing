@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/sequelize';
 import { MoneyCourse, Weather } from './bot.model';
 import { WeatherDto } from './dto/weather.dto';
 import { getWeather1 } from './utils/weather';
+import getCourse from './utils/money-course';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class BotService implements OnModuleInit {
     private isWeatherRunning = false;
+    private isMoneyRunning = false;
     private weatherToken: string;
+    private moneyToken: string;
 
     constructor(
         @InjectModel(MoneyCourse) private moneyRepository: typeof MoneyCourse,
@@ -16,8 +19,13 @@ export class BotService implements OnModuleInit {
         private configService: ConfigService
     ) {
         this.weatherToken = this.configService.get<string>('WEATHER_TOKEN');
+        this.moneyToken = this.configService.get<string>('MONEY_TOKEN');
+
         if (!this.weatherToken) {
             console.error("❌ API-ключ для погоды отсутствует!");
+        }
+        if (!this.moneyToken) {
+            console.error("❌ API-ключ для валют отсутствует!");
         }
     }
 
@@ -64,6 +72,29 @@ export class BotService implements OnModuleInit {
             } catch (error) {
                 console.error('❌ Ошибка получения погоды:', error.message);
             }
+            await new Promise(resolve => setTimeout(resolve, 360000));
+        }
+    }
+
+    async updateMoneyCourse() {
+        if (this.isMoneyRunning) return;
+        this.isMoneyRunning = true;
+
+        while (this.isMoneyRunning) {
+            try {
+                if (!this.moneyToken) {
+                    throw new Error("❌ API-ключ для валют отсутствует!");
+                }
+
+                const courseData = await getCourse(this.moneyToken);
+                if (!courseData) {
+                    throw new Error("❌ Неверные данные по курсам валют!");
+                }
+
+                await this.moneyRepository.upsert(courseData);
+            } catch (error) {
+                console.error('❌ Ошибка получения курса валют:', error.message);
+            }
             await new Promise(resolve => setTimeout(resolve, 3600000));
         }
     }
@@ -73,7 +104,13 @@ export class BotService implements OnModuleInit {
         console.log('⚠️ Мониторинг погоды остановлен.');
     }
 
+    stopMoneyCheck() {
+        this.isMoneyRunning = false;
+        console.log('⚠️ Мониторинг курса валют остановлен.');
+    }
+
     onModuleInit() {
-        this.checkWeather(); 
+        this.checkWeather();
+        this.updateMoneyCourse();
     }
 }
