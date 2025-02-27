@@ -23,15 +23,15 @@ async function getWeather1(weatherToken) {
         });
 
         const data = response.data;
-        console.log("✅ Данные получены:", data);
+        console.log("✅ Данные получены:", JSON.stringify(data, null, 2));
 
-        // Проверка перед использованием moment.unix()
+        // Проверка наличия ключей
         if (!data.dt || !data.sys?.sunrise || !data.sys?.sunset) {
-            throw new Error("❌ Неверные данные о погоде! Отсутствует dt, sunrise или sunset.");
+            throw new Error("❌ Неверные данные о погоде! (dt, sunrise или sunset отсутствуют)");
         }
 
         return {
-            time: moment.unix(data.dt).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
+            time: moment.unix(Number(data.dt)).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
             temp: parseFloat(data.main.temp.toFixed(1)),
             humidity: data.main.humidity,
             pressure: parseFloat((data.main.pressure / 1.3333333).toFixed(1)),
@@ -42,10 +42,10 @@ async function getWeather1(weatherToken) {
             visibility: data.visibility || 0,
             rain_1h: data.rain?.['1h'] || 0,
             rain_3h: data.rain?.['3h'] || 0,
-            icon: data.weather[0].icon,
-            description: data.weather[0].description,
-            sunrise: moment.unix(data.sys.sunrise).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
-            sunset: moment.unix(data.sys.sunset).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
+            icon: data.weather[0]?.icon || 'unknown',
+            description: data.weather[0]?.description || 'Нет данных',
+            sunrise: moment.unix(Number(data.sys.sunrise)).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
+            sunset: moment.unix(Number(data.sys.sunset)).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
         };
     } catch (error) {
         console.error("❌ Ошибка получения данных о погоде:", error.message);
