@@ -8,9 +8,10 @@ async function getWeather1(weatherToken) {
     if (!weatherToken) {
         throw new Error("❌ API-ключ для погоды отсутствует!");
     }
-    
+
+    console.log("📡 Отправка запроса в OpenWeather API...");
+
     try {
-        console.log("📡 Отправка запроса в OpenWeather API...");
         const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
             params: {
                 lat,
@@ -24,12 +25,13 @@ async function getWeather1(weatherToken) {
         const data = response.data;
         console.log("✅ Данные получены:", data);
 
-        if (!data || !data.main || !data.weather || !data.sys) {
-            throw new Error("❌ Неверные данные о погоде!");
+        // Проверка перед использованием moment.unix()
+        if (!data.dt || !data.sys?.sunrise || !data.sys?.sunset) {
+            throw new Error("❌ Неверные данные о погоде! Отсутствует dt, sunrise или sunset.");
         }
 
         return {
-            time: data.dt ? moment.unix(data.dt).utcOffset(7).format('YYYY-MM-DD HH:mm:ss') : null,
+            time: moment.unix(data.dt).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
             temp: parseFloat(data.main.temp.toFixed(1)),
             humidity: data.main.humidity,
             pressure: parseFloat((data.main.pressure / 1.3333333).toFixed(1)),
@@ -40,13 +42,13 @@ async function getWeather1(weatherToken) {
             visibility: data.visibility || 0,
             rain_1h: data.rain?.['1h'] || 0,
             rain_3h: data.rain?.['3h'] || 0,
-            icon: data.weather[0]?.icon || '',
-            description: data.weather[0]?.description || '',
-            sunrise: data.sys.sunrise ? moment.unix(data.sys.sunrise).utcOffset(7).format('YYYY-MM-DD HH:mm:ss') : null,
-            sunset: data.sys.sunset ? moment.unix(data.sys.sunset).utcOffset(7).format('YYYY-MM-DD HH:mm:ss') : null,
+            icon: data.weather[0].icon,
+            description: data.weather[0].description,
+            sunrise: moment.unix(data.sys.sunrise).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
+            sunset: moment.unix(data.sys.sunset).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
         };
     } catch (error) {
-        console.error('❌ Ошибка получения данных о погоде:', error.message);
+        console.error("❌ Ошибка получения данных о погоде:", error.message);
         return null;
     }
 }
