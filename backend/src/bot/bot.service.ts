@@ -33,6 +33,14 @@ export class BotService implements OnModuleInit {
         return await this.weatherRepository.upsert(dto);
     }
 
+    async getSavedWeather() {
+        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
+    }
+
+    async getSavedCourse() {
+        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
+    }
+
     async checkWeather() {
         if (this.isWeatherRunning) return;
         this.isWeatherRunning = true;
@@ -72,7 +80,7 @@ export class BotService implements OnModuleInit {
             } catch (error) {
                 console.error('❌ Ошибка получения погоды:', error.message);
             }
-            await new Promise(resolve => setTimeout(resolve, 360000));
+            await new Promise(resolve => setTimeout(resolve, 3600000));
         }
     }
 
