@@ -25,13 +25,17 @@ async function getWeather1(weatherToken) {
         const data = response.data;
         console.log("✅ Данные получены:", JSON.stringify(data, null, 2));
 
-        // Проверка наличия ключей
+        // 🛠 Диагностика типа данных
+        console.log("📊 Тип data.dt:", typeof data.dt, "Значение:", data.dt);
+        console.log("📊 Тип data.sys.sunrise:", typeof data.sys.sunrise, "Значение:", data.sys.sunrise);
+        console.log("📊 Тип data.sys.sunset:", typeof data.sys.sunset, "Значение:", data.sys.sunset);
+
         if (!data.dt || !data.sys?.sunrise || !data.sys?.sunset) {
             throw new Error("❌ Неверные данные о погоде! (dt, sunrise или sunset отсутствуют)");
         }
 
         return {
-            time: moment.unix(Number(data.dt)).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
+            time: new Date(data.dt * 1000).toISOString(), // Временная замена moment
             temp: parseFloat(data.main.temp.toFixed(1)),
             humidity: data.main.humidity,
             pressure: parseFloat((data.main.pressure / 1.3333333).toFixed(1)),
@@ -44,8 +48,8 @@ async function getWeather1(weatherToken) {
             rain_3h: data.rain?.['3h'] || 0,
             icon: data.weather[0]?.icon || 'unknown',
             description: data.weather[0]?.description || 'Нет данных',
-            sunrise: moment.unix(Number(data.sys.sunrise)).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
-            sunset: moment.unix(Number(data.sys.sunset)).utcOffset(7).format('YYYY-MM-DD HH:mm:ss'),
+            sunrise: new Date(data.sys.sunrise * 1000).toISOString(), // Тоже замена moment
+            sunset: new Date(data.sys.sunset * 1000).toISOString(),
         };
     } catch (error) {
         console.error("❌ Ошибка получения данных о погоде:", error.message);
