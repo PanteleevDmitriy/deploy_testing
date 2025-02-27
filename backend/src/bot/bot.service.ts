@@ -17,7 +17,7 @@ export class BotService implements OnModuleInit {
     ) {
         this.weatherToken = this.configService.get<string>('WEATHER_TOKEN');
         if (!this.weatherToken) {
-            console.error('❌ Ошибка: WEATHER_TOKEN отсутствует в конфигурации!');
+            console.error("❌ API-ключ для погоды отсутствует!");
         }
     }
 
@@ -32,14 +32,14 @@ export class BotService implements OnModuleInit {
         while (this.isWeatherRunning) {
             try {
                 if (!this.weatherToken) {
-                    throw new Error('❌ Ошибка: WEATHER_TOKEN не задан!');
+                    throw new Error("❌ API-ключ для погоды отсутствует!");
                 }
-
+                
                 const weatherRawData = await getWeather1(this.weatherToken);
                 if (!weatherRawData) {
-                    throw new Error('❌ Ошибка: Данные о погоде не получены!');
+                    throw new Error("❌ Неверные данные о погоде!");
                 }
-
+                
                 const weatherDto: WeatherDto = {
                     time_point: 0,
                     time_value: new Date().toISOString(),
@@ -57,7 +57,7 @@ export class BotService implements OnModuleInit {
                     icon: weatherRawData.icon,
                     description: weatherRawData.description,
                     visibility: weatherRawData.visibility,
-                    pop: 0,
+                    pop: 0, 
                 };
 
                 await this.updateWeatherData(weatherDto);
