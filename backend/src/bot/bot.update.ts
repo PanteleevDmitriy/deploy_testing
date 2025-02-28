@@ -2,6 +2,13 @@ import { Update, Start, Hears, InjectBot } from 'nestjs-telegraf';
 import { Telegraf, Context, Markup } from 'telegraf';
 import { BotService } from './bot.service';
 
+const iconDict: Record<string, string> = {
+  "01d": "☀", "02d": "🌤", "03d": "⛅", "04d": "☁",
+  "09d": "⛈", "10d": "⛈", "11d": "⛈", "13d": "🌨", "50d": "🌫",
+  "01n": "🌑", "02n": "☁", "03n": "☁", "04n": "☁",
+  "09n": "⛈", "10n": "⛈", "11n": "⛈", "13n": "🌨", "50n": "🌫"
+};
+
 @Update()
 export class BotUpdate {
   constructor(
@@ -37,8 +44,8 @@ export class BotUpdate {
 🌅 Восход: ${weather.sunrise}
 🌇 Закат: ${weather.sunset}
 🌫 Видимость: ${weather.visibility} м
-📌 Описание: ${weather.description}`;
-    await ctx.reply(message);
+${iconDict[weather.icon] || "📌"} ${weather.description}`;    
+await ctx.reply(message);
   }
 
   @Hears('💰 Курс валют')
@@ -49,7 +56,7 @@ export class BotUpdate {
       return;
     }
     const message = `📅 Время: ${course.time}
-💰 Курс валют:
+💰 Курс валют к 1$ (usd):
 🇷🇺 RUB: ${Number(course.rub).toFixed(2)}
 🇻🇳 VND: ${Number(course.vnd).toFixed(0)}
 🇨🇳 CNY: ${Number(course.china).toFixed(3)}
