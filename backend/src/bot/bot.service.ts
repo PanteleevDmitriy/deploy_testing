@@ -31,12 +31,7 @@ export class BotService implements OnModuleInit {
 
     private formatTime(date: string | number) {
         return new Date(date).toLocaleString('ru-RU', {
-            timeZone: 'Asia/Ho_Chi_Minh',
-            hour: '2-digit',
-            minute: '2-digit',
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit'
+            timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: '2-digit'
         });
     }
 
@@ -57,7 +52,7 @@ export class BotService implements OnModuleInit {
                 
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: this.formatTime(Date.now()),
+                    time_value: this.formatTime(new Date()),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -93,7 +88,7 @@ export class BotService implements OnModuleInit {
                     throw new Error("❌ API-ключ для валют отсутствует!");
                 }
 
-                const courseData = await getCourse(this.moneyToken);
+                let courseData = await getCourse(this.moneyToken);
                 if (!courseData) {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
@@ -102,14 +97,11 @@ export class BotService implements OnModuleInit {
                     vnd: 0, cny: 3, lak: 0, khr: 0, krw: 0, uzs: 0, myr: 3, eur: 3, gbp: 3
                 };
 
-                for (const currency in courseData) {
-                    if (currenciesToRound.hasOwnProperty(currency)) {
-                        courseData[currency] = parseFloat(courseData[currency]).toFixed(currenciesToRound[currency]);
-                    } else {
-                        courseData[currency] = parseFloat(courseData[currency]).toFixed(2);
-                    }
-                }
-                
+                courseData = Object.fromEntries(Object.entries(courseData).map(([currency, value]: [string, any]) => {
+                    const decimals = currenciesToRound[currency.toLowerCase()] ?? 2;
+                    return [currency, parseFloat(value).toFixed(decimals)];
+                }));
+
                 courseData.time = this.formatTime(courseData.time);
 
                 await this.moneyRepository.upsert(courseData);
