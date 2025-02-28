@@ -29,7 +29,7 @@ export class BotService implements OnModuleInit {
         }
     }
 
-    private formatTime(date: string | number) {
+    private formatTime(date: string | number): string {
         return new Date(date).toLocaleString('ru-RU', {
             timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: '2-digit'
         });
@@ -52,7 +52,7 @@ export class BotService implements OnModuleInit {
                 
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: this.formatTime(new Date()),
+                    time_value: this.formatTime(Date.now()),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -92,24 +92,33 @@ export class BotService implements OnModuleInit {
                 if (!courseData) {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
-
+                
                 const currenciesToRound = {
                     vnd: 0, cny: 3, lak: 0, khr: 0, krw: 0, uzs: 0, myr: 3, eur: 3, gbp: 3
                 };
-
-                courseData = Object.fromEntries(Object.entries(courseData).map(([currency, value]: [string, any]) => {
-                    const decimals = currenciesToRound[currency.toLowerCase()] ?? 2;
-                    return [currency, parseFloat(value).toFixed(decimals)];
-                }));
-
-                courseData.time = this.formatTime(courseData.time);
-
-                await this.moneyRepository.upsert(courseData);
+                
+                Object.keys(courseData).forEach(currency => {
+                    if (currenciesToRound.hasOwnProperty(currency)) {
+                        courseData[currency] = Number(courseData[currency]).toFixed(currenciesToRound[currency]);
+                    } else {
+                        courseData[currency] = Number(courseData[currency]).toFixed(2);
+                    }
+                });
+                
+                await this.moneyRepository.upsert({ ...courseData, time: this.formatTime(Date.now()) });
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
             }
             await new Promise(resolve => setTimeout(resolve, 3600000));
         }
+    }
+
+    async getSavedWeather() {
+        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
+    }
+
+    async getSavedCourse() {
+        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
     }
 
     stopWeatherCheck() {
@@ -120,14 +129,6 @@ export class BotService implements OnModuleInit {
     stopMoneyCheck() {
         this.isMoneyRunning = false;
         console.log('⚠️ Мониторинг курса валют остановлен.');
-    }
-
-    async getSavedWeather() {
-        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
-    }
-
-    async getSavedCourse() {
-        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
     }
 
     onModuleInit() {
