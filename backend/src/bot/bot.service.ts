@@ -93,17 +93,15 @@ export class BotService implements OnModuleInit {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
                 
-                const currenciesToRound = {
+                const currenciesToRound: Record<string, number> = {
                     vnd: 0, cny: 3, lak: 0, khr: 0, krw: 0, uzs: 0, myr: 3, eur: 3, gbp: 3
                 };
                 
-                Object.keys(courseData).forEach(currency => {
-                    if (currenciesToRound.hasOwnProperty(currency)) {
-                        courseData[currency] = Number(courseData[currency]).toFixed(currenciesToRound[currency]);
-                    } else {
-                        courseData[currency] = Number(courseData[currency]).toFixed(2);
-                    }
+                Object.entries(courseData).forEach(([currency, value]) => {
+                    const rounding = currenciesToRound[currency] ?? 2; // Если валюты нет в списке, округляем до 2 знаков
+                    courseData[currency] = Number(value).toFixed(rounding);
                 });
+                
                 
                 await this.moneyRepository.upsert({ ...courseData, time: this.formatTime(Date.now()) });
             } catch (error) {
