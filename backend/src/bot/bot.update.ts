@@ -1,5 +1,5 @@
 import { Update, Start, Hears, InjectBot } from 'nestjs-telegraf';
-import { Telegraf, Context } from 'telegraf';
+import { Telegraf, Context, Markup } from 'telegraf';
 import { BotService } from './bot.service';
 
 @Update()
@@ -11,10 +11,15 @@ export class BotUpdate {
 
   @Start()
   async onStart(ctx: Context) {
-    await ctx.reply(`Привет!`);
+    await ctx.reply(
+      `Привет! Выберите действие:`,
+      Markup.keyboard([
+        ['💰 Курс валют', '🌦 Текущая погода']
+      ]).resize()
+    );
   }
 
-  @Hears('погода')
+  @Hears('🌦 Текущая погода')
   async onWeatherRequest(ctx: Context) {
     const weather = await this.appService.getSavedWeather();
     if (!weather) {
@@ -36,7 +41,7 @@ export class BotUpdate {
     await ctx.reply(message);
   }
 
-  @Hears('курс')
+  @Hears('💰 Курс валют')
   async onCourseRequest(ctx: Context) {
     const course = await this.appService.getSavedCourse();
     if (!course) {
@@ -45,22 +50,22 @@ export class BotUpdate {
     }
     const message = `📅 Время: ${course.time}
 💰 Курс валют:
-🇷🇺 RUB: ${course.rub}
-🇻🇳 VND: ${course.vnd}
-🇨🇳 CNY: ${course.china}
-🇯🇵 JPY: ${course.japan}
-🇱🇦 LAK: ${course.laos}
-🇹🇭 THB: ${course.tailand}
-🇰🇭 KHR: ${course.kambodja}
-🇰🇿 KZT: ${course.kz}
-🇰🇷 KRW: ${course.korea}
-🇰🇬 KGS: ${course.kirgizstan}
-🇺🇿 UZS: ${course.uzbekistan}
-🇮🇳 INR: ${course.india}
-🇲🇾 MYR: ${course.malaysia}
-🇪🇺 EUR: ${course.euro}
-🇹🇷 TRY: ${course.lira}
-🇬🇧 GBP: ${course.funt}`;
+🇷🇺 RUB: ${Number(course.rub).toFixed(2)}
+🇻🇳 VND: ${Number(course.vnd).toFixed(0)}
+🇨🇳 CNY: ${Number(course.china).toFixed(3)}
+🇯🇵 JPY: ${Number(course.japan).toFixed(2)}
+🇱🇦 LAK: ${Number(course.laos).toFixed(0)}
+🇹🇭 THB: ${Number(course.tailand).toFixed(2)}
+🇰🇭 KHR: ${Number(course.kambodja).toFixed(0)}
+🇰🇿 KZT: ${Number(course.kz).toFixed(2)}
+🇰🇷 KRW: ${Number(course.korea).toFixed(0)}
+🇰🇬 KGS: ${Number(course.kirgizstan).toFixed(2)}
+🇺🇿 UZS: ${Number(course.uzbekistan).toFixed(0)}
+🇮🇳 INR: ${Number(course.india).toFixed(2)}
+🇲🇾 MYR: ${Number(course.malaysia).toFixed(3)}
+🇪🇺 EUR: ${Number(course.euro).toFixed(3)}
+🇹🇷 TRY: ${Number(course.lira).toFixed(2)}
+🇬🇧 GBP: ${Number(course.funt).toFixed(3)}`;
     await ctx.reply(message);
   }
 }
