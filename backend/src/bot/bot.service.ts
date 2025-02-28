@@ -33,14 +33,6 @@ export class BotService implements OnModuleInit {
         return await this.weatherRepository.upsert(dto);
     }
 
-    async getSavedWeather() {
-        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
-    }
-
-    async getSavedCourse() {
-        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
-    }
-
     async checkWeather() {
         if (this.isWeatherRunning) return;
         this.isWeatherRunning = true;
@@ -56,9 +48,20 @@ export class BotService implements OnModuleInit {
                     throw new Error("❌ Неверные данные о погоде!");
                 }
                 
+                const formatVNTime = (date: string | number) => {
+                    return new Date(date).toLocaleString('ru-RU', {
+                        timeZone: 'Asia/Ho_Chi_Minh',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: '2-digit'
+                    });
+                };
+
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: new Date().toISOString(),
+                    time_value: formatVNTime(weatherRawData.time),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -68,8 +71,8 @@ export class BotService implements OnModuleInit {
                     clouds: weatherRawData.clouds,
                     rain_1h: weatherRawData.rain_1h,
                     rain_3h: weatherRawData.rain_3h,
-                    sunrise: weatherRawData.sunrise,
-                    sunset: weatherRawData.sunset,
+                    sunrise: formatVNTime(weatherRawData.sunrise),
+                    sunset: formatVNTime(weatherRawData.sunset),
                     icon: weatherRawData.icon,
                     description: weatherRawData.description,
                     visibility: weatherRawData.visibility,
@@ -80,7 +83,7 @@ export class BotService implements OnModuleInit {
             } catch (error) {
                 console.error('❌ Ошибка получения погоды:', error.message);
             }
-            await new Promise(resolve => setTimeout(resolve, 3600000));
+            await new Promise(resolve => setTimeout(resolve, 600000));
         }
     }
 
@@ -99,6 +102,16 @@ export class BotService implements OnModuleInit {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
 
+                Object.keys(courseData).forEach(currency => {
+                    if (['vnd', 'lak', 'khr', 'krw', 'uzs'].includes(currency)) {
+                        courseData[currency] = Math.round(courseData[currency]);
+                    } else if (['cny', 'myr', 'eur', 'gbp'].includes(currency)) {
+                        courseData[currency] = parseFloat(courseData[currency].toFixed(3));
+                    } else {
+                        courseData[currency] = parseFloat(courseData[currency].toFixed(2));
+                    }
+                });
+
                 await this.moneyRepository.upsert(courseData);
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
@@ -115,6 +128,14 @@ export class BotService implements OnModuleInit {
     stopMoneyCheck() {
         this.isMoneyRunning = false;
         console.log('⚠️ Мониторинг курса валют остановлен.');
+    }
+
+    async getSavedWeather() {
+        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
+    }
+
+    async getSavedCourse() {
+        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
     }
 
     onModuleInit() {
