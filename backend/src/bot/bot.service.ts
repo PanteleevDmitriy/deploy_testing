@@ -57,7 +57,7 @@ export class BotService implements OnModuleInit {
                 
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: this.formatTime(new Date().toISOString()),
+                    time_value: this.formatTime(Date.now()),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -109,8 +109,9 @@ export class BotService implements OnModuleInit {
                         courseData[currency] = parseFloat(courseData[currency]).toFixed(2);
                     }
                 }
-
+                
                 courseData.time = this.formatTime(courseData.time);
+
                 await this.moneyRepository.upsert(courseData);
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
@@ -127,6 +128,14 @@ export class BotService implements OnModuleInit {
     stopMoneyCheck() {
         this.isMoneyRunning = false;
         console.log('⚠️ Мониторинг курса валют остановлен.');
+    }
+
+    async getSavedWeather() {
+        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
+    }
+
+    async getSavedCourse() {
+        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
     }
 
     onModuleInit() {
