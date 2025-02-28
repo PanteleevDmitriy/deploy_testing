@@ -29,6 +29,17 @@ export class BotService implements OnModuleInit {
         }
     }
 
+    private formatVNTime(date: string | number | Date) {
+        return new Date(date).toLocaleString('ru-RU', {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            hour: '2-digit',
+            minute: '2-digit',
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit'
+        });
+    }
+
     async checkWeather() {
         if (this.isWeatherRunning) return;
         this.isWeatherRunning = true;
@@ -46,7 +57,7 @@ export class BotService implements OnModuleInit {
                 
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: this.formatTime(new Date()),
+                    time_value: this.formatVNTime(new Date()),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -56,14 +67,14 @@ export class BotService implements OnModuleInit {
                     clouds: weatherRawData.clouds,
                     rain_1h: weatherRawData.rain_1h,
                     rain_3h: weatherRawData.rain_3h,
-                    sunrise: this.formatTime(new Date(weatherRawData.sunrise)),
-                    sunset: this.formatTime(new Date(weatherRawData.sunset)),
+                    sunrise: this.formatVNTime(weatherRawData.sunrise),
+                    sunset: this.formatVNTime(weatherRawData.sunset),
                     icon: weatherRawData.icon,
                     description: weatherRawData.description,
                     visibility: weatherRawData.visibility,
                     pop: 0, 
                 };
-                
+
                 await this.weatherRepository.upsert(weatherDto);
             } catch (error) {
                 console.error('❌ Ошибка получения погоды:', error.message);
@@ -86,23 +97,32 @@ export class BotService implements OnModuleInit {
                 if (!courseData) {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
-                
+
                 const currenciesToRound = {
                     vnd: 0, cny: 3, lak: 0, khr: 0, krw: 0, uzs: 0, myr: 3, eur: 3, gbp: 3
                 };
-                
-                Object.keys(courseData).forEach(currency => {
-                    const decimalPlaces = currenciesToRound[currency] ?? 2;
-                    courseData[currency] = parseFloat(courseData[currency].toFixed(decimalPlaces));
-                });
 
-                courseData.time = this.formatTime(new Date());
+                Object.keys(courseData).forEach(currency => {
+                    const roundTo = currenciesToRound[currency] ?? 2;
+                    courseData[currency] = parseFloat(courseData[currency].toFixed(roundTo));
+                });
+                
+                courseData.time = this.formatVNTime(courseData.time);
+
                 await this.moneyRepository.upsert(courseData);
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
             }
             await new Promise(resolve => setTimeout(resolve, 3600000));
         }
+    }
+
+    async getSavedWeather() {
+        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
+    }
+
+    async getSavedCourse() {
+        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
     }
 
     stopWeatherCheck() {
@@ -118,16 +138,5 @@ export class BotService implements OnModuleInit {
     onModuleInit() {
         this.checkWeather();
         this.updateMoneyCourse();
-    }
-
-    private formatTime(date: Date): string {
-        return date.toLocaleString('ru-RU', {
-            timeZone: 'Asia/Ho_Chi_Minh',
-            hour: '2-digit',
-            minute: '2-digit',
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit'
-        });
     }
 }
