@@ -29,6 +29,17 @@ export class BotService implements OnModuleInit {
         }
     }
 
+    private formatVNTime(date: string | number | Date): string {
+        return new Date(date).toLocaleString('ru-RU', {
+            timeZone: 'Asia/Ho_Chi_Minh',
+            hour: '2-digit',
+            minute: '2-digit',
+            day: '2-digit',
+            month: '2-digit',
+            year: '2-digit'
+        });
+    }
+
     async updateWeatherData(dto: WeatherDto) {
         return await this.weatherRepository.upsert(dto);
     }
@@ -48,20 +59,9 @@ export class BotService implements OnModuleInit {
                     throw new Error("❌ Неверные данные о погоде!");
                 }
                 
-                const formatVNTime = (date: string | number) => {
-                    return new Date(date).toLocaleString('ru-RU', {
-                        timeZone: 'Asia/Ho_Chi_Minh',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: '2-digit'
-                    });
-                };
-
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: formatVNTime(weatherRawData.time),
+                    time_value: this.formatVNTime(new Date()),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -71,8 +71,8 @@ export class BotService implements OnModuleInit {
                     clouds: weatherRawData.clouds,
                     rain_1h: weatherRawData.rain_1h,
                     rain_3h: weatherRawData.rain_3h,
-                    sunrise: formatVNTime(weatherRawData.sunrise),
-                    sunset: formatVNTime(weatherRawData.sunset),
+                    sunrise: this.formatVNTime(weatherRawData.sunrise),
+                    sunset: this.formatVNTime(weatherRawData.sunset),
                     icon: weatherRawData.icon,
                     description: weatherRawData.description,
                     visibility: weatherRawData.visibility,
@@ -102,13 +102,14 @@ export class BotService implements OnModuleInit {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
 
+                const currenciesToRound = {
+                    vnd: 0, cny: 3, lak: 0, khr: 0, krw: 0, uzs: 0, myr: 3, eur: 3, gbp: 3
+                };
+
                 Object.keys(courseData).forEach(currency => {
-                    if (['vnd', 'lak', 'khr', 'krw', 'uzs'].includes(currency)) {
-                        courseData[currency] = Math.round(courseData[currency]);
-                    } else if (['cny', 'myr', 'eur', 'gbp'].includes(currency)) {
-                        courseData[currency] = parseFloat(courseData[currency].toFixed(3));
-                    } else {
-                        courseData[currency] = parseFloat(courseData[currency].toFixed(2));
+                    if (typeof courseData[currency] === 'number') {
+                        const decimals = currenciesToRound[currency] ?? 2;
+                        courseData[currency] = parseFloat(courseData[currency].toFixed(decimals));
                     }
                 });
 
@@ -116,7 +117,7 @@ export class BotService implements OnModuleInit {
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
             }
-            await new Promise(resolve => setTimeout(resolve, 3600000));
+            await new Promise(resolve => setTimeout(resolve, 600000));
         }
     }
 
