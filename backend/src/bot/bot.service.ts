@@ -29,7 +29,7 @@ export class BotService implements OnModuleInit {
         }
     }
 
-    private formatVNTime(date: string | number | Date) {
+    private formatTime(date: string | number) {
         return new Date(date).toLocaleString('ru-RU', {
             timeZone: 'Asia/Ho_Chi_Minh',
             hour: '2-digit',
@@ -57,7 +57,7 @@ export class BotService implements OnModuleInit {
                 
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: this.formatVNTime(new Date()),
+                    time_value: this.formatTime(new Date().toISOString()),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -67,8 +67,8 @@ export class BotService implements OnModuleInit {
                     clouds: weatherRawData.clouds,
                     rain_1h: weatherRawData.rain_1h,
                     rain_3h: weatherRawData.rain_3h,
-                    sunrise: this.formatVNTime(weatherRawData.sunrise),
-                    sunset: this.formatVNTime(weatherRawData.sunset),
+                    sunrise: this.formatTime(weatherRawData.sunrise),
+                    sunset: this.formatTime(weatherRawData.sunset),
                     icon: weatherRawData.icon,
                     description: weatherRawData.description,
                     visibility: weatherRawData.visibility,
@@ -102,27 +102,21 @@ export class BotService implements OnModuleInit {
                     vnd: 0, cny: 3, lak: 0, khr: 0, krw: 0, uzs: 0, myr: 3, eur: 3, gbp: 3
                 };
 
-                Object.keys(courseData).forEach(currency => {
-                    const roundTo = currenciesToRound[currency] ?? 2;
-                    courseData[currency] = parseFloat(courseData[currency].toFixed(roundTo));
-                });
-                
-                courseData.time = this.formatVNTime(courseData.time);
+                for (const currency in courseData) {
+                    if (currenciesToRound.hasOwnProperty(currency)) {
+                        courseData[currency] = parseFloat(courseData[currency]).toFixed(currenciesToRound[currency]);
+                    } else {
+                        courseData[currency] = parseFloat(courseData[currency]).toFixed(2);
+                    }
+                }
 
+                courseData.time = this.formatTime(courseData.time);
                 await this.moneyRepository.upsert(courseData);
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
             }
             await new Promise(resolve => setTimeout(resolve, 3600000));
         }
-    }
-
-    async getSavedWeather() {
-        return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
-    }
-
-    async getSavedCourse() {
-        return await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
     }
 
     stopWeatherCheck() {
