@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
+import { Telegraf } from 'telegraf';
 import * as helmet from 'fastify-helmet';
 import * as pointOfView from 'point-of-view';
 import * as handlebars from 'handlebars';
@@ -51,6 +52,11 @@ async function bootstrap() {
     credentials: true, // Если куки или аутентификация
     optionsSuccessStatus: 204, // Некоторые браузеры ожидают статус 204
   });
+
+  const bot = app.get<Telegraf<any>>(Telegraf);
+  const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;
+  await bot.telegram.setWebhook(webhookUrl);
+
   await app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server has been started on http://localhost:${PORT}`)
 });

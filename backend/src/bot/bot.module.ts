@@ -3,7 +3,8 @@ import { TelegrafModule } from 'nestjs-telegraf';
 import { BotService } from './bot.service';
 import { BotUpdate } from './bot.update';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from '../users/users.module'; 
+import { UsersModule } from '../users/users.module';
+import { BotController } from './bot.controller';
 import LocalSession = require('telegraf-session-local');
 import { SequelizeModule } from '@nestjs/sequelize';
 import { MoneyCourse, Weather } from './bot.model';
@@ -20,11 +21,15 @@ import { MoneyCourse, Weather } from './bot.model';
         middlewares: [
           new LocalSession({ database: 'sessions_db.json' }).middleware(),
         ],
+        telegram: {
+          webhookReply: true,
+        },
       }),
       inject: [ConfigService],
     }),
   ],
   providers: [BotService, BotUpdate],
+  controllers: [BotController],
   exports: [BotService],
 })
 export class BotModule {}
