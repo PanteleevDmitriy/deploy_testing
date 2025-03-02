@@ -45,7 +45,8 @@ export class BotUpdate {
 🌅 Восход: ${weather.sunrise}
 🌇 Закат: ${weather.sunset}
 🌫 Видимость: ${weather.visibility} м
-${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;    
+${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
+
     await ctx.reply(message);
   }
 
@@ -89,7 +90,6 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
       return;
     }
     const message = `💰 Курс валют за 100.000 донгов (VND):
-🇺🇸 Доллар США (USD): ${(100000 / Number(course.vnd)).toFixed(2)}
 🇷🇺 Российский рубль (RUB): ${(Number(course.rub) / Number(course.vnd) * 100000).toFixed(0)}
 🇰🇿 Казахский тенге (KZT): ${(Number(course.kz) / Number(course.vnd) * 100000).toFixed(0)}
 🇰🇬 Киргизский сом (KGS): ${(Number(course.kirgizstan) / Number(course.vnd) * 100000).toFixed(0)}
@@ -113,6 +113,15 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 
   @Action('convert_to_usd')
   async onConvertToUSD(ctx: Context) {
-    await this.onCourseRequest(ctx);
+    const course = await this.appService.getSavedCourse();
+    if (!course) {
+      await ctx.reply('Нет данных о курсе валют.');
+      return;
+    }
+    const message = `📅 Время обновления: ${course.time} ... (оставляем полный текст курса доллара)`;
+
+    await ctx.editMessageText(message, Markup.inlineKeyboard([
+      Markup.button.callback('💱 Курс донга к другим валютам', 'convert_to_vnd')
+    ]));
   }
 }
