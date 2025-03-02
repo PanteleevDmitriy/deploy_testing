@@ -67,15 +67,15 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(1)}
 🇺🇿 Узбекский сум (UZS): ${Number(course.uzbekistan).toFixed(0)}
 🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(1)}
-🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
 🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(0)}
 🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(1)}
 🇱🇦 Лаосский кип (LAK): ${Number(course.laos).toFixed(0)}
-🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
 🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(1)}
+🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
+🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
 🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(1)}
-🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
 🇬🇧 Фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}
+🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
 🇪🇺 Евро (EUR): ${Number(course.euro).toFixed(3)}`;
 
     await ctx.reply(message, Markup.inlineKeyboard([
@@ -100,15 +100,15 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 🇰🇬 Киргизский сом (KGS): ${(Number(course.kirgizstan) / Number(course.vnd) * 100000).toFixed(0)}
 🇺🇿 Узбекский сум (UZS): ${(Number(course.uzbekistan) / Number(course.vnd) * 100000).toFixed(0)}
 🇨🇳 Китайский юань (CNY): ${(Number(course.china) / Number(course.vnd) * 100000).toFixed(2)}
-🇰🇷 Южнокорейская вона (KRW): ${(Number(course.korea) / Number(course.vnd) * 100000).toFixed(0)}
 🇯🇵 Японская иена (JPY): ${(Number(course.japan) / Number(course.vnd) * 100000).toFixed(0)}
 🇹🇭 Тайский бат (THB): ${(Number(course.tailand) / Number(course.vnd) * 100000).toFixed(0)}
 🇱🇦 Лаосский кип (LAK): ${(Number(course.laos) / Number(course.vnd) * 100000).toFixed(0)}
-🇰🇭 Камбоджийский риель (KHR): ${(Number(course.kambodja) / Number(course.vnd) * 100000).toFixed(0)}
 🇮🇳 Индийская рупия (INR): ${(Number(course.india) / Number(course.vnd) * 100000).toFixed(0)}
+🇰🇷 Южнокорейская вона (KRW): ${(Number(course.korea) / Number(course.vnd) * 100000).toFixed(0)}
+🇰🇭 Камбоджийский риель (KHR): ${(Number(course.kambodja) / Number(course.vnd) * 100000).toFixed(0)}
 🇲🇾 Малайзийский ринггит (MYR): ${(Number(course.malaysia) / Number(course.vnd) * 100000).toFixed(2)}
-🇹🇷 Турецкая лира (TRY): ${(Number(course.lira) / Number(course.vnd) * 100000).toFixed(0)}
 🇬🇧 Фунт стерлингов (GBP): ${(Number(course.funt) / Number(course.vnd) * 100000).toFixed(2)}
+🇹🇷 Турецкая лира (TRY): ${(Number(course.lira) / Number(course.vnd) * 100000).toFixed(0)}
 🇪🇺 Евро (EUR): ${(Number(course.euro) / Number(course.vnd) * 100000).toFixed(2)}`;
 
     await ctx.editMessageText(message, Markup.inlineKeyboard([
@@ -133,15 +133,15 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(1)}
 🇺🇿 Узбекский сум (UZS): ${Number(course.uzbekistan).toFixed(0)}
 🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(1)}
-🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
 🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(0)}
 🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(1)}
 🇱🇦 Лаосский кип (LAK): ${Number(course.laos).toFixed(0)}
-🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
 🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(1)}
+🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
+🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
 🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(1)}
-🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
 🇬🇧 Фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}
+🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
 🇪🇺 Евро (EUR): ${Number(course.euro).toFixed(3)}`;
     await ctx.editMessageText(message, Markup.inlineKeyboard([
       Markup.button.callback('💱 Курс донга к другим валютам', 'convert_to_vnd')
