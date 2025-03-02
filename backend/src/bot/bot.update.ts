@@ -1,8 +1,8 @@
-import { Update, Start, Hears, InjectBot } from 'nestjs-telegraf';
+import { Update, Start, Hears, InjectBot, Action } from 'nestjs-telegraf';
 import { Telegraf, Context, Markup } from 'telegraf';
 import { BotService } from './bot.service';
 
-const iconDict: Record<string, string> = {
+const iconDict = {
   "01d": "☀", "02d": "🌤", "03d": "⛅", "04d": "☁",
   "09d": "⛈", "10d": "⛈", "11d": "⛈", "13d": "🌨", "50d": "🌫",
   "01n": "🌑", "02n": "☁", "03n": "☁", "04n": "☁",
@@ -26,6 +26,29 @@ export class BotUpdate {
     );
   }
 
+  @Hears('🌦 Текущая погода')
+  async onWeatherRequest(ctx: Context) {
+    const weather = await this.appService.getSavedWeather();
+    if (!weather) {
+      await ctx.reply('Нет данных о погоде.');
+      return;
+    }
+    const message = `📅 Время прогноза: ${weather.time_value}
+
+🌡 Температура: ${weather.temp}°C
+💧 Влажность: ${weather.humidity}%
+🌀 Давление: ${weather.pressure} мм рт. ст.
+🌬 Ветер: ${weather.wind_speed} м/с, порывы до ${weather.wind_gust} м/с
+💨 Облачность: ${weather.clouds}%
+🌧 Дождь за последний час: ${weather.rain_1h} мм
+🌧 Дождь за последние 3 часа: ${weather.rain_3h} мм
+🌅 Восход: ${weather.sunrise}
+🌇 Закат: ${weather.sunset}
+🌫 Видимость: ${weather.visibility} м
+${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;    
+    await ctx.reply(message);
+  }
+
   @Hears('💰 Курс валют')
   async onCourseRequest(ctx: Context) {
     const course = await this.appService.getSavedCourse();
@@ -33,8 +56,7 @@ export class BotUpdate {
       await ctx.reply('Нет данных о курсе валют.');
       return;
     }
-
-    const usdMessage = `📅 Время обновления: ${course.time}
+    const message = `📅 Время обновления: ${course.time}
 
 💰 Курс валют за 1 доллар США (USD):
 🇷🇺 Российский рубль (RUB): ${Number(course.rub).toFixed(2)}
@@ -54,20 +76,19 @@ export class BotUpdate {
 🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(2)}
 🇬🇧 Фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}`;
 
-    await ctx.reply(usdMessage, Markup.inlineKeyboard([
-      Markup.button.callback('Курс донга к другим валютам', 'VND_CONVERSION')
+    await ctx.reply(message, Markup.inlineKeyboard([
+      Markup.button.callback('💱 Курс донга к другим валютам', 'convert_to_vnd')
     ]));
   }
 
-  @Hears('VND_CONVERSION')
-  async onDongConversion(ctx: Context) {
+  @Action('convert_to_vnd')
+  async onConvertToVND(ctx: Context) {
     const course = await this.appService.getSavedCourse();
     if (!course) {
       await ctx.reply('Нет данных о курсе валют.');
       return;
     }
-
-    const vndMessage = `💰 Курс валют за 100.000 вьетнамских донгов (VND):
+    const message = `💰 Курс валют за 100.000 вьетнамских донгов (VND):
 🇷🇺 Российский рубль (RUB): ${(Number(course.rub) / Number(course.vnd) * 100000).toFixed(2)}
 🇨🇳 Китайский юань (CNY): ${(Number(course.china) / Number(course.vnd) * 100000).toFixed(3)}
 🇯🇵 Японская иена (JPY): ${(Number(course.japan) / Number(course.vnd) * 100000).toFixed(2)}
@@ -84,6 +105,15 @@ export class BotUpdate {
 🇹🇷 Турецкая лира (TRY): ${(Number(course.lira) / Number(course.vnd) * 100000).toFixed(2)}
 🇬🇧 Фунт стерлингов (GBP): ${(Number(course.funt) / Number(course.vnd) * 100000).toFixed(3)}`;
 
-    await ctx.reply(vndMessage);
+    await ctx.editMessageText(message, Markup.inlineKeyboard([
+      Markup.button.callback('💲 Курс доллара', 'convert_to_usd')
+    ]));
+  }
+
+  @Action('convert_to_usd')
+  async onConvertToUSD(ctx: Context) {
+    await this.onCourseRequest(ctx);
   }
 }
+
+
