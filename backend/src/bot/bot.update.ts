@@ -33,18 +33,19 @@ export class BotUpdate {
       await ctx.reply('Нет данных о погоде.');
       return;
     }
-    const message = `📅 Время: ${weather.time_value}
+    const message = `📅 Время прогноза: ${weather.time_value}
+
 🌡 Температура: ${weather.temp}°C
 💧 Влажность: ${weather.humidity}%
 🌀 Давление: ${weather.pressure} мм рт. ст.
 🌬 Ветер: ${weather.wind_speed} м/с, порывы до ${weather.wind_gust} м/с
 💨 Облачность: ${weather.clouds}%
-🌧 Дождь за 1ч: ${weather.rain_1h} мм
-🌧 Дождь за 3ч: ${weather.rain_3h} мм
+🌧 Дождь за последний час: ${weather.rain_1h} мм
+🌧 Дождь за последние 3 часа: ${weather.rain_3h} мм
 🌅 Восход: ${weather.sunrise}
 🌇 Закат: ${weather.sunset}
 🌫 Видимость: ${weather.visibility} м
-${iconDict[weather.icon] || "📌"} ${weather.description}`;    
+${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;    
 await ctx.reply(message);
   }
 
@@ -55,24 +56,25 @@ await ctx.reply(message);
       await ctx.reply('Нет данных о курсе валют.');
       return;
     }
-    const message = `📅 Время: ${course.time}
-💰 Курс валют к 1$ (usd):
-🇷🇺 RUB: ${Number(course.rub).toFixed(2)}
-🇻🇳 VND: ${Number(course.vnd).toFixed(0)}
-🇨🇳 CNY: ${Number(course.china).toFixed(3)}
-🇯🇵 JPY: ${Number(course.japan).toFixed(2)}
-🇱🇦 LAK: ${Number(course.laos).toFixed(0)}
-🇹🇭 THB: ${Number(course.tailand).toFixed(2)}
-🇰🇭 KHR: ${Number(course.kambodja).toFixed(0)}
-🇰🇿 KZT: ${Number(course.kz).toFixed(2)}
-🇰🇷 KRW: ${Number(course.korea).toFixed(0)}
-🇰🇬 KGS: ${Number(course.kirgizstan).toFixed(2)}
-🇺🇿 UZS: ${Number(course.uzbekistan).toFixed(0)}
-🇮🇳 INR: ${Number(course.india).toFixed(2)}
-🇲🇾 MYR: ${Number(course.malaysia).toFixed(3)}
-🇪🇺 EUR: ${Number(course.euro).toFixed(3)}
-🇹🇷 TRY: ${Number(course.lira).toFixed(2)}
-🇬🇧 GBP: ${Number(course.funt).toFixed(3)}`;
+    const message = `📅 Время обновления: ${course.time}
+
+💰 Курс валют за 1 доллар США (USD):
+🇷🇺 Российский рубль (RUB): ${Number(course.rub).toFixed(2)}
+🇻🇳 Вьетнамский донг (VND): ${Number(course.vnd).toFixed(0)}
+🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(3)}
+🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(2)}
+🇱🇦 Лаосский кип (LAK): ${Number(course.laos).toFixed(0)}
+🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(2)}
+🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
+🇰🇿 Казахский тенге (KZT): ${Number(course.kz).toFixed(2)}
+🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
+🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(2)}
+🇺🇿 Узбекский сум (UZS): ${Number(course.uzbekistan).toFixed(0)}
+🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(2)}
+🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(3)}
+🇪🇺 Евро (EUR): ${Number(course.euro).toFixed(3)}
+🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(2)}
+🇬🇧 Британский фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}`;
     await ctx.reply(message);
   }
 }
