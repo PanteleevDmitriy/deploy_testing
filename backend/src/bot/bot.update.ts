@@ -60,20 +60,21 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
     const message = `📅 Время обновления: ${course.time}
 
 💰 Курс валют за 1 доллар США (USD):
+
 🇻🇳 Вьетнамский донг (VND): ${Number(course.vnd).toFixed(0)}
-🇷🇺 Российский рубль (RUB): ${Number(course.rub).toFixed(2)}
-🇰🇿 Казахский тенге (KZT): ${Number(course.kz).toFixed(2)}
-🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(2)}
+🇷🇺 Российский рубль (RUB): ${Number(course.rub).toFixed(1)}
+🇰🇿 Казахский тенге (KZT): ${Number(course.kz).toFixed(0)}
+🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(1)}
 🇺🇿 Узбекский сум (UZS): ${Number(course.uzbekistan).toFixed(0)}
-🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(3)}
+🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(1)}
 🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
-🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(2)}
-🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(2)}
+🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(0)}
+🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(1)}
 🇱🇦 Лаосский кип (LAK): ${Number(course.laos).toFixed(0)}
 🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
-🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(2)}
-🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(3)}
-🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(2)}
+🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(1)}
+🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(1)}
+🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
 🇬🇧 Фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}
 🇪🇺 Евро (EUR): ${Number(course.euro).toFixed(3)}`;
 
@@ -89,7 +90,10 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
       await ctx.reply('Нет данных о курсе валют.');
       return;
     }
-    const message = `💰 Курс валют за 100.000 донгов (VND):
+    const message = `📅 Время обновления: ${course.time}
+    
+💰 Курс валют за 100.000 донгов (VND):
+
 🇷🇺 Российский рубль (RUB): ${(Number(course.rub) / Number(course.vnd) * 100000).toFixed(0)}
 🇰🇿 Казахский тенге (KZT): ${(Number(course.kz) / Number(course.vnd) * 100000).toFixed(0)}
 🇰🇬 Киргизский сом (KGS): ${(Number(course.kirgizstan) / Number(course.vnd) * 100000).toFixed(0)}
@@ -118,8 +122,26 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
       await ctx.reply('Нет данных о курсе валют.');
       return;
     }
-    const message = `📅 Время обновления: ${course.time} ... (оставляем полный текст курса доллара)`;
+    const message = `📅 Время обновления: ${course.time}
 
+💰 Курс валют за 1 доллар США (USD):
+
+🇻🇳 Вьетнамский донг (VND): ${Number(course.vnd).toFixed(0)}
+🇷🇺 Российский рубль (RUB): ${Number(course.rub).toFixed(1)}
+🇰🇿 Казахский тенге (KZT): ${Number(course.kz).toFixed(0)}
+🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(1)}
+🇺🇿 Узбекский сум (UZS): ${Number(course.uzbekistan).toFixed(0)}
+🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(1)}
+🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
+🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(0)}
+🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(1)}
+🇱🇦 Лаосский кип (LAK): ${Number(course.laos).toFixed(0)}
+🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
+🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(1)}
+🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(1)}
+🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
+🇬🇧 Фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}
+🇪🇺 Евро (EUR): ${Number(course.euro).toFixed(3)}`;
     await ctx.editMessageText(message, Markup.inlineKeyboard([
       Markup.button.callback('💱 Курс донга к другим валютам', 'convert_to_vnd')
     ]));
