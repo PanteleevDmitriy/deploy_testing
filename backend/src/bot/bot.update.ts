@@ -37,9 +37,9 @@ export class BotUpdate {
 
 🌡 Температура: ${weather.temp}°C
 💧 Влажность: ${weather.humidity}%
+💨 Облачность: ${weather.clouds}%
 🌀 Давление: ${weather.pressure} мм рт. ст.
 🌬 Ветер: ${weather.wind_speed} м/с, порывы до ${weather.wind_gust} м/с
-💨 Облачность: ${weather.clouds}%
 🌧 Дождь за последний час: ${weather.rain_1h} мм
 🌧 Дождь за последние 3 часа: ${weather.rain_3h} мм
 🌅 Восход: ${weather.sunrise}
@@ -66,14 +66,14 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 🇰🇿 Казахский тенге (KZT): ${Number(course.kz).toFixed(0)}
 🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(1)}
 🇺🇿 Узбекский сум (UZS): ${Number(course.uzbekistan).toFixed(0)}
-🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(1)}
+🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(2)}
 🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(0)}
 🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(1)}
 🇱🇦 Лаосский кип (LAK): ${Number(course.laos).toFixed(0)}
 🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(1)}
 🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
 🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
-🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(1)}
+🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(2)}
 🇬🇧 Фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}
 🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
 🇪🇺 Евро (EUR): ${Number(course.euro).toFixed(3)}`;
@@ -132,14 +132,14 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 🇰🇿 Казахский тенге (KZT): ${Number(course.kz).toFixed(0)}
 🇰🇬 Киргизский сом (KGS): ${Number(course.kirgizstan).toFixed(1)}
 🇺🇿 Узбекский сум (UZS): ${Number(course.uzbekistan).toFixed(0)}
-🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(1)}
+🇨🇳 Китайский юань (CNY): ${Number(course.china).toFixed(2)}
 🇯🇵 Японская иена (JPY): ${Number(course.japan).toFixed(0)}
 🇹🇭 Тайский бат (THB): ${Number(course.tailand).toFixed(1)}
 🇱🇦 Лаосский кип (LAK): ${Number(course.laos).toFixed(0)}
 🇮🇳 Индийская рупия (INR): ${Number(course.india).toFixed(1)}
 🇰🇷 Южнокорейская вона (KRW): ${Number(course.korea).toFixed(0)}
 🇰🇭 Камбоджийский риель (KHR): ${Number(course.kambodja).toFixed(0)}
-🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(1)}
+🇲🇾 Малайзийский ринггит (MYR): ${Number(course.malaysia).toFixed(2)}
 🇬🇧 Фунт стерлингов (GBP): ${Number(course.funt).toFixed(3)}
 🇹🇷 Турецкая лира (TRY): ${Number(course.lira).toFixed(1)}
 🇪🇺 Евро (EUR): ${Number(course.euro).toFixed(3)}`;
