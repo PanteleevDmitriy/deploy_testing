@@ -1,5 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { InjectBot } from 'nestjs-telegraf';
+import { Telegraf } from 'telegraf';
 import { MoneyCourse, Weather } from './bot.model';
 import { WeatherDto } from './dto/weather.dto';
 import { getWeather1 } from './utils/weather';
@@ -14,6 +16,7 @@ export class BotService implements OnModuleInit {
     private moneyToken: string;
 
     constructor(
+        @InjectBot() private bot: Telegraf,
         @InjectModel(MoneyCourse) private moneyRepository: typeof MoneyCourse,
         @InjectModel(Weather) private weatherRepository: typeof Weather,
         private configService: ConfigService
@@ -120,6 +123,9 @@ export class BotService implements OnModuleInit {
     }
 
     onModuleInit() {
+        const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;
+        this.bot.telegram.setWebhook(webhookUrl);
+        console.log(`✅ Webhook установлен: ${webhookUrl}`);
         this.checkWeather();
         this.updateMoneyCourse();
     }

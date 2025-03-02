@@ -18,6 +18,12 @@ import { MoneyCourse, Weather } from './bot.model';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         token: configService.get<string>('BOT_TOKEN'),
+        launchOptions: {
+          webhook: {
+            domain: 'https://seawindtravel.ru/api', // Домен твоего сервера
+            hookPath: '/bot/webhook', // Путь для обработки запросов от Telegram
+          },
+        },
         middlewares: [
           new LocalSession({ database: 'sessions_db.json' }).middleware(),
         ],
@@ -28,8 +34,8 @@ import { MoneyCourse, Weather } from './bot.model';
       inject: [ConfigService],
     }),
   ],
-  providers: [BotService, BotUpdate],
   controllers: [BotController],
+  providers: [BotService, BotUpdate],
   exports: [BotService],
 })
 export class BotModule {}
