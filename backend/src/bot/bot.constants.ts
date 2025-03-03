@@ -7,7 +7,7 @@ export const iconDict = {
 
 export const generateMessageWeather = (weather: any): string => {
     return `
-📅 Последнее обновление: ${weather.time_value}
+📅 Время обновления: ${weather.time_value}
 
 🌡 Температура: ${weather.temp}°C
 💧 Влажность: ${weather.humidity}%
@@ -24,7 +24,7 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 
 export const generateMessageUSD = (course: any): string => {
     return `
-📅 Последнее обновление: ${course.time}
+📅 Время обновления: ${course.time}
   
 💰 Курс валют за 1 доллар США (USD):
   
@@ -48,7 +48,7 @@ export const generateMessageUSD = (course: any): string => {
   
 export const generateMessageVND = (course: any): string => {
     return `
-📅 Последнее обновление: ${course.time}
+📅 Время обновления: ${course.time}
   
 💰 Курс валют за 100.000 донгов (VND):
   
