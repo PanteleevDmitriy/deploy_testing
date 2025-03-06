@@ -124,9 +124,12 @@ export class BotService implements OnModuleInit {
 
     onModuleInit() {
         const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;
-        this.bot.telegram.setWebhook(webhookUrl);
+        this.bot.telegram.setWebhook(webhookUrl, {
+            allowed_updates: ["message", "callback_query"]
+        });
         console.log(`✅ Webhook установлен: ${webhookUrl}`);
         this.checkWeather();
         this.updateMoneyCourse();
     }
+    
 }
