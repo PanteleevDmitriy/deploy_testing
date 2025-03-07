@@ -7,7 +7,7 @@ import * as handlebars from 'handlebars';
 import * as fastifyHelmet from 'fastify-helmet';
 import * as fastifyCookie from '@fastify/cookie';
 import * as fastifyCors from '@fastify/cors';
-// import fastifyRawBody from 'fastify-raw-body';
+import fastifyRawBody from 'fastify-raw-body';
 import serveStatic = require('@fastify/static');
 
 const PORT = process.env.PORT || 3001;
@@ -27,7 +27,7 @@ async function bootstrap() {
 
   // Регистрация middleware
   await app.register(fastifyCookie as any, { secret: SECRET });
-  // await app.register(fastifyRawBody as any, { global: false });
+  await app.register(fastifyRawBody as any, { global: false });
   await app.register(fastifyHelmet);
   await app.register(pointOfView, {
     engine: { handlebars },
