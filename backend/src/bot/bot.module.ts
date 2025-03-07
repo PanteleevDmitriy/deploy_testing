@@ -21,7 +21,7 @@ import { MoneyCourse, Weather } from './bot.model';
         launchOptions: {
           webhook: {
             domain: 'https://seawindtravel.ru', // Домен твоего сервера
-            hookPath: '/apibot/webhook', // Путь для обработки запросов от Telegram
+            hookPath: '/api/bot/webhook', // Путь для обработки запросов от Telegram
           },
         },
         middlewares: [
