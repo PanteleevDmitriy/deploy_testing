@@ -8,6 +8,7 @@ import fastifyHelmet from 'fastify-helmet';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifyRawBody from 'fastify-raw-body';
+import serveStatic from '@fastify/static';
 
 const PORT = process.env.PORT || 3001;
 const SECRET = process.env.SECRET || 'SEKRETA_NET';
@@ -18,8 +19,11 @@ async function bootstrap() {
     new FastifyAdapter(),
   );
 
-  // Разрешение для статических файлов
-  app.useStaticAssets({ root: join(__dirname, '..', 'public') });
+  // Разрешение для статических файлов через @fastify/static
+  await app.register(serveStatic as any, {
+    root: join(__dirname, '..', 'public'),
+    prefix: '/public/', // Опционально, если нужен префикс
+  });
 
   // Регистрация middleware
   await app.register(fastifyCookie as any, { secret: SECRET });
