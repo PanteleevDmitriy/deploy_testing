@@ -8,7 +8,7 @@ import fastifyHelmet from 'fastify-helmet';
 import fastifyCookie from '@fastify/cookie';
 import fastifyCors from '@fastify/cors';
 import fastifyRawBody from 'fastify-raw-body';
-import serveStatic from '@fastify/static';
+import * as serveStatic from '@fastify/static';
 
 const PORT = process.env.PORT || 3001;
 const SECRET = process.env.SECRET || 'SEKRETA_NET';
