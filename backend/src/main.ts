@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import * as pointOfView from 'point-of-view';
 import * as handlebars from 'handlebars';
@@ -30,19 +29,6 @@ async function bootstrap() {
     engine: { handlebars },
     templates: 'views',
   });
-
-  // Настройка Swagger
-  const swagger_options = new DocumentBuilder()
-    .setTitle('NestJS API')
-    .setDescription('API документация')
-    .setVersion('1.0')
-    .addTag('users')
-    .addTag('auth')
-    .addTag('others')
-    .build();
-
-  const document = SwaggerModule.createDocument(app, swagger_options);
-  SwaggerModule.setup('/swagger_doc', app, document);
 
   // Регистрация Cookie и CORS
   await app.register(fastifyCors as any, {
