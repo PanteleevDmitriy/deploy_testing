@@ -23,8 +23,8 @@ async function bootstrap() {
   app.useStaticAssets({ root: join(__dirname, '..', 'public') });
 
   // Регистрация middleware
-  await app.register(fastifyHelmet);
   await app.register(fastifyRawBody, { global: false }); // Для Telegraf
+  await app.register(fastifyHelmet);
   await app.register(pointOfView, {
     engine: { handlebars },
     templates: 'views',
