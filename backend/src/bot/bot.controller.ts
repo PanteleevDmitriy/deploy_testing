@@ -8,7 +8,11 @@ export class BotController {
   constructor(@InjectBot() private readonly bot: Telegraf<any>) {}
 
   @Post('/webhook')
-  async onUpdate(@Req() request: Request) {
+async onUpdate(@Req() request: Request) {
+  try {
     await this.bot.handleUpdate(request.body);
+  } catch (error) {
+    console.error('Ошибка в onUpdate:', error);
   }
+}
 }
