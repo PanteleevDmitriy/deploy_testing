@@ -23,7 +23,8 @@ async function bootstrap() {
   app.useStaticAssets({ root: join(__dirname, '..', 'public') });
 
   // Регистрация middleware
-  await app.register(fastifyRawBody, { global: false }); // Для Telegraf
+  await app.register(fastifyCookie as any, { secret: SECRET });
+  await app.register(fastifyRawBody as any, { global: false });
   await app.register(fastifyHelmet);
   await app.register(pointOfView, {
     engine: { handlebars },
@@ -44,8 +45,7 @@ async function bootstrap() {
   SwaggerModule.setup('/swagger_doc', app, document);
 
   // Регистрация Cookie и CORS
-  await app.register(fastifyCookie, { secret: SECRET });
-  await app.register(fastifyCors, {
+  await app.register(fastifyCors as any, {
     origin: ['http://localhost:3000', 'http://seawindtravel.ru'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
