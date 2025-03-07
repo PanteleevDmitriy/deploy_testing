@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 
-@Controller('/api/bot')
+@Controller('/bot')
 export class BotController {
   constructor(@InjectBot() private readonly bot: Telegraf<any>) {}
 
