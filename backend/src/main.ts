@@ -4,9 +4,9 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { join } from 'path';
 import * as pointOfView from 'point-of-view';
 import * as handlebars from 'handlebars';
-import fastifyHelmet from 'fastify-helmet';
-import fastifyCookie from '@fastify/cookie';
-import fastifyCors from '@fastify/cors';
+import * as fastifyHelmet from 'fastify-helmet';
+import * as fastifyCookie from '@fastify/cookie';
+import * as fastifyCors from '@fastify/cors';
 // import fastifyRawBody from 'fastify-raw-body';
 import serveStatic = require('@fastify/static');
 
