@@ -20,7 +20,7 @@ async function bootstrap() {
   );
 
   // Разрешение для статических файлов через @fastify/static
-  await app.register(serveStatic as any, {
+  await app.register((serveStatic as any).default || serveStatic, {
     root: join(__dirname, '..', 'public'),
     prefix: '/public/', // Опционально, если нужен префикс
   });
