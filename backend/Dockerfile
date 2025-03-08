@@ -8,5 +8,5 @@ RUN npm install
 COPY . .
 
 EXPOSE 5000
-ы
+
 CMD ["npm", "run", "start:dev"]
