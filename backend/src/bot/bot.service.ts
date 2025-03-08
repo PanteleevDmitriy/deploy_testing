@@ -122,12 +122,26 @@ export class BotService implements OnModuleInit {
         console.log('⚠️ Мониторинг курса валют остановлен.');
     }
 
-    onModuleInit() {
+    async onModuleInit() {
         const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;
-        this.bot.telegram.setWebhook(webhookUrl, {
-            allowed_updates: ["message", "callback_query"]
-        });
-        console.log(`✅ Webhook установлен: ${webhookUrl}`);
+        
+        try {
+            // Получаем текущий вебхук
+            const webhookInfo = await this.bot.telegram.getWebhookInfo();
+    
+            if (webhookInfo.url !== webhookUrl) {
+                console.log('🌍 Устанавливаю новый Webhook...');
+                await this.bot.telegram.setWebhook(webhookUrl, {
+                    allowed_updates: ["message", "callback_query"]
+                });
+                console.log(`✅ Webhook установлен: ${webhookUrl}`);
+            } else {
+                console.log(`🔹 Webhook уже установлен: ${webhookUrl}, пропускаю.`);
+            }
+        } catch (error) {
+            console.error("❌ Ошибка при установке Webhook:", error);
+        }
+    
         this.checkWeather();
         this.updateMoneyCourse();
     }
