@@ -124,27 +124,43 @@ export class BotService implements OnModuleInit {
 
     async onModuleInit() {
         const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;
-        
+    
         try {
             // Получаем текущий вебхук
             const webhookInfo = await this.bot.telegram.getWebhookInfo();
+            console.log(`🌍 Текущий Webhook: ${webhookInfo.url || "❌ Не установлен"}`);
     
-            if (webhookInfo.url !== webhookUrl) {
-                console.log('🌍 Устанавливаю новый Webhook...');
-                await this.bot.telegram.setWebhook(webhookUrl, {
+            // Если вебхук не совпадает — сначала удаляем старый
+            if (webhookInfo.url && webhookInfo.url !== webhookUrl) {
+                console.log("🛠️ Удаляю старый Webhook...");
+                await this.bot.telegram.deleteWebhook();
+                console.log("✅ Старый Webhook удалён.");
+            }
+    
+            // Если вебхук не установлен или не совпадает, устанавливаем новый
+            if (!webhookInfo.url || webhookInfo.url !== webhookUrl) {
+                console.log("🚀 Устанавливаю новый Webhook...");
+                const response = await this.bot.telegram.setWebhook(webhookUrl, {
                     allowed_updates: ["message", "callback_query"],
-                    drop_pending_updates: true
+                    drop_pending_updates: true, // Удаляем старые запросы, если бот был оффлайн
                 });
-                console.log(`✅ Webhook установлен: ${webhookUrl}`);
+    
+                if (response) {
+                    console.log(`✅ Webhook успешно установлен: ${webhookUrl}`);
+                } else {
+                    console.error("❌ Ошибка при установке Webhook!");
+                }
             } else {
-                console.log(`🔹 Webhook уже установлен: ${webhookUrl}, пропускаю.`);
+                console.log("🔹 Webhook уже установлен, пропускаю.");
             }
         } catch (error) {
-            console.error("❌ Ошибка при установке Webhook:", error);
+            console.error("❌ Ошибка при настройке Webhook:", error);
         }
     
+        // Запускаем фоновые задачи
         this.checkWeather();
         this.updateMoneyCourse();
     }
+    
     
 }
