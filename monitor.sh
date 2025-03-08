@@ -2,6 +2,13 @@
 # Загружаем переменные из .env
 export $(grep -v '^#' .env | xargs)
 
+# Проверка загрузки переменных
+echo "DEBUG: Проверка загруженных переменных окружения"
+echo "TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}"
+echo "BACKEND_CONTAINER=${BACKEND_CONTAINER}"
+echo "TELEGRAM_BOT_URL=${TELEGRAM_BOT_URL}"
+echo "BOT_TOKEN=${BOT_TOKEN}"
+echo "-----------------------------------------"
 # Функция отправки уведомления в Telegram
 send_telegram_message() {
     MESSAGE=$1
