@@ -39,32 +39,34 @@ while true; do
         echo "⚠️  Backend-контейнер $BACKEND_CONTAINER не работает! Перезапуск..."
         send_telegram_message "⚠️ Backend-контейнер не работает. Перезапускаю!"
         docker-compose down && docker-compose up -d
-    else
-        echo "✅ Контейнер $BACKEND_CONTAINER работает."
-    fi
-
-    # Проверка доступности Telegram-бота
-    echo "🔄 Проверка ответа от Telegram-бота..."
-    HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "${TELEGRAM_BOT_URL}")
-
-    echo "ℹ️  HTTP-код ответа: $HTTP_CODE"
-
-    if [[ "$HTTP_CODE" == "200" ]]; then
-        if [ "$bot_started" = false ]; then
-            echo "✅ Бот успешно запущен!"
-            send_telegram_message "✅ Бот успешно запущен!"
-            bot_started=true
-        else
-            echo "📩 Сообщение №$counter | Бот работает!"
-            send_telegram_message "📩 Сообщение №$counter | Бот работает!"
-            ((counter++))
-        fi
-    else
-        echo "⚠️  Telegram-бот не отвечает (код $HTTP_CODE)! Перезапуск..."
-        send_telegram_message "⚠️ Бот недоступен (код $HTTP_CODE). Перезапускаю контейнеры!"
-        docker-compose down && docker-compose up -d
         bot_started=false
         counter=1
+    else
+        echo "✅ Контейнер $BACKEND_CONTAINER работает."
+        
+        # Проверка доступности Telegram-бота только если контейнер работает
+        echo "🔄 Проверка ответа от Telegram-бота..."
+        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "${TELEGRAM_BOT_URL}")
+
+        echo "ℹ️  HTTP-код ответа: $HTTP_CODE"
+
+        if [[ "$HTTP_CODE" == "200" ]]; then
+            if [ "$bot_started" = false ]; then
+                echo "✅ Бот успешно запущен!"
+                send_telegram_message "✅ Бот успешно запущен!"
+                bot_started=true
+            else
+                echo "📩 Сообщение №$counter | Бот работает!"
+                send_telegram_message "📩 Сообщение №$counter | Бот работает!"
+                ((counter++))
+            fi
+        else
+            echo "⚠️  Telegram-бот не отвечает (код $HTTP_CODE)! Перезапуск..."
+            send_telegram_message "⚠️ Бот недоступен (код $HTTP_CODE). Перезапускаю контейнеры!"
+            docker-compose down && docker-compose up -d
+            bot_started=false
+            counter=1
+        fi
     fi
 
     echo "⏳ Ожидание 10 минут перед следующей проверкой..."
