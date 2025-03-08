@@ -132,7 +132,8 @@ export class BotService implements OnModuleInit {
             if (webhookInfo.url !== webhookUrl) {
                 console.log('🌍 Устанавливаю новый Webhook...');
                 await this.bot.telegram.setWebhook(webhookUrl, {
-                    allowed_updates: ["message", "callback_query"]
+                    allowed_updates: ["message", "callback_query"],
+                    drop_pending_updates: true
                 });
                 console.log(`✅ Webhook установлен: ${webhookUrl}`);
             } else {
