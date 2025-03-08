@@ -20,12 +20,23 @@ import { MoneyCourse, Weather } from './bot.model';
         token: configService.get<string>('BOT_TOKEN'),
         launchOptions: {
           webhook: {
-            domain: 'https://seawindtravel.ru', // Домен твоего сервера
-            hookPath: '/api/bot/webhook', // Путь для обработки запросов от Telegram
+            domain: 'https://seawindtravel.ru',
+            hookPath: '/api/bot/webhook',
           },
         },
         middlewares: [
           new LocalSession({ database: 'sessions_db.json' }).middleware(),
+          async (ctx, next) => {
+            const messageTime = ctx.message?.date;
+            const now = Math.floor(Date.now() / 1000);
+
+            if (messageTime && now - messageTime > 10) {
+              console.log('❌ Старое сообщение, игнорируем:', ctx.message.text);
+              return;
+            }
+
+            await next(); // Пропускаем дальше, если сообщение свежее
+          },
         ],
         telegram: {
           webhookReply: true,
