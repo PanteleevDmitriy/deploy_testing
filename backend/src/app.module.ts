@@ -8,6 +8,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './users/users.model';
 import { AuthModule } from './auth/auth.module';
 import { BotModule } from './bot/bot.module';
+import { Excursion } from './excursions/excursions.model';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { BotModule } from './bot/bot.module';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [User],
+      models: [User, Excursion],
       autoLoadModels: true
     }),
     UsersModule,
