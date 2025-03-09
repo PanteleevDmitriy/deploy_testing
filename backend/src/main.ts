@@ -8,7 +8,6 @@ import * as fastifyRawBody from 'fastify-raw-body';
 import serveStatic = require('@fastify/static');
 import * as pointOfView from 'point-of-view';
 import * as handlebars from 'handlebars';
-import { Telegraf } from 'telegraf';
 import { join } from 'path';
 
 const PORT = process.env.PORT || 3001;
@@ -41,26 +40,6 @@ async function bootstrap() {
   await app.register(pointOfView, {
     engine: { handlebars },
     templates: 'views',
-  });
-
-  // Получаем инстанс Fastify
-  const fastify = app.getHttpAdapter().getInstance();
-
-  // Инициализация бота
-  const bot = app.get(Telegraf); // Получаем экземпляр бота
-
-  // Создание вебхука для бота
-  const webhook = await bot.createWebhook({ domain: 'https://seawindtravel.ru' });
-
-  // Обработчик вебхука с использованием Fastify
-  fastify.post('/api/bot/webhook', async (req: any, res: any) => {
-    const update = req.body; // получаем тело запроса
-
-    try {
-      await webhook(req.raw, res.raw); // передаем raw запрос в Telegraf
-    } catch (err) {
-      res.status(500).send({ error: 'Webhook failed' });
-    }
   });
 
   // Запуск сервера
