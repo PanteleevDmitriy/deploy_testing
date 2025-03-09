@@ -1,18 +1,10 @@
 "use client"
-
-import { useState } from "react"
-import TourCard from "./components/TourCard"
-import Link from "next/link"
+import ExcursionCard from "./components/ExcursionCard"
 import { tours } from "./data/tours"
 
-const mainPageTours = tours.filter((tour) => tour.isMainPage)
-
 export default function Home() {
-  const [expandedTourId, setExpandedTourId] = useState<number | null>(null)
-
-  const handleExpand = (id: number) => {
-    setExpandedTourId(expandedTourId === id ? null : id)
-  }
+  // Фильтруем только доступные и популярные экскурсии для главной страницы
+  const availablePopularTours = tours.filter((tour) => tour.isAvailable && tour.isPopular).sort((a, b) => a.id - b.id)
 
   return (
     <div className="pt-32">
@@ -32,32 +24,23 @@ export default function Home() {
 
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-center">Популярные туры</h2>
-          <div className="space-y-8">
-            {mainPageTours.map((tour) => (
-              <div key={tour.id} className="flex justify-center">
-                <div className="w-full md:w-[70%]">
-                  <TourCard
-                    id={tour.id}
-                    title={tour.title}
-                    description={tour.description}
-                    price={tour.price}
-                    images={tour.images}
-                    onExpand={handleExpand}
-                    isExpanded={expandedTourId === tour.id}
-                  />
+          <h2 className="text-3xl font-bold mb-8 text-center">Популярные экскурсии</h2>
+
+          {availablePopularTours.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-xl">Экскурсии не найдены</p>
+            </div>
+          ) : (
+            <div className="space-y-8">
+              {availablePopularTours.map((excursion) => (
+                <div key={excursion.id} className="flex justify-center">
+                  <div className="w-full md:w-[70%]">
+                    <ExcursionCard excursion={excursion} />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8 text-center">
-            <Link
-              href="/tours"
-              className="bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 inline-block"
-            >
-              Все туры
-            </Link>
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

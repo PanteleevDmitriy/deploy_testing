@@ -59,7 +59,7 @@ export default function Header() {
           <nav className="py-2">
             <div className="flex flex-col space-y-2">
               <Link
-                href="/tours"
+                href="/"
                 className="text-white hover:text-teal-100 transition duration-300"
                 onClick={closeMenu}
               >
