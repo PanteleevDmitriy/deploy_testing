@@ -20,8 +20,8 @@ import { MoneyCourse, Weather } from './bot.model';
         token: configService.get<string>('BOT_TOKEN'),
         launchOptions: {
           webhook: {
-            domain: 'https://seawindtravel.ru',
-            hookPath: '/api/bot/webhook',
+            domain: 'https://seawindtravel.ru',  // Твой домен для вебхука
+            hookPath: '/api/bot/webhook',  // Путь вебхука
           },
         },
         middlewares: [
@@ -39,7 +39,7 @@ import { MoneyCourse, Weather } from './bot.model';
           },
         ],
         telegram: {
-          webhookReply: true,
+          webhookReply: true,  // Включаем возможность ответа через вебхук
         },
       }),
       inject: [ConfigService],

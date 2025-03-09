@@ -3,14 +3,6 @@
 # Загружаем переменные из .env
 export $(grep -v '^#' .env | xargs)
 
-# Проверка загрузки переменных
-echo "🔍 DEBUG: Проверка загруженных переменных окружения..."
-echo "   - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}"
-echo "   - BACKEND_CONTAINER=${BACKEND_CONTAINER}"
-echo "   - TELEGRAM_BOT_URL=${TELEGRAM_BOT_URL}"
-echo "   - BOT_TOKEN=${BOT_TOKEN}"
-echo "-----------------------------------------"
-
 # Функция отправки уведомления в Telegram
 send_telegram_message() {
     MESSAGE=$1
@@ -48,12 +40,19 @@ while true; do
         exit 1
     fi
 
+    echo "✅ Переменные из окружения загружены"
     # Проверка, запущен ли backend-контейнер
     echo "🔄 Проверка состояния контейнера $BACKEND_CONTAINER..."
     if ! docker ps --format '{{.Names}}' | grep -q "^${BACKEND_CONTAINER}$"; then
         echo "⚠️  Backend-контейнер $BACKEND_CONTAINER не работает! Перезапуск..."
         send_telegram_message "⚠️ Backend-контейнер не работает. Перезапускаю!"
-        docker-compose down && docker-compose up -d
+        docker-compose down
+        
+        # Задержка в 10 секунд перед запуском
+        echo "⏳ Ожидание 10 секунд перед запуском контейнеров..."
+        sleep 10  # Задержка в 10 секунд
+        
+        docker-compose up -d
         bot_started=false
         counter=1
     else
@@ -73,7 +72,13 @@ while true; do
         else
             echo "⚠️ Бот не отвечает! Перезапуск контейнеров..."
             send_telegram_message "⚠️ Бот недоступен. Перезапускаю контейнеры!"
-            docker-compose down && docker-compose up -d
+            docker-compose down
+            
+            # Задержка в 10 секунд перед запуском
+            echo "⏳ Ожидание 10 секунд перед запуском контейнеров..."
+            sleep 10  # Задержка в 10 секунд
+            
+            docker-compose up -d
             bot_started=false
             counter=1
         fi
