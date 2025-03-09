@@ -9,6 +9,7 @@ import { User } from './users/users.model';
 import { AuthModule } from './auth/auth.module';
 import { BotModule } from './bot/bot.module';
 import { Excursion } from './excursions/excursions.model';
+import { ExcursionsModule } from './excursions/excursions.module';
 
 @Module({
   imports: [
@@ -26,9 +27,10 @@ import { Excursion } from './excursions/excursions.model';
       models: [User, Excursion],
       autoLoadModels: true
     }),
-    UsersModule,
     forwardRef( () => AuthModule),
-    BotModule
+    UsersModule,
+    BotModule,
+    ExcursionsModule
   ],
   controllers: [AppController, TestController],
   providers: [AppService],
