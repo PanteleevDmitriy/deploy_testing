@@ -23,8 +23,8 @@ export default function ExcursionPage() {
   // Если экскурсия не найдена или недоступна, показываем сообщение
   if (!excursion) {
     return (
-      <div className="container mx-auto px-4 py-16 pt-32 text-center">
-        <h1 className="text-3xl font-bold mb-8">Экскурсия не найдена или недоступна</h1>
+      <div className="container mx-auto px-4 py-8 pt-28 text-center">
+        <h1 className="text-3xl font-bold mb-4">Экскурсия не найдена или недоступна</h1>
         <Link href="/" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700">
           Вернуться на главную
         </Link>
@@ -41,11 +41,11 @@ export default function ExcursionPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 pt-32">
-      <h1 className="text-3xl font-bold mb-8 text-center">{excursion.name}</h1>
+    <div className="container mx-auto px-4 py-8 pt-28">
+      <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
 
-      <div className="mb-8">
-        <div className="relative w-full h-[300px] md:h-[500px] mb-4 bg-gray-100 rounded-lg">
+      <div className="mb-4">
+        <div className="relative w-full h-[300px] md:h-[500px] mb-3 bg-white rounded-lg">
           <Image
             src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
             alt={excursion.name}
@@ -74,11 +74,11 @@ export default function ExcursionPage() {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-4 justify-center">
+        <div className="flex flex-wrap gap-2 mb-3 justify-center">
           {excursion.photoLinks.map((photo, index) => (
             <div
               key={index}
-              className={`cursor-pointer border-2 ${index === currentImageIndex ? "border-teal-500" : "border-transparent"} bg-gray-100 relative w-[100px] h-[75px]`}
+              className={`cursor-pointer border-2 ${index === currentImageIndex ? "border-teal-500" : "border-transparent"} bg-white relative w-[100px] h-[75px]`}
               onClick={() => setCurrentImageIndex(index)}
             >
               <Image
@@ -93,21 +93,21 @@ export default function ExcursionPage() {
         </div>
       </div>
 
-      <div className="bg-white shadow-lg rounded-lg p-6 mb-8">
-        <div className="mb-4">
-          <h2 className="text-2xl font-semibold mb-2">Описание</h2>
+      <div className="bg-white shadow-lg rounded-lg p-4 mb-4">
+        <div className="mb-3">
+          <h2 className="text-2xl font-semibold mb-1">Описание</h2>
           <p>{excursion.longDescription}</p>
         </div>
 
-        <div className="mb-4">
-          <h2 className="text-2xl font-semibold mb-2">Цена</h2>
+        <div className="mb-3">
+          <h2 className="text-2xl font-semibold mb-1">Цена</h2>
           <p className="text-xl font-bold text-teal-600">
             от {Math.round(Number.parseFloat(excursion.price))} $ с человека
           </p>
         </div>
 
-        <div className="mb-4">
-          <h2 className="text-2xl font-semibold mb-2">Особенности</h2>
+        <div className="mb-3">
+          <h2 className="text-2xl font-semibold mb-1">Особенности</h2>
           <ul className="list-disc list-inside">
             {excursion.isFamilyFriendly && <li>Подходит для семей с детьми</li>}
             {excursion.isWinter && <li>Зимний сезон</li>}

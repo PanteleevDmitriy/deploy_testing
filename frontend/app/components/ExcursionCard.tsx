@@ -22,7 +22,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="relative w-full h-[333px] sm:h-[500px] bg-gray-100">
+      <div className="relative w-full h-[333px] sm:h-[500px] bg-white">
         <Image
           src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
