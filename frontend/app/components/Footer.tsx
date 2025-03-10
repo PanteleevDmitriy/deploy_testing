@@ -30,7 +30,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-2">Ссылки</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/tours" className="text-blue-600 hover:underline">
+                <Link href="/" className="text-blue-600 hover:underline">
                   Экскурсии
                 </Link>
               </li>
