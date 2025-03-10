@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { ExcursionInterface } from "../types/excursion";
+import type { ExcursionInterface } from "../types/excursion"
 
 interface ExcursionCardProps {
   excursion: ExcursionInterface
@@ -22,30 +22,31 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="relative w-full h-[333px] sm:h-[500px]">
+      <div className="relative w-full h-[333px] sm:h-[500px] bg-gray-100">
         <Image
           src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
           layout="fill"
-          objectFit="cover"
+          objectFit="contain"
+          className="rounded-t-lg"
         />
         <div className="absolute inset-0 flex items-center justify-between p-4">
           <button
             onClick={prevImage}
-            className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+            className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
             aria-label="Предыдущее изображение"
           >
             &#10094;
           </button>
           <button
             onClick={nextImage}
-            className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75"
+            className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
             aria-label="Следующее изображение"
           >
             &#10095;
           </button>
         </div>
-        <div className="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+        <div className="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded z-10">
           {currentImageIndex + 1} / {excursion.photoLinks.length}
         </div>
       </div>
