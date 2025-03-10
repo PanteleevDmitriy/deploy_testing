@@ -10,14 +10,11 @@ export default function Home() {
     <div className="pt-32">
       <section className="bg-white py-4 sm:py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center">
-            Экскурсии по Вьетнаму
-            <br />
-            город Нячанг
-          </h1>
-          <p className="text-lg sm:text-xl mb-4 text-center">Добро пожаловать на сайт компании SEAWIND!</p>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center">Вас приветствует компания SEA Wind travel</h1>
+          <p className="text-lg sm:text-xl mb-4 text-center">С нами ваш отдых будет незабываемым!</p>
           <p className="mb-4 text-center">
-            Мы проводим экскурсии по всем направлениям, у нас русские гиды и огромный опыт в туризме.
+            Мы предлагаем экскурсии по всем направлениям. Мы гарантируем комфорт и качество. У нас компетентные русские
+            гиды и большой опыт в туризме.
           </p>
         </div>
       </section>

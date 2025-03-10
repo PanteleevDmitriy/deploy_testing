@@ -58,11 +58,7 @@ export default function Header() {
         {isMenuOpen && (
           <nav className="py-2">
             <div className="flex flex-col space-y-2">
-              <Link
-                href="/"
-                className="text-white hover:text-teal-100 transition duration-300"
-                onClick={closeMenu}
-              >
+              <Link href="/" className="text-white hover:text-teal-100 transition duration-300" onClick={closeMenu}>
                 Экскурсии
               </Link>
               <Link
@@ -81,20 +77,6 @@ export default function Header() {
               </Link>
               <Link href="/faq" className="text-white hover:text-teal-100 transition duration-300" onClick={closeMenu}>
                 Часто задаваемые вопросы
-              </Link>
-              <Link
-                href="/promotions"
-                className="text-white hover:text-teal-100 transition duration-300"
-                onClick={closeMenu}
-              >
-                Акции и предложения
-              </Link>
-              <Link
-                href="/services"
-                className="text-white hover:text-teal-100 transition duration-300"
-                onClick={closeMenu}
-              >
-                Услуги
               </Link>
               <Link
                 href="/articles"

@@ -50,16 +50,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/promotions" className="text-blue-600 hover:underline">
-                  Акции и предложения
-                </Link>
-              </li>
-              <li>
-                <Link href="/services" className="text-blue-600 hover:underline">
-                  Услуги
-                </Link>
-              </li>
-              <li>
                 <Link href="/articles" className="text-blue-600 hover:underline">
                   Полезные статьи
                 </Link>
@@ -68,13 +58,18 @@ export default function Footer() {
           </div>
           <div className="w-full md:w-1/3">
             <h3 className="text-lg font-semibold mb-2">Подписаться на новости</h3>
-            <p className="text-sm text-gray-600 mb-2">Подпишитесь на наши новости и акции</p>
-            <form className="flex flex-col">
-              <input type="email" placeholder="Ваш email" className="px-3 py-2 border rounded mb-2" />
-              <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Подписаться
-              </button>
-            </form>
+            <p className="text-sm text-gray-600 mb-4">
+              Узнайте о ярких локациях в городе и окресностях. Куда сходить? Где поесть? Всё самое интересное в нашем
+              телеграм канале!
+            </p>
+            <a
+              href="https://t.me/Dm_Pn"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 inline-block"
+            >
+              Подписаться
+            </a>
           </div>
         </div>
         <div className="mt-8 text-center text-sm text-gray-600">

@@ -1,13 +1,15 @@
-'use client'
+"use client"
 
-import './globals.css'
-import { Inter } from 'next/font/google'
-import Header from './components/Header'
-import Footer from './components/Footer'
-import { useEffect } from 'react'
-import { usePathname } from 'next/navigation'
+import type React from "react"
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] })
+import "./globals.css"
+import { Inter } from "next/font/google"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
+import { useEffect } from "react"
+import { usePathname } from "next/navigation"
+
+const inter = Inter({ subsets: ["latin", "cyrillic"] })
 
 export default function RootLayout({
   children,
@@ -22,6 +24,9 @@ export default function RootLayout({
 
   return (
     <html lang="ru" className="h-full">
+      <head>
+        <title>SEA Wind travel - экскурсии Нячанг - Вьетнам</title>
+      </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
         <Header />
         <main className="flex-grow pt-28">{children}</main>
