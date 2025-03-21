@@ -91,16 +91,37 @@ export class BotService implements OnModuleInit {
                     throw new Error("❌ API-ключ для валют отсутствует!");
                 }
 
+                // Получаем последнее сохранённое значение курса
+                const lastCourse = await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
+
+                if (lastCourse) {
+                    const lastUpdateTime = new Date(lastCourse.time).getTime();
+                    const currentTime = Date.now();
+                    const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
+
+                    if (hoursSinceLastUpdate < 7.5) {
+                        console.log("⏳ Курс валют ещё не требует обновления. Повторная проверка через 1 час.");
+                        await new Promise(resolve => setTimeout(resolve, 3600000)); // Ждём 1 час перед следующей проверкой
+                        continue;
+                    }
+                }
+
+                // Запрос новых данных
                 let courseData = await getCourse(this.moneyToken);
                 if (!courseData) {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
-                
+
+                // Сохраняем новый курс с текущим временем
                 await this.moneyRepository.upsert({ ...courseData, time: this.formatTime(Date.now()) });
+
+                console.log("✅ Курс валют обновлён. Следующая проверка через 8 часов.");
+
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
             }
-            await new Promise(resolve => setTimeout(resolve, 3600000));
+
+            await new Promise(resolve => setTimeout(resolve, 28800000)); // Проверяем снова через 8 часов
         }
     }
 
@@ -161,6 +182,4 @@ export class BotService implements OnModuleInit {
         this.checkWeather();
         this.updateMoneyCourse();
     }
-    
-    
 }
