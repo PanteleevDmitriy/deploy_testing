@@ -1,14 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import { ExcursionInterface } from "@/app/types/excursion"
 
 export default function ExcursionPage() {
   const params = useParams()
-  const router = useRouter()
   const id = Number.parseInt(params.id as string)
 
   const [excursion, setExcursion] = useState<ExcursionInterface | null>(null)
@@ -19,17 +18,11 @@ export default function ExcursionPage() {
 
     async function fetchExcursions() {
       try {
-        console.log("useEffect сработал, id:", id)
-
         const response = await fetch(`/api/excursions`)
         if (!response.ok) throw new Error("Ошибка загрузки экскурсий")
 
         const data: ExcursionInterface[] = await response.json()
-        console.log("Данные с API:", data)
-
         const foundExcursion = data.find((tour) => tour.id === id && tour.isAvailable) || null
-        console.log("Найденная экскурсия:", foundExcursion)
-
         setExcursion(foundExcursion)
       } catch (error) {
         console.error("Ошибка загрузки данных:", error)
@@ -38,10 +31,6 @@ export default function ExcursionPage() {
 
     fetchExcursions()
   }, [id])
-
-  useEffect(() => {
-    console.log("Текущая экскурсия в стейте:", excursion)
-  }, [excursion])
 
   if (!excursion) {
     return (
@@ -62,31 +51,29 @@ export default function ExcursionPage() {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + (excursion.photoLinks?.length || 1)) % (excursion.photoLinks?.length || 1))
   }
 
-  console.log("Текущая картинка:", excursion.photoLinks?.[currentImageIndex])
-
   return (
     <div className="container mx-auto px-4 py-8 pt-28">
       <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
 
       <div className="mb-4 flex justify-center">
         <div className="w-full md:w-[50%]">
-          <div className="relative w-full h-[300px] md:h-[500px] mb-3 bg-white rounded-lg">
+          <div className="relative w-full h-auto mb-3 bg-white rounded-lg">
             {excursion.photoLinks && excursion.photoLinks.length > 0 ? (
               <Image
                 src={excursion.photoLinks[currentImageIndex]}
                 alt={excursion.name}
-                width={1200}
-                height={800}
-                unoptimized
+                width={800}
+                height={500}
+                style={{ width: "100%", height: "auto" }}
                 className="rounded-lg"
               />
             ) : (
               <Image
                 src="/placeholder.svg"
                 alt="Изображение отсутствует"
-                width={1200}
-                height={800}
-                unoptimized
+                width={800}
+                height={500}
+                style={{ width: "100%", height: "auto" }}
                 className="rounded-lg"
               />
             )}
