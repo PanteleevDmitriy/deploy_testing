@@ -3,27 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон */
   --foreground: #171717;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  position: relative;
-  min-height: 100vh;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('/bg.png') repeat-y center top;
+  background: var(--background) url('/bg.png') repeat-y center top;
   background-size: 100% auto;
-  opacity: 0.5; /* Прозрачность фона */
-  z-index: -1; /* Отправляем фон под контент */
+  font-family: Arial, Helvetica, sans-serif;
 }

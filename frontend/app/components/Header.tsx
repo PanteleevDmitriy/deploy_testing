@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import Image from "next/image"
-import { FaTelegram, FaInstagram, FaVk } from "react-icons/fa"
-import { useState } from "react"
+import Link from "next/link";
+import Image from "next/image";
+import { FaTelegram, FaInstagram, FaVk } from "react-icons/fa";
+import { useState } from "react";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   const closeMenu = () => {
-    setIsMenuOpen(false)
-  }
+    setIsMenuOpen(false);
+  };
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-teal-500 shadow-md z-50">
+    <header className="fixed top-0 left-0 right-0 bg-teal-300 shadow-md z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[100px] justify-between">
           <button
@@ -29,7 +29,7 @@ export default function Header() {
           <div className="flex-1 flex justify-center">
             <Link href="/">
               <Image
-                src="/logo_fon.png"
+                src="/favicon.ico"
                 alt="SEAWIND travel Logo"
                 width={100}
                 height={100}
@@ -61,28 +61,16 @@ export default function Header() {
               <Link href="/" className="text-white hover:text-teal-100 transition duration-300" onClick={closeMenu}>
                 Экскурсии
               </Link>
-              <Link
-                href="/about"
-                className="text-white hover:text-teal-100 transition duration-300"
-                onClick={closeMenu}
-              >
+              <Link href="/about" className="text-white hover:text-teal-100 transition duration-300" onClick={closeMenu}>
                 Информация о нас
               </Link>
-              <Link
-                href="/reviews"
-                className="text-white hover:text-teal-100 transition duration-300"
-                onClick={closeMenu}
-              >
+              <Link href="/reviews" className="text-white hover:text-teal-100 transition duration-300" onClick={closeMenu}>
                 Отзывы туристов
               </Link>
               <Link href="/faq" className="text-white hover:text-teal-100 transition duration-300" onClick={closeMenu}>
                 Часто задаваемые вопросы
               </Link>
-              <Link
-                href="/articles"
-                className="text-white hover:text-teal-100 transition duration-300"
-                onClick={closeMenu}
-              >
+              <Link href="/articles" className="text-white hover:text-teal-100 transition duration-300" onClick={closeMenu}>
                 Полезные статьи
               </Link>
             </div>
@@ -90,5 +78,5 @@ export default function Header() {
         )}
       </div>
     </header>
-  )
+  );
 }

@@ -25,26 +25,23 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="pt-28 bg-cover bg-center min-h-screen" style={{ backgroundImage: "url('/background.png')" }}>
-      {/* Блок приветствия */}
-      <section className="bg-white/50 py-4 sm:py-6">
+    <div className="pt-28">
+      <section className="bg-white bg-opacity-50 py-2 sm:py-4 rounded-xl mx-2">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">
-            Вас приветствует компания SEA Wind travel
-          </h1>
-          <p className="text-lg sm:text-xl mb-2 text-center">
-            С нами ваш отдых будет незабываемым!
-          </p>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">Вас приветствует компания 
+            SEA Wind travel</h1>
+          <p className="text-lg sm:text-xl mb-2 text-center">С нами ваш отдых будет незабываемым!</p>
           <p className="mb-2 text-center">
-            Мы предлагаем экскурсии по всем направлениям. Мы гарантируем комфорт и качество. 
-            У нас компетентные русские гиды и большой опыт в туризме.
+            Мы предлагаем экскурсии по всем направлениям. 
+            Мы гарантируем комфорт и качество. 
+            У нас компетентные русские гиды 
+            и большой опыт в туризме.
           </p>
         </div>
       </section>
 
-      {/* Блок экскурсий */}
       <section className="py-6">
-        <div className="container mx-auto px-4 bg-white/50 p-6 rounded-lg shadow-md">
+        <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold mb-4 text-center">Наши экскурсии</h2>
 
           {loading ? (

@@ -21,8 +21,8 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   }
 
   return (
-    <div className="bg-white/50 shadow-lg rounded-lg overflow-hidden">
-      <div className="relative w-full h-[333px] sm:h-[500px] bg-white/50">
+    <div className="bg-white/80 shadow-lg rounded-lg overflow-hidden">
+      <div className="relative w-full h-[333px] sm:h-[500px] bg-white/80">
         <Image
           src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
@@ -50,7 +50,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
           {currentImageIndex + 1} / {excursion.photoLinks.length}
         </div>
       </div>
-      <div className="p-4 bg-white/50 backdrop-blur-sm rounded-b-lg">
+      <div className="p-4 bg-white/80 backdrop-blur-sm rounded-b-lg">
         <div className="flex justify-between items-start mb-2">
           <div>
             <h3 className="text-xl font-semibold">{excursion.name}</h3>
