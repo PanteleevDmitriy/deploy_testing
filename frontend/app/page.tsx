@@ -1,20 +1,37 @@
 "use client"
+
+import { useState, useEffect } from "react"
 import ExcursionCard from "./components/ExcursionCard"
-import { tours } from "./data/tours"
+import type { ExcursionInterface } from "@/app/types/excursion"
 
 export default function Home() {
+  const [tours, setTours] = useState<ExcursionInterface[]>([])
+
+  useEffect(() => {
+    fetch("/api/excursions")
+      .then((res) => res.json())
+      .then((data: ExcursionInterface[]) => {
+        setTours(data)
+      })
+      .catch((error) => console.error("Ошибка загрузки экскурсий:", error))
+  }, [])
+
   // Фильтруем только доступные и популярные экскурсии для главной страницы
-  const availablePopularTours = tours.filter((tour) => tour.isAvailable && tour.isPopular).sort((a, b) => a.id - b.id)
+  const availablePopularTours = tours
+    .filter((tour) => tour.isAvailable && tour.isPopular)
+    .sort((a, b) => a.id - b.id)
 
   return (
     <div className="pt-28">
       <section className="bg-white py-2 sm:py-4">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">Вас приветствует компания SEA Wind travel</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">
+            Вас приветствует компания SEA Wind travel
+          </h1>
           <p className="text-lg sm:text-xl mb-2 text-center">С нами ваш отдых будет незабываемым!</p>
           <p className="mb-2 text-center">
-            Мы предлагаем экскурсии по всем направлениям. Мы гарантируем комфорт и качество. У нас компетентные русские
-            гиды и большой опыт в туризме.
+            Мы предлагаем экскурсии по всем направлениям. Мы гарантируем комфорт и качество. У нас компетентные
+            русские гиды и большой опыт в туризме.
           </p>
         </div>
       </section>
@@ -43,4 +60,3 @@ export default function Home() {
     </div>
   )
 }
-
