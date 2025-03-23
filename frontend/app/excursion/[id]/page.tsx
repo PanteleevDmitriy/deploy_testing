@@ -15,20 +15,20 @@ export default function ExcursionPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
-    console.log("useEffect сработал, id:", id) // Логируем срабатывание useEffect
-
     window.scrollTo(0, 0)
 
     async function fetchExcursions() {
       try {
+        console.log("useEffect сработал, id:", id)
+
         const response = await fetch(`/api/excursions`)
         if (!response.ok) throw new Error("Ошибка загрузки экскурсий")
 
         const data: ExcursionInterface[] = await response.json()
-        console.log("Данные с API:", data) // Логируем, что вернул API
+        console.log("Данные с API:", data)
 
         const foundExcursion = data.find((tour) => tour.id === id && tour.isAvailable) || null
-        console.log("Найденная экскурсия:", foundExcursion) // Логируем, что нашли
+        console.log("Найденная экскурсия:", foundExcursion)
 
         setExcursion(foundExcursion)
       } catch (error) {
@@ -39,7 +39,9 @@ export default function ExcursionPage() {
     fetchExcursions()
   }, [id])
 
-  console.log("Текущая экскурсия в стейте:", excursion) // Логируем состояние excursion
+  useEffect(() => {
+    console.log("Текущая экскурсия в стейте:", excursion)
+  }, [excursion])
 
   if (!excursion) {
     return (
@@ -60,6 +62,8 @@ export default function ExcursionPage() {
     setCurrentImageIndex((prevIndex) => (prevIndex - 1 + (excursion.photoLinks?.length || 1)) % (excursion.photoLinks?.length || 1))
   }
 
+  console.log("Текущая картинка:", excursion.photoLinks?.[currentImageIndex])
+
   return (
     <div className="container mx-auto px-4 py-8 pt-28">
       <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
@@ -71,16 +75,18 @@ export default function ExcursionPage() {
               <Image
                 src={excursion.photoLinks[currentImageIndex]}
                 alt={excursion.name}
-                layout="fill"
-                objectFit="contain"
+                width={1200}
+                height={800}
+                unoptimized
                 className="rounded-lg"
               />
             ) : (
               <Image
                 src="/placeholder.svg"
                 alt="Изображение отсутствует"
-                layout="fill"
-                objectFit="contain"
+                width={1200}
+                height={800}
+                unoptimized
                 className="rounded-lg"
               />
             )}
