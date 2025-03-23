@@ -30,8 +30,8 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'sun9-20.userapi.com',
-        pathname: '/impg/**',
+        hostname: 'vk.com',
+        pathname: '/**',
       },
       {
         protocol: "https",
