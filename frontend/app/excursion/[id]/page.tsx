@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
@@ -7,15 +9,14 @@ import type { ExcursionInterface } from "@/app/types/excursion";
 export default function ExcursionPage() {
   const params = useParams();
   const id = Number.parseInt(params.id as string);
-  const [excursions, setExcursions] = useState<ExcursionInterface[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [excursions, setExcursions] = useState<ExcursionInterface[]>([]);
 
   useEffect(() => {
     fetch("/api/excursions")
       .then((res) => res.json())
-      .then((data: ExcursionInterface[]) => {
-        setExcursions(data);
-      });
+      .then((data) => setExcursions(data))
+      .catch((err) => console.error("Ошибка загрузки экскурсий:", err));
   }, []);
 
   const excursion = excursions.find((tour) => tour.id === id);
@@ -49,13 +50,13 @@ export default function ExcursionPage() {
 
       <div className="mb-4 flex justify-center">
         <div className="w-full md:w-[50%]">
-          <div className="relative w-full h-auto max-h-[500px] flex justify-center items-center bg-white rounded-lg">
+          <div className="relative w-full h-[300px] md:h-[500px] mb-3 bg-white rounded-lg">
             <Image
               src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
-              width={800}
-              height={500}
-              className="rounded-lg object-contain"
+              layout="fill"
+              objectFit="contain"
+              className="rounded-lg"
             />
             <div className="absolute inset-0 flex items-center justify-between p-4">
               <button
@@ -88,9 +89,9 @@ export default function ExcursionPage() {
                 <Image
                   src={photo || "/placeholder.svg"}
                   alt={`${excursion.name} фото ${index + 1}`}
-                  width={100}
-                  height={75}
-                  className="rounded object-contain"
+                  layout="fill"
+                  objectFit="contain"
+                  className="rounded"
                 />
               </div>
             ))}
@@ -109,6 +110,18 @@ export default function ExcursionPage() {
           <p className="text-xl font-bold text-teal-600">
             от {Math.round(Number.parseFloat(excursion.price))} $ с человека
           </p>
+        </div>
+
+        <div className="mb-3">
+          <h2 className="text-2xl font-semibold mb-1">Особенности</h2>
+          <ul className="list-disc list-inside">
+            {excursion.isFamilyFriendly && <li>Подходит для семей с детьми</li>}
+            {excursion.isWinter && <li>Зимний сезон</li>}
+            {excursion.isBeach && <li>Пляжный отдых</li>}
+            {excursion.isOption1 && <li>Опция 1</li>}
+            {excursion.isOption2 && <li>Опция 2</li>}
+            {excursion.isOption3 && <li>Опция 3</li>}
+          </ul>
         </div>
       </div>
 
