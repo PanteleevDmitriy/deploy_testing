@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
-import { tours } from "@/app/data/tours"
 import type { ExcursionInterface } from "@/app/types/excursion"
 
 export default function ExcursionPage() {
@@ -12,15 +11,26 @@ export default function ExcursionPage() {
   const router = useRouter()
   const id = Number.parseInt(params.id as string)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
-
-  // Находим экскурсию по id и проверяем, что она доступна
-  const excursion = tours.find((tour) => tour.id === id && tour.isAvailable) as ExcursionInterface | undefined
+  const [excursion, setExcursion] = useState<ExcursionInterface | null>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  // Если экскурсия не найдена или недоступна, показываем сообщение
+  useEffect(() => {
+    async function fetchExcursions() {
+      try {
+        const response = await fetch("/api/excursions")
+        const data: ExcursionInterface[] = await response.json()
+        const foundExcursion = data.find((tour) => tour.id === id && tour.isAvailable)
+        setExcursion(foundExcursion || null)
+      } catch (error) {
+        console.error("Ошибка загрузки экскурсий:", error)
+      }
+    }
+    fetchExcursions()
+  }, [id])
+
   if (!excursion) {
     return (
       <div className="container mx-auto px-4 py-8 pt-28 text-center">
@@ -140,4 +150,3 @@ export default function ExcursionPage() {
     </div>
   )
 }
-
