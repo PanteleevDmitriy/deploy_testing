@@ -1,25 +1,34 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import ExcursionCard from "./components/ExcursionCard"
-import type { ExcursionInterface } from "@/app/types/excursion"
+import { useState, useEffect } from "react";
+import ExcursionCard from "./components/ExcursionCard";
+import type { ExcursionInterface } from "@/app/types/excursion";
 
 export default function Home() {
-  const [tours, setTours] = useState<ExcursionInterface[]>([])
+  const [tours, setTours] = useState<ExcursionInterface[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/excursions")
       .then((res) => res.json())
       .then((data: ExcursionInterface[]) => {
-        setTours(data)
+        setTours(data);
+        setLoading(false);
       })
-      .catch((error) => console.error("Ошибка загрузки экскурсий:", error))
-  }, [])
+      .catch(() => setLoading(false));
+  }, []);
 
-  // Фильтруем только доступные и популярные экскурсии для главной страницы
+  if (loading) {
+    return <div className="text-center py-4 text-xl">Загрузка...</div>;
+  }
+
+  if (!tours || tours.length === 0) {
+    return <div className="text-center py-4 text-xl">Экскурсии не найдены</div>;
+  }
+
   const availablePopularTours = tours
     .filter((tour) => tour.isAvailable && tour.isPopular)
-    .sort((a, b) => a.id - b.id)
+    .sort((a, b) => a.id - b.id);
 
   return (
     <div className="pt-28">
@@ -30,8 +39,8 @@ export default function Home() {
           </h1>
           <p className="text-lg sm:text-xl mb-2 text-center">С нами ваш отдых будет незабываемым!</p>
           <p className="mb-2 text-center">
-            Мы предлагаем экскурсии по всем направлениям. Мы гарантируем комфорт и качество. У нас компетентные
-            русские гиды и большой опыт в туризме.
+            Мы предлагаем экскурсии по всем направлениям. Мы гарантируем комфорт и качество. У нас компетентные русские
+            гиды и большой опыт в туризме.
           </p>
         </div>
       </section>
@@ -58,5 +67,5 @@ export default function Home() {
         </div>
       </section>
     </div>
-  )
+  );
 }
