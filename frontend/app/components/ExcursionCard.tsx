@@ -27,7 +27,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
           src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
           layout="fill"
-          objectFit="contain"
+          objectFit="cover"
           className="rounded-t-lg"
         />
         <div className="absolute inset-0 flex items-center justify-between p-4">
@@ -51,12 +51,15 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
         </div>
       </div>
       <div className="p-4 bg-glass rounded-b-lg">
-        <div className="flex justify-between items-start mb-2">
-          <div>
-            <h3 className="text-xl font-semibold">{excursion.name}</h3>
-            <p className="text-gray-600">{excursion.shortDescription}</p>
-          </div>
+        <div className="flex justify-between items-center mb-2">
+          <h3 className="text-xl font-semibold">{excursion.name}</h3>
+          {excursion.isPopular && (
+            <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+              Популярное
+            </span>
+          )}
         </div>
+        <p className="text-gray-600">{excursion.shortDescription}</p>
         <Link
           href={`/excursion/${excursion.id}`}
           className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 w-full text-[8px] sm:text-xs lg:text-base block text-center mt-4"
