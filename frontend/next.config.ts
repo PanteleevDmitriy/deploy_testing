@@ -34,8 +34,8 @@ const nextConfig: NextConfig = {
         pathname: '/impg/**',
       },
       {
-        protocol: 'https',
-        hostname: 'psv4.userapi.com',  // Добавляем домен
+        protocol: "https",
+        hostname: "images.unsplash.com",  // Добавляем домен
         pathname: '/s/v1/d/**',        // Указываем путь, который будет разрешен
       },
       {
