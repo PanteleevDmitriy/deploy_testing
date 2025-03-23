@@ -15,6 +15,8 @@ export default function ExcursionPage() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
+    console.log("useEffect сработал, id:", id) // Логируем срабатывание useEffect
+
     window.scrollTo(0, 0)
 
     async function fetchExcursions() {
@@ -23,7 +25,11 @@ export default function ExcursionPage() {
         if (!response.ok) throw new Error("Ошибка загрузки экскурсий")
 
         const data: ExcursionInterface[] = await response.json()
+        console.log("Данные с API:", data) // Логируем, что вернул API
+
         const foundExcursion = data.find((tour) => tour.id === id && tour.isAvailable) || null
+        console.log("Найденная экскурсия:", foundExcursion) // Логируем, что нашли
+
         setExcursion(foundExcursion)
       } catch (error) {
         console.error("Ошибка загрузки данных:", error)
@@ -32,6 +38,8 @@ export default function ExcursionPage() {
 
     fetchExcursions()
   }, [id])
+
+  console.log("Текущая экскурсия в стейте:", excursion) // Логируем состояние excursion
 
   if (!excursion) {
     return (
