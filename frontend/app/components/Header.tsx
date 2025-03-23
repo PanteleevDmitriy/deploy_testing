@@ -17,7 +17,7 @@ export default function Header() {
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-gradient-to-r from-teal-500 to-blue-500 shadow-md z-50">
+    <header className="fixed top-0 left-0 right-0 bg-teal-500 shadow-md z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[100px] justify-between">
           <button
@@ -29,7 +29,7 @@ export default function Header() {
           <div className="flex-1 flex justify-center">
             <Link href="/">
               <Image
-                src="https://psv4.userapi.com/s/v1/d/NK_p_rgrKlsS0P8drTT4cuN083R7REHcl87RzlSI46kymLdByjgOOwKsDpS5vwwNeFgCxW7rGkhmvuymwPY5RQ2OGnCGEhMokfXef4U7JDuI4G5MGHN1qA/logo_fon.png"
+                src="/logo_fon.png"
                 alt="SEAWIND travel Logo"
                 width={100}
                 height={100}
@@ -92,4 +92,3 @@ export default function Header() {
     </header>
   )
 }
-
