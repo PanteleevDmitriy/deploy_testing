@@ -9,14 +9,18 @@ import type { ExcursionInterface } from "@/app/types/excursion";
 export default function ExcursionPage() {
   const params = useParams();
   const id = Number.parseInt(params.id as string);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [excursions, setExcursions] = useState<ExcursionInterface[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     fetch("/api/excursions")
       .then((res) => res.json())
-      .then((data) => setExcursions(data))
-      .catch((err) => console.error("Ошибка загрузки экскурсий:", err));
+      .then((data: ExcursionInterface[]) => {
+        setExcursions(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   const excursion = excursions.find((tour) => tour.id === id);
@@ -24,6 +28,14 @@ export default function ExcursionPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8 pt-28 text-center">
+        <h1 className="text-3xl font-bold mb-4">Загрузка...</h1>
+      </div>
+    );
+  }
 
   if (!excursion) {
     return (
@@ -78,24 +90,6 @@ export default function ExcursionPage() {
               {currentImageIndex + 1} / {excursion.photoLinks.length}
             </div>
           </div>
-
-          <div className="flex flex-wrap gap-2 mb-3 justify-center">
-            {excursion.photoLinks.map((photo, index) => (
-              <div
-                key={index}
-                className={`cursor-pointer border-2 ${index === currentImageIndex ? "border-teal-500" : "border-transparent"} bg-white relative w-[100px] h-[75px]`}
-                onClick={() => setCurrentImageIndex(index)}
-              >
-                <Image
-                  src={photo || "/placeholder.svg"}
-                  alt={`${excursion.name} фото ${index + 1}`}
-                  layout="fill"
-                  objectFit="contain"
-                  className="rounded"
-                />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
@@ -104,24 +98,11 @@ export default function ExcursionPage() {
           <h2 className="text-2xl font-semibold mb-1">Описание</h2>
           <p>{excursion.longDescription}</p>
         </div>
-
         <div className="mb-3">
           <h2 className="text-2xl font-semibold mb-1">Цена</h2>
           <p className="text-xl font-bold text-teal-600">
             от {Math.round(Number.parseFloat(excursion.price))} $ с человека
           </p>
-        </div>
-
-        <div className="mb-3">
-          <h2 className="text-2xl font-semibold mb-1">Особенности</h2>
-          <ul className="list-disc list-inside">
-            {excursion.isFamilyFriendly && <li>Подходит для семей с детьми</li>}
-            {excursion.isWinter && <li>Зимний сезон</li>}
-            {excursion.isBeach && <li>Пляжный отдых</li>}
-            {excursion.isOption1 && <li>Опция 1</li>}
-            {excursion.isOption2 && <li>Опция 2</li>}
-            {excursion.isOption3 && <li>Опция 3</li>}
-          </ul>
         </div>
       </div>
 
