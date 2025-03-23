@@ -1,36 +1,28 @@
-"use client"
-
-import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
-import Image from "next/image"
-import Link from "next/link"
-import { ExcursionInterface } from "@/app/types/excursion"
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import type { ExcursionInterface } from "@/app/types/excursion";
 
 export default function ExcursionPage() {
-  const params = useParams()
-  const id = Number.parseInt(params.id as string)
-
-  const [excursion, setExcursion] = useState<ExcursionInterface | null>(null)
-  const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const params = useParams();
+  const id = Number.parseInt(params.id as string);
+  const [excursions, setExcursions] = useState<ExcursionInterface[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    fetch("/api/excursions")
+      .then((res) => res.json())
+      .then((data: ExcursionInterface[]) => {
+        setExcursions(data);
+      });
+  }, []);
 
-    async function fetchExcursions() {
-      try {
-        const response = await fetch(`/api/excursions`)
-        if (!response.ok) throw new Error("Ошибка загрузки экскурсий")
+  const excursion = excursions.find((tour) => tour.id === id);
 
-        const data: ExcursionInterface[] = await response.json()
-        const foundExcursion = data.find((tour) => tour.id === id && tour.isAvailable) || null
-        setExcursion(foundExcursion)
-      } catch (error) {
-        console.error("Ошибка загрузки данных:", error)
-      }
-    }
-
-    fetchExcursions()
-  }, [id])
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!excursion) {
     return (
@@ -40,16 +32,16 @@ export default function ExcursionPage() {
           Список экскурсий
         </Link>
       </div>
-    )
+    );
   }
 
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % (excursion.photoLinks?.length || 1))
-  }
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % excursion.photoLinks.length);
+  };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + (excursion.photoLinks?.length || 1)) % (excursion.photoLinks?.length || 1))
-  }
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + excursion.photoLinks.length) % excursion.photoLinks.length);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 pt-28">
@@ -57,27 +49,14 @@ export default function ExcursionPage() {
 
       <div className="mb-4 flex justify-center">
         <div className="w-full md:w-[50%]">
-          <div className="relative w-full h-auto mb-3 bg-white rounded-lg">
-            {excursion.photoLinks && excursion.photoLinks.length > 0 ? (
-              <Image
-                src={excursion.photoLinks[currentImageIndex]}
-                alt={excursion.name}
-                width={800}
-                height={500}
-                style={{ width: "100%", height: "auto" }}
-                className="rounded-lg"
-              />
-            ) : (
-              <Image
-                src="/placeholder.svg"
-                alt="Изображение отсутствует"
-                width={800}
-                height={500}
-                style={{ width: "100%", height: "auto" }}
-                className="rounded-lg"
-              />
-            )}
-
+          <div className="relative w-full h-auto max-h-[500px] flex justify-center items-center bg-white rounded-lg">
+            <Image
+              src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
+              alt={excursion.name}
+              width={800}
+              height={500}
+              className="rounded-lg object-contain"
+            />
             <div className="absolute inset-0 flex items-center justify-between p-4">
               <button
                 onClick={prevImage}
@@ -95,8 +74,26 @@ export default function ExcursionPage() {
               </button>
             </div>
             <div className="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded z-10">
-              {currentImageIndex + 1} / {excursion.photoLinks?.length || 1}
+              {currentImageIndex + 1} / {excursion.photoLinks.length}
             </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-3 justify-center">
+            {excursion.photoLinks.map((photo, index) => (
+              <div
+                key={index}
+                className={`cursor-pointer border-2 ${index === currentImageIndex ? "border-teal-500" : "border-transparent"} bg-white relative w-[100px] h-[75px]`}
+                onClick={() => setCurrentImageIndex(index)}
+              >
+                <Image
+                  src={photo || "/placeholder.svg"}
+                  alt={`${excursion.name} фото ${index + 1}`}
+                  width={100}
+                  height={75}
+                  className="rounded object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -132,5 +129,5 @@ export default function ExcursionPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
