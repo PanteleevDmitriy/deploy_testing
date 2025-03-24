@@ -21,7 +21,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   };
 
   return (
-    <div className="bg-white/50 shadow-lg rounded-lg overflow-hidden flex flex-col">
+    <div className="bg-blue-200/50 shadow-lg rounded-lg overflow-hidden flex flex-col">
       {/* Основное изображение с каруселью */}
       <div className="relative w-full h-[250px] sm:h-[350px] md:h-[400px] flex items-center justify-center">
         <Image
@@ -55,7 +55,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
       </div>
 
       {/* Информация об экскурсии */}
-      <div className="p-4 bg-white/50 rounded-b-lg flex flex-col flex-grow">
+      <div className="p-4 bg-blue-200 rounded-b-lg flex flex-col flex-grow">
         <div className="p-2 rounded flex justify-between items-start">
           <div>
             <h3 className="text-lg font-semibold">{excursion.name}</h3>
