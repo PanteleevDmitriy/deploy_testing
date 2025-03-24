@@ -56,15 +56,18 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
 
       {/* Информация об экскурсии */}
       <div className="p-4 bg-white/50 backdrop-blur-sm rounded-b-lg flex flex-col flex-grow">
-        <div className="p-2 rounded">
-          <h3 className="text-lg font-semibold">{excursion.name}</h3>
-          <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>
-        </div>
-        {excursion.isPopular && (
-          <div className="bg-red-500 text-white px-2 py-1 text-xs font-bold rounded mt-2">
-            Популярное
+        <div className="p-2 rounded flex justify-between items-start">
+          <div>
+            <h3 className="text-lg font-semibold">{excursion.name}</h3>
+            <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>
           </div>
-        )}
+          {excursion.isPopular && (
+            <div className="bg-red-500 text-white px-2 py-1 text-xs font-bold rounded max-w-fit">
+              Популярное
+            </div>
+          )}
+        </div>
+
         <Link
           href={`/excursion/${excursion.id}`}
           className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 w-full text-center block mt-auto"
