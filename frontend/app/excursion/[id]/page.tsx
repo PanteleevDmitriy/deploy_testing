@@ -62,7 +62,7 @@ export default function ExcursionPage() {
 
       <div className="mb-4 flex justify-center">
         <div className="w-full md:w-[50%]">
-          <div className="relative w-full h-[300px] md:h-[500px] mb-3 bg-white rounded-lg">
+          <div className="relative w-full h-[300px] md:h-[500px] mb-3 bg-white bg-opacity-50 rounded-lg">
             <Image
               src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
@@ -93,7 +93,7 @@ export default function ExcursionPage() {
         </div>
       </div>
 
-      <div className="bg-white shadow-lg rounded-lg p-4 mb-4">
+      <div className="bg-white bg-opacity-50 shadow-lg rounded-lg p-4 mb-4">
         <div className="mb-3">
           <h2 className="text-2xl font-semibold mb-1">Описание</h2>
           <p>{excursion.longDescription}</p>
