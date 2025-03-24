@@ -61,7 +61,7 @@ export default function ExcursionPage() {
 
       {/* Карусель */}
       {excursion.photoLinks.length > 0 && (
-        <div className="mb-4 flex justify-center">
+        <div className="mb-4 flex flex-col items-center">
           <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px] bg-white">
             <Image
               src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
@@ -92,6 +92,29 @@ export default function ExcursionPage() {
               </>
             )}
           </div>
+
+          {/* Миниатюры */}
+          {excursion.photoLinks.length > 1 && (
+            <div className="flex overflow-x-auto gap-2 px-4 py-2 mt-2">
+              {excursion.photoLinks.map((photo, index) => (
+                <div
+                  key={index}
+                  className={`w-16 h-16 relative cursor-pointer border-4 ${
+                    index === currentImageIndex ? "border-teal-600" : "border-transparent"
+                  }`}
+                  onClick={() => setCurrentImageIndex(index)}
+                >
+                  <Image
+                    src={photo}
+                    alt={`Миниатюра ${index + 1}`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
