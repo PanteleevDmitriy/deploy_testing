@@ -60,32 +60,40 @@ export default function ExcursionPage() {
       <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
 
       {/* Карусель */}
-      <div className="mb-4 flex justify-center">
-        <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px]">
-          <Image
-            src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
-            alt={excursion.name}
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
-          />
-          <button
-            onClick={prevImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
-          >
-            &#10094;
-          </button>
-          <button
-            onClick={nextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
-          >
-            &#10095;
-          </button>
-          <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded">
-            {currentImageIndex + 1} / {excursion.photoLinks.length}
+      {excursion.photoLinks.length > 0 && (
+        <div className="mb-4 flex justify-center">
+          <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px]">
+            <Image
+              src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
+              alt={excursion.name}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+            />
+            {excursion.photoLinks.length > 1 && (
+              <>
+                <button
+                  onClick={prevImage}
+                  className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
+                  aria-label="Предыдущее изображение"
+                >
+                  &#10094;
+                </button>
+                <button
+                  onClick={nextImage}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
+                  aria-label="Следующее изображение"
+                >
+                  &#10095;
+                </button>
+                <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded">
+                  {currentImageIndex + 1} / {excursion.photoLinks.length}
+                </div>
+              </>
+            )}
           </div>
         </div>
-      </div>
+      )}
 
       {/* Описание экскурсии */}
       <div className="bg-white/50 shadow-lg rounded-lg p-4 mb-4">

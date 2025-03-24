@@ -32,45 +32,51 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
           className="rounded-t-lg"
         />
         {/* Кнопки управления */}
-        <button
-          onClick={prevImage}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1 sm:p-2 rounded-full hover:bg-black/75 z-10"
-          aria-label="Предыдущее изображение"
-        >
-          &#10094;
-        </button>
-        <button
-          onClick={nextImage}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1 sm:p-2 rounded-full hover:bg-black/75 z-10"
-          aria-label="Следующее изображение"
-        >
-          &#10095;
-        </button>
-        <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded z-10 text-sm">
-          {currentImageIndex + 1} / {excursion.photoLinks.length}
-        </div>
+        {excursion.photoLinks.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1 sm:p-2 rounded-full hover:bg-black/75 z-10"
+              aria-label="Предыдущее изображение"
+            >
+              &#10094;
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-1 sm:p-2 rounded-full hover:bg-black/75 z-10"
+              aria-label="Следующее изображение"
+            >
+              &#10095;
+            </button>
+            <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded z-10 text-sm">
+              {currentImageIndex + 1} / {excursion.photoLinks.length}
+            </div>
+          </>
+        )}
       </div>
 
       {/* Миниатюры */}
-      <div className="flex overflow-x-auto gap-2 px-4 py-2 bg-white/80 backdrop-blur-md">
-        {excursion.photoLinks.map((photo, index) => (
-          <div
-            key={index}
-            className={`w-14 h-14 relative cursor-pointer border-4 ${
-              index === currentImageIndex ? "border-teal-600" : "border-transparent"
-            }`}
-            onClick={() => setCurrentImageIndex(index)}
-          >
-            <Image
-              src={photo}
-              alt={`Миниатюра ${index + 1}`}
-              layout="fill"
-              objectFit="cover"
-              className="rounded"
-            />
-          </div>
-        ))}
-      </div>
+      {excursion.photoLinks.length > 1 && (
+        <div className="flex overflow-x-auto gap-2 px-4 py-2 bg-white/80 backdrop-blur-md">
+          {excursion.photoLinks.map((photo, index) => (
+            <div
+              key={index}
+              className={`w-14 h-14 relative cursor-pointer border-4 ${
+                index === currentImageIndex ? "border-teal-600" : "border-transparent"
+              }`}
+              onClick={() => setCurrentImageIndex(index)}
+            >
+              <Image
+                src={photo}
+                alt={`Миниатюра ${index + 1}`}
+                layout="fill"
+                objectFit="cover"
+                className="rounded"
+              />
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Информация об экскурсии */}
       <div className="p-4 bg-white/90 backdrop-blur-md rounded-b-lg">
