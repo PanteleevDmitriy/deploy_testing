@@ -21,7 +21,7 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[100px] justify-between">
           <button
-            className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition duration-300"
+            className="bg-blue-600 text-white px-4 py-1 rounded-lg hover:bg-blue-700 transition duration-300 text-xs sm:text-base sm:px-4 sm:py-1.5"
             onClick={toggleMenu}
           >
             Меню
@@ -39,17 +39,17 @@ export default function Header() {
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <a href="https://t.me/Dm_Pn" target="_blank" rel="noopener noreferrer">
-              <FaTelegram className="text-black hover:text-teal-700 transition duration-300 w-[15px] h-[15px] sm:w-[48px] sm:h-[48px]" />
+              <FaTelegram className="text-blue-900 hover:text-blue-700 transition duration-300 w-[15px] h-[15px] sm:w-[32px] sm:h-[32px]" />
             </a>
             <a href="https://www.instagram.com/sea.wind.travel/" target="_blank" rel="noopener noreferrer">
-              <FaInstagram className="text-black hover:text-teal-700 transition duration-300 w-[15px] h-[15px] sm:w-[48px] sm:h-[48px]" />
+              <FaInstagram className="text-blue-900 hover:text-blue-700 transition duration-300 w-[15px] h-[15px] sm:w-[32px] sm:h-[32px]" />
             </a>
             <a href="https://vk.com/seawind_travel" target="_blank" rel="noopener noreferrer">
-              <FaVk className="text-black hover:text-teal-700 transition duration-300 w-[15px] h-[15px] sm:w-[48px] sm:h-[48px]" />
+              <FaVk className="text-blue-900 hover:text-blue-700 transition duration-300 w-[15px] h-[15px] sm:w-[32px] sm:h-[32px]" />
             </a>
             <Link
               href="/auth"
-              className="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition duration-300"
+              className="bg-blue-600 text-white px-4 py-1 rounded-lg hover:bg-blue-700 transition duration-300 text-xs sm:text-base sm:px-4 sm:py-1.5"
             >
               Войти
             </Link>
@@ -58,19 +58,19 @@ export default function Header() {
         {isMenuOpen && (
           <nav className="py-2">
             <div className="flex flex-col space-y-2">
-              <Link href="/" className="text-black hover:text-teal-700 transition duration-300" onClick={closeMenu}>
+              <Link href="/" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Экскурсии
               </Link>
-              <Link href="/about" className="text-black hover:text-teal-700 transition duration-300" onClick={closeMenu}>
+              <Link href="/about" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Информация о нас
               </Link>
-              <Link href="/reviews" className="text-black hover:text-teal-700 transition duration-300" onClick={closeMenu}>
+              <Link href="/reviews" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Отзывы туристов
               </Link>
-              <Link href="/faq" className="text-black hover:text-teal-700 transition duration-300" onClick={closeMenu}>
+              <Link href="/faq" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Часто задаваемые вопросы
               </Link>
-              <Link href="/articles" className="text-black hover:text-teal-700 transition duration-300" onClick={closeMenu}>
+              <Link href="/articles" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Полезные статьи
               </Link>
             </div>
