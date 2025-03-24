@@ -21,7 +21,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   };
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm shadow-lg rounded-lg overflow-hidden flex flex-col">
+    <div className="bg-white/50 backdrop-blur-sm shadow-lg rounded-lg overflow-hidden flex flex-col">
       {/* Основное изображение с каруселью */}
       <div className="relative w-full h-[250px] sm:h-[350px] md:h-[400px] flex items-center justify-center">
         <Image
@@ -55,8 +55,8 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
       </div>
 
       {/* Информация об экскурсии */}
-      <div className="p-4 bg-white/80 backdrop-blur-sm rounded-b-lg flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-2 bg-white/80 backdrop-blur-sm p-2 rounded">
+      <div className="p-4 bg-white/50 backdrop-blur-sm rounded-b-lg flex flex-col flex-grow">
+        <div className="flex justify-between items-start mb-2 bg-white/50 backdrop-blur-sm p-2 rounded">
           <div>
             <h3 className="text-lg font-semibold">{excursion.name}</h3>
             <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>

@@ -26,7 +26,7 @@ export default function Home() {
 
   return (
     <div className="pt-28">
-      <section className="bg-white/80 py-2 sm:py-4 rounded-xl mx-2 backdrop-blur-sm">
+      <section className="bg-white/50 py-2 sm:py-4 rounded-xl mx-2 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">
             Вас приветствует компания SEA Wind travel
