@@ -62,12 +62,12 @@ export default function ExcursionPage() {
       {/* Карусель */}
       {excursion.photoLinks.length > 0 && (
         <div className="mb-4 flex justify-center">
-          <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px]">
+          <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px] bg-white flex items-center justify-center">
             <Image
               src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
               layout="fill"
-              objectFit="cover"
+              objectFit="contain"
               className="rounded-lg"
             />
             {excursion.photoLinks.length > 1 && (
