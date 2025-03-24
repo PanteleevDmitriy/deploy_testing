@@ -23,7 +23,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   return (
     <div className="bg-teal-50/50 shadow-lg rounded-lg overflow-hidden flex flex-col">
       {/* Основное изображение с каруселью */}
-      <div className="relative w-full h-[250px] sm:h-[350px] md:h-[400px] flex items-center justify-center">
+      <div className="relative w-full h-[300px] sm:h-[420px] md:h-[480px] flex items-center justify-center">
         <Image
           src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
