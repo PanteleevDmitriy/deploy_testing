@@ -55,11 +55,11 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
       </div>
 
       {/* Информация об экскурсии */}
-      <div className="p-4 bg-white/50 backdrop-blur-sm rounded-b-lg flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-2 bg-white/50 backdrop-blur-sm p-2 rounded">
+      <div className="p-4 bg-white/50 backdrop-blur-lg rounded-b-lg flex flex-col flex-grow">
+        <div className="flex justify-between items-start mb-2 bg-white/50 backdrop-blur-lg p-2 rounded">
           <div>
-            <h3 className="text-lg font-semibold">{excursion.name}</h3>
-            <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>
+            <h3 className="text-lg font-semibold bg-white/50 backdrop-blur-lg">{excursion.name}</h3>
+            <p className="text-gray-600 text-sm bg-white/50 backdrop-blur-lg">{excursion.shortDescription}</p>
           </div>
           {excursion.isPopular && (
             <div className="bg-red-500 text-white px-2 py-1 text-xs font-bold rounded">
