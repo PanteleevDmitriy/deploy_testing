@@ -55,29 +55,6 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
         )}
       </div>
 
-      {/* Миниатюры */}
-      {excursion.photoLinks.length > 1 && (
-        <div className="flex overflow-x-auto gap-2 px-4 py-2 bg-white/80 backdrop-blur-md">
-          {excursion.photoLinks.map((photo, index) => (
-            <div
-              key={index}
-              className={`w-14 h-14 relative cursor-pointer border-4 ${
-                index === currentImageIndex ? "border-teal-600" : "border-transparent"
-              }`}
-              onClick={() => setCurrentImageIndex(index)}
-            >
-              <Image
-                src={photo}
-                alt={`Миниатюра ${index + 1}`}
-                layout="fill"
-                objectFit="cover"
-                className="rounded"
-              />
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* Информация об экскурсии */}
       <div className="p-4 bg-white/90 backdrop-blur-md rounded-b-lg">
         <div className="flex justify-between items-start mb-2">
