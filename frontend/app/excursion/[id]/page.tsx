@@ -92,36 +92,6 @@ export default function ExcursionPage() {
           </div>
         </div>
       </div>
-
-      <div className="bg-white shadow-lg rounded-lg p-4 mb-4">
-        <div className="mb-3">
-          <h2 className="text-2xl font-semibold mb-1">Описание</h2>
-          <p>{excursion.longDescription}</p>
-        </div>
-        <div className="mb-3">
-          <h2 className="text-2xl font-semibold mb-1">Цена</h2>
-          <p className="text-xl font-bold text-teal-600">
-            от {Math.round(Number.parseFloat(excursion.price))} $ с человека
-          </p>
-        </div>
-      </div>
-
-      <div className="text-center">
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link
-            href="/book-tour"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
-          >
-            Забронировать
-          </Link>
-          <Link
-            href="/"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
-          >
-            Список экскурсий
-          </Link>
-        </div>
-      </div>
     </div>
   );
 }
