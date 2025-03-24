@@ -55,7 +55,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
       </div>
 
       {/* Информация об экскурсии */}
-      <div className="p-4 bg-white/90 backdrop-blur-md rounded-b-lg flex flex-col flex-grow">
+      <div className="p-4 bg-white/80 backdrop-blur-md rounded-b-lg flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-2">
           <div>
             <h3 className="text-lg font-semibold">{excursion.name}</h3>
