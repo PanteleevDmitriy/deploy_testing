@@ -2,7 +2,7 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="bg-teal-100 py-8">
+    <footer className="bg-teal-100 py-8 shadow-md">
       <div className="container mx-auto px-4">
         <div className="flex flex-wrap justify-between">
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
@@ -30,27 +30,27 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-2">Ссылки</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-blue-700 hover:underline">
+                <Link href="/" className="text-black hover:text-teal-700 transition duration-300">
                   Экскурсии
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-blue-700 hover:underline">
+                <Link href="/about" className="text-black hover:text-teal-700 transition duration-300">
                   Информация о нас
                 </Link>
               </li>
               <li>
-                <Link href="/reviews" className="text-blue-700 hover:underline">
+                <Link href="/reviews" className="text-black hover:text-teal-700 transition duration-300">
                   Отзывы туристов
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-blue-700 hover:underline">
+                <Link href="/faq" className="text-black hover:text-teal-700 transition duration-300">
                   Часто задаваемые вопросы
                 </Link>
               </li>
               <li>
-                <Link href="/articles" className="text-blue-700 hover:underline">
+                <Link href="/articles" className="text-black hover:text-teal-700 transition duration-300">
                   Полезные статьи
                 </Link>
               </li>
@@ -59,7 +59,7 @@ export default function Footer() {
           <div className="w-full md:w-1/3">
             <h3 className="text-lg font-semibold mb-2">Подписаться на новости</h3>
             <p className="text-sm text-gray-700 mb-4">
-              Узнайте о ярких локациях в городе и окресностях. Куда сходить? Где поесть? Всё самое интересное в нашем
+              Узнайте о ярких локациях в городе и окрестностях. Куда сходить? Где поесть? Всё самое интересное в нашем
               телеграм-канале!
             </p>
             <a
@@ -78,5 +78,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
