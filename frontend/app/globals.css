@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
   --foreground: #171717;
 }
 
 body {
   color: var(--foreground);
-  background: var(--background);
+  background: transparent; /* Сделали фон прозрачным */
   font-family: Arial, Helvetica, sans-serif;
   position: relative;
   min-height: 100vh;
@@ -24,13 +23,13 @@ body::before {
   height: 100%;
   background: url('/bg.png') repeat-y center top;
   background-size: 100% auto;
-  opacity: 0.5; /* Прозрачность фона */
-  z-index: -1; /* Отправляем фон под контент */
+  opacity: 1; /* Убрали затемнение */
+  z-index: -1;
 }
 
 .bg-glass {
-  background: rgba(255, 255, 255, 0.8); /* Полупрозрачный фон карточек */
-  backdrop-filter: blur(8px); /* Размытие */
-  -webkit-backdrop-filter: blur(8px); /* Для Safari */
+  background: rgba(255, 255, 255, 0.5); /* Уменьшили непрозрачность */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
 }
