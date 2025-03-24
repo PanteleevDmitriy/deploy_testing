@@ -58,7 +58,9 @@ export default function Home() {
           ) : (
             <div className="flex flex-col gap-6">
               {excursions.map((excursion) => (
-                <ExcursionCard key={excursion.id} excursion={excursion} />
+                <div key={excursion.id} className="bg-white/50 rounded-lg p-4 shadow-lg">
+                  <ExcursionCard excursion={excursion} />
+                </div>
               ))}
             </div>
           )}
