@@ -62,7 +62,7 @@ export default function ExcursionPage() {
       {/* Карусель */}
       {excursion.photoLinks.length > 0 && (
         <div className="mb-4 flex flex-col items-center">
-          <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px] bg-white/50 backdrop-blur-sm shadow-lg rounded-lg overflow-hidden">
+          <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px] bg-white/50 shadow-lg rounded-lg overflow-hidden">
             <Image
               src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
@@ -119,7 +119,7 @@ export default function ExcursionPage() {
       )}
 
       {/* Описание экскурсии */}
-      <div className="bg-white/50 backdrop-blur-sm shadow-lg rounded-lg p-4 mb-4">
+      <div className="bg-white/50 shadow-lg rounded-lg p-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Описание</h2>
         <p>{excursion.longDescription}</p>
         <h2 className="text-2xl font-semibold mt-3 mb-1">Цена</h2>
