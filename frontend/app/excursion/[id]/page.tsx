@@ -9,7 +9,7 @@ import type { ExcursionInterface } from "@/app/types/excursion";
 export default function ExcursionPage() {
   const params = useParams();
   const id = Number.parseInt(params.id as string);
-  const [excursions, setExcursions] = useState<ExcursionInterface[]>([]);
+  const [excursion, setExcursion] = useState<ExcursionInterface | null>(null);
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -17,13 +17,12 @@ export default function ExcursionPage() {
     fetch("/api/excursions")
       .then((res) => res.json())
       .then((data: ExcursionInterface[]) => {
-        setExcursions(data);
+        const foundExcursion = data.find((tour) => tour.id === id);
+        setExcursion(foundExcursion || null);
         setLoading(false);
       })
       .catch(() => setLoading(false));
-  }, []);
-
-  const excursion = excursions.find((tour) => tour.id === id);
+  }, [id]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -60,52 +59,45 @@ export default function ExcursionPage() {
     <div className="container mx-auto px-4 py-8 pt-28">
       <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
 
+      {/* Карусель */}
       <div className="mb-4 flex justify-center">
-        <div className="w-full md:w-[50%]">
-          <div className="relative w-full h-[300px] md:h-[500px] mb-3 bg-white bg-opacity-50 rounded-lg">
-            <Image
-              src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
-              alt={excursion.name}
-              layout="fill"
-              objectFit="contain"
-              className="rounded-lg"
-            />
-            <div className="absolute inset-0 flex items-center justify-between p-4">
-              <button
-                onClick={prevImage}
-                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
-                aria-label="Предыдущее изображение"
-              >
-                &#10094;
-              </button>
-              <button
-                onClick={nextImage}
-                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
-                aria-label="Следующее изображение"
-              >
-                &#10095;
-              </button>
-            </div>
-            <div className="absolute bottom-4 right-4 bg-black bg-opacity-50 text-white px-2 py-1 rounded z-10">
-              {currentImageIndex + 1} / {excursion.photoLinks.length}
-            </div>
+        <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px]">
+          <Image
+            src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
+            alt={excursion.name}
+            layout="fill"
+            objectFit="cover"
+            className="rounded-lg"
+          />
+          <button
+            onClick={prevImage}
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
+          >
+            &#10094;
+          </button>
+          <button
+            onClick={nextImage}
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
+          >
+            &#10095;
+          </button>
+          <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+            {currentImageIndex + 1} / {excursion.photoLinks.length}
           </div>
         </div>
       </div>
 
+      {/* Описание экскурсии */}
       <div className="bg-white bg-opacity-50 shadow-lg rounded-lg p-4 mb-4">
-        <div className="mb-3">
-          <h2 className="text-2xl font-semibold mb-1">Описание</h2>
-          <p>{excursion.longDescription}</p>
-        </div>
-        <div className="mb-3">
-          <h2 className="text-2xl font-semibold mb-1">Цена</h2>
-          <p className="text-xl font-bold text-teal-600">
-            от {Math.round(Number.parseFloat(excursion.price))} $ с человека
-          </p>
-        </div>
+        <h2 className="text-2xl font-semibold mb-1">Описание</h2>
+        <p>{excursion.longDescription}</p>
+        <h2 className="text-2xl font-semibold mt-3 mb-1">Цена</h2>
+        <p className="text-xl font-bold text-teal-600">
+          от {Math.round(Number.parseFloat(excursion.price))} $ с человека
+        </p>
       </div>
 
+      {/* Кнопки */}
       <div className="text-center">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
