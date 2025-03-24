@@ -56,12 +56,10 @@ export default function Home() {
               <p className="text-xl">Экскурсии не найдены</p>
             </div>
           ) : (
-            <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {excursions.map((excursion) => (
-                <div key={excursion.id} className="flex justify-center">
-                  <div className="w-full md:w-[70%] bg-white bg-opacity-50 rounded-lg p-4">
-                    <ExcursionCard excursion={excursion} />
-                  </div>
+                <div key={excursion.id} className="bg-white/50 shadow-lg rounded-lg p-4">
+                  <ExcursionCard excursion={excursion} />
                 </div>
               ))}
             </div>

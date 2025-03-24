@@ -71,24 +71,24 @@ export default function ExcursionPage() {
           />
           <button
             onClick={prevImage}
-            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
+            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
           >
             &#10094;
           </button>
           <button
             onClick={nextImage}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 z-10"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
           >
             &#10095;
           </button>
-          <div className="absolute bottom-2 right-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+          <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded">
             {currentImageIndex + 1} / {excursion.photoLinks.length}
           </div>
         </div>
       </div>
 
       {/* Описание экскурсии */}
-      <div className="bg-white bg-opacity-50 shadow-lg rounded-lg p-4 mb-4">
+      <div className="bg-white/50 shadow-lg rounded-lg p-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Описание</h2>
         <p>{excursion.longDescription}</p>
         <h2 className="text-2xl font-semibold mt-3 mb-1">Цена</h2>
