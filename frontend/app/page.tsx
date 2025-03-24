@@ -28,9 +28,12 @@ export default function Home() {
     <div className="pt-28">
       <section className="bg-white bg-opacity-50 py-2 sm:py-4 rounded-xl mx-2">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">Вас приветствует компания 
-            SEA Wind travel</h1>
-          <p className="text-lg sm:text-xl mb-2 text-center">С нами ваш отдых будет незабываемым!</p>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">
+            Вас приветствует компания SEA Wind travel
+          </h1>
+          <p className="text-lg sm:text-xl mb-2 text-center">
+            С нами ваш отдых будет незабываемым!
+          </p>
           <p className="mb-2 text-center">
             Мы предлагаем экскурсии по всем направлениям. 
             Мы гарантируем комфорт и качество. 
@@ -55,12 +58,7 @@ export default function Home() {
           ) : (
             <div className="space-y-6">
               {excursions.map((excursion) => (
-                <div key={excursion.id} className="flex justify-center relative">
-                  {excursion.isPopular && (
-                    <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 text-sm font-bold rounded">
-                      Популярное
-                    </div>
-                  )}
+                <div key={excursion.id} className="flex justify-center">
                   <div className="w-full md:w-[70%]">
                     <ExcursionCard excursion={excursion} />
                   </div>
