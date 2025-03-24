@@ -21,14 +21,14 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   };
 
   return (
-    <div className="bg-white/80 shadow-lg rounded-lg overflow-hidden">
+    <div className="bg-white/80 shadow-lg rounded-lg overflow-hidden flex flex-col">
       {/* Основное изображение с каруселью */}
-      <div className="relative w-full aspect-[16/9]">
+      <div className="relative w-full h-[250px] sm:h-[350px] md:h-[400px] flex items-center justify-center">
         <Image
           src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
           fill
-          className="object-cover rounded-t-lg"
+          className="object-contain rounded-t-lg"
         />
         {/* Кнопки управления */}
         {excursion.photoLinks.length > 1 && (
@@ -55,7 +55,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
       </div>
 
       {/* Информация об экскурсии */}
-      <div className="p-4 bg-white/90 backdrop-blur-md rounded-b-lg">
+      <div className="p-4 bg-white/90 backdrop-blur-md rounded-b-lg flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-2">
           <div>
             <h3 className="text-lg font-semibold">{excursion.name}</h3>
@@ -69,7 +69,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
         </div>
         <Link
           href={`/excursion/${excursion.id}`}
-          className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 w-full text-center block mt-4"
+          className="bg-teal-600 text-white px-4 py-2 rounded-full hover:bg-teal-700 w-full text-center block mt-auto"
         >
           Подробнее
         </Link>

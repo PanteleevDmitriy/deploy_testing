@@ -56,7 +56,7 @@ export default function Home() {
               <p className="text-xl">Экскурсии не найдены</p>
             </div>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {excursions.map((excursion) => (
                 <ExcursionCard key={excursion.id} excursion={excursion} />
               ))}
