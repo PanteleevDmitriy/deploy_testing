@@ -59,7 +59,7 @@ export default function Home() {
             <div className="space-y-6">
               {excursions.map((excursion) => (
                 <div key={excursion.id} className="flex justify-center">
-                  <div className="w-full md:w-[70%]">
+                  <div className="w-full md:w-[70%] bg-white bg-opacity-50 p-4 rounded-lg shadow-md">
                     <ExcursionCard excursion={excursion} />
                   </div>
                 </div>
