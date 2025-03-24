@@ -23,13 +23,12 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   return (
     <div className="bg-white/80 shadow-lg rounded-lg overflow-hidden">
       {/* Основное изображение с каруселью */}
-      <div className="relative w-full h-[300px] sm:h-[450px]">
+      <div className="relative w-full aspect-[16/9]">
         <Image
           src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-t-lg"
+          fill
+          className="object-cover rounded-t-lg"
         />
         {/* Кнопки управления */}
         {excursion.photoLinks.length > 1 && (
