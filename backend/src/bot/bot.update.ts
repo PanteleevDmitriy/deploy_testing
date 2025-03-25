@@ -1,7 +1,7 @@
 import { Update, Start, Hears, InjectBot, Action, On } from 'nestjs-telegraf';
 import { Telegraf, Context, Markup } from 'telegraf';
 import { BotService } from './bot.service';
-import { generateMessageCustomVND, generateMessageUSD, generateMessageVND, generateMessageWeather } from './bot.constants';
+import { generateMessageCustomVND, generateMessageUSD, generateMessageVND, generateMessageWeather } from './utils/constants';
 import { BotContext } from './utils/session.interface';
 import { Message } from 'telegraf/types'; // Импортируем тип Message
 
@@ -56,7 +56,7 @@ export class BotUpdate {
       }
       const message = generateMessageVND(course);
       await ctx.editMessageText(message, Markup.inlineKeyboard([
-          Markup.button.callback('💲 Курс доллара', 'convert_to_usd'),
+          Markup.button.callback('💲 Курс доллара США', 'convert_to_usd'),
           Markup.button.callback('✏️ Введите сумму в донгах', 'enter_custom_vnd')
       ]));
   }
