@@ -93,3 +93,27 @@ export const generateMessageCustomVND = (course: any, amount: number): string =>
 🇹🇷 Турецкая лира (TRY): ${(Number(course.lira) / Number(course.vnd) * amount).toFixed(0)}
 🇪🇺 Евро (EUR): ${(Number(course.euro) / Number(course.vnd) * amount).toFixed(2)}`;
 };
+
+export const generateMessageCustomUSD = (course: any, amount: number): string => {
+    return `
+📅 Время обновления: ${course.time}
+  
+💰 Курс валют к доллару за ${amount.toLocaleString()} (USD):
+
+🇻🇳 Вьетнамский донг (VND): ${(amount * Number(course.vnd)).toFixed(0)}
+🇷🇺 Российский рубль (RUB): ${(amount * Number(course.rub)).toFixed(1)}
+🇰🇿 Казахский тенге (KZT): ${(amount * Number(course.kz)).toFixed(0)}
+🇰🇬 Киргизский сом (KGS): ${(amount * Number(course.kirgizstan)).toFixed(1)}
+🇺🇿 Узбекский сум (UZS): ${(amount * Number(course.uzbekistan)).toFixed(0)}
+🇨🇳 Китайский юань (CNY): ${(amount * Number(course.china)).toFixed(2)}
+🇯🇵 Японская иена (JPY): ${(amount * Number(course.japan)).toFixed(0)}
+🇹🇭 Тайский бат (THB): ${(amount * Number(course.tailand)).toFixed(1)}
+🇱🇦 Лаосский кип (LAK): ${(amount * Number(course.laos)).toFixed(0)}
+🇮🇳 Индийская рупия (INR): ${(amount * Number(course.india)).toFixed(1)}
+🇰🇷 Южнокорейская вона (KRW): ${(amount * Number(course.korea)).toFixed(0)}
+🇰🇭 Камбоджийский риель (KHR): ${(amount * Number(course.kambodja)).toFixed(0)}
+🇲🇾 Малайзийский ринггит (MYR): ${(amount * Number(course.malaysia)).toFixed(2)}
+🇬🇧 Фунт стерлингов (GBP): ${(amount * Number(course.funt)).toFixed(3)}
+🇹🇷 Турецкая лира (TRY): ${(amount * Number(course.lira)).toFixed(1)}
+🇪🇺 Евро (EUR): ${(amount * Number(course.euro)).toFixed(3)}`;
+};
