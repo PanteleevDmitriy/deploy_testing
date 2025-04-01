@@ -95,14 +95,14 @@ export class BotService implements OnModuleInit {
     
                 // Получаем последнее сохранённое значение курса
                 const lastCourse = await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
-                console.log("📊 Последний сохранённый курс:", lastCourse);
+                console.log("📊 Последний сохранённый курс:", lastCourse?.dataValues);
     
                 if (lastCourse) {
                     const lastUpdateTime = new Date(lastCourse.time).getTime();
-                    console.log(`⏱ Время последнего обновления: ${lastUpdateTime}`);
+                    console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
                     const currentTime = Date.now();
     
-                    console.log(`⏱ текущее время: ${currentTime}`);
+                    console.log(`⏱ Текущее время (timestamp): ${currentTime}`);
                     const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
     
                     console.log(`⏱ Последнее обновление было ${hoursSinceLastUpdate.toFixed(2)} часов назад.`);
@@ -119,12 +119,20 @@ export class BotService implements OnModuleInit {
                 let courseData = await getCourse(this.moneyToken);
                 console.log("📥 Данные от API:", courseData);
     
-                if (!courseData) {
+                // Проверка на корректность данных
+                if (!courseData || typeof courseData !== "object") {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
     
-                // Сохраняем новый курс с текущим временем
+                if (!courseData.usd || !courseData.vnd) {
+                    console.error("❌ Ошибка: В API-ответе нет курса USD или VND!", courseData);
+                    throw new Error("❌ В API-ответе отсутствуют важные валютные данные!");
+                }
+    
+                // Сохраняем новый курс с текущим временем в ISO-формате
                 const updatedData = { ...courseData, time: new Date().toISOString() };
+                console.log("💾 Данные для сохранения:", updatedData);
+    
                 await this.moneyRepository.upsert(updatedData);
                 console.log("✅ Курс валют обновлён:", updatedData);
                 console.log("⏭ Следующая проверка через 8 часов.");
@@ -136,6 +144,7 @@ export class BotService implements OnModuleInit {
             await new Promise(resolve => setTimeout(resolve, 28800000)); // Проверяем снова через 8 часов
         }
     }
+    
 
     async getSavedWeather() {
         return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
