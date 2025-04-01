@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { ExcursionInterface } from "@/app/types/excursion";
@@ -9,29 +11,10 @@ interface ExcursionCardProps {
 
 export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [loadedImages, setLoadedImages] = useState<boolean[]>([]);
 
+  // Преобразование ссылок на локальные пути
   const imageBasePath = "/photo/";
   const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
-
-  useEffect(() => {
-    // Массив промисов для загрузки всех изображений
-    const loadImages = async () => {
-      const promises = imageUrls.map((url) => {
-        return new Promise<boolean>((resolve) => {
-          const img = new window.Image();  // Используем window.Image для загрузки
-          img.src = url;
-          img.onload = () => resolve(true);  // Если картинка загружена, обновляем состояние
-          img.onerror = () => resolve(false);  // В случае ошибки
-        });
-      });
-
-      const results = await Promise.all(promises);
-      setLoadedImages(results);  // Устанавливаем статус загруженных изображений
-    };
-
-    loadImages();  // Загружаем изображения при рендере
-  }, [imageUrls]);
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
@@ -45,18 +28,13 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
     <div className="bg-teal-50/50 shadow-lg rounded-lg overflow-hidden flex flex-col">
       {/* Основное изображение с каруселью */}
       <div className="relative w-full h-[300px] sm:h-[420px] md:h-[480px] flex items-center justify-center">
-        {loadedImages[currentImageIndex] ? (
-          <Image
-            src={imageUrls[currentImageIndex]}
-            alt={excursion.name}
-            fill
-            className="rounded-t-lg"
-          />
-        ) : (
-          <div className="w-full h-full bg-gray-200 flex justify-center items-center">
-            <span>Загрузка...</span>
-          </div>
-        )}
+        <Image
+          src={imageUrls[currentImageIndex] || "/placeholder.svg"}
+          alt={excursion.name}
+          layout="fill"
+          objectFit="contain"  // Сохраняет пропорции и выравнивает по высоте
+          className="rounded-t-lg"
+        />
 
         {/* Кнопки управления */}
         {imageUrls.length > 1 && (
@@ -90,7 +68,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
             <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>
           </div>
           {excursion.isPopular && (
-            <div className="bg-orange-500 text-white px-2 py-1 text-xs font-bold rounded-full shadow-md">
+            <div className="bg-yellow-500 text-white px-2 py-1 text-xs font-bold rounded-full shadow-md">
               🔥
             </div>
           )}
