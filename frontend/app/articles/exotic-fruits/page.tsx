@@ -26,7 +26,7 @@ export default function ExoticFruitsArticle() {
       season: "Май – сентябрь.",
       price: "В сезон – 20,000-35,000 VND/кг, вне сезона – до 50,000 VND/кг.",
       images: [
-      "passionfruit_1.jpeg","passionfruit_1.jpg"
+      "passionfruit_1.jpeg","passionfruit_2.jpg"
       ],
     },
     {
@@ -248,20 +248,20 @@ export default function ExoticFruitsArticle() {
       <div className="space-y-12">
   {fruits.map((fruit, index) => (
     <section key={index} className="text-center">
-      <h2 className="text-2xl font-semibold mb-4">
+      <h2 className="text-2xl font-semibold mb-4 whitespace-pre-line">
         {fruit.name}
       </h2>
       <div className="flex justify-center gap-4 mb-4">
         {fruit.images.map((image, imgIndex) => (
-          <Image
-            key={imgIndex}
-            // Путь к изображению теперь локальный
-            src={`/photo/fruits/${image || "placeholder.svg"}`}
-            alt={`${fruit.name} ${imgIndex + 1}`}
-            width={200}
-            height={200}
-            className="rounded-lg"
-          />
+          <div key={imgIndex} className="w-[200px] h-[200px] overflow-hidden rounded-lg">
+            <Image
+              src={`/photo/fruits/${image || "placeholder.svg"}`}
+              alt={`${fruit.name} ${imgIndex + 1}`}
+              width={200}
+              height={200}
+              className="w-full h-full object-cover"
+            />
+          </div>
         ))}
       </div>
       <div className="text-left">
@@ -287,6 +287,7 @@ export default function ExoticFruitsArticle() {
     </section>
   ))}
 </div>
+
 
 
       <div className="mt-12">
