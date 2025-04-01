@@ -12,12 +12,16 @@ interface ExcursionCardProps {
 export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Преобразование ссылок на локальные пути
+  const imageBasePath = "/public/photo/";
+  const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
+
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % excursion.photoLinks.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + excursion.photoLinks.length) % excursion.photoLinks.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
   };
 
   return (
@@ -25,13 +29,14 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
       {/* Основное изображение с каруселью */}
       <div className="relative w-full h-[300px] sm:h-[420px] md:h-[480px] flex items-center justify-center">
         <Image
-          src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
+          src={imageUrls[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
           fill
-          className="object-contain rounded-t-lg"
+          className="rounded-t-lg"
         />
+
         {/* Кнопки управления */}
-        {excursion.photoLinks.length > 1 && (
+        {imageUrls.length > 1 && (
           <>
             <button
               onClick={prevImage}
@@ -48,7 +53,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
               &#10095;
             </button>
             <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded z-10 text-sm">
-              {currentImageIndex + 1} / {excursion.photoLinks.length}
+              {currentImageIndex + 1} / {imageUrls.length}
             </div>
           </>
         )}
@@ -62,8 +67,8 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
             <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>
           </div>
           {excursion.isPopular && (
-            <div className="bg-red-500 text-white px-2 py-1 text-xs font-bold rounded max-w-fit">
-              Популярное
+            <div className="bg-red-500 text-white px-2 py-1 text-xs font-bold rounded-full shadow-md">
+              🔥
             </div>
           )}
         </div>

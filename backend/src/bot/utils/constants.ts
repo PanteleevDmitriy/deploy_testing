@@ -26,10 +26,8 @@ export const generateMessageWeather = (weather: any): string => {
 🌀 Давление: ${weather.pressure} мм рт. ст.
 🌬 Ветер: ${weather.wind_speed} м/с, порывы до ${weather.wind_gust} м/с
 🌧 Дождь за последний час: ${weather.rain_1h} мм
-🌧 Дождь за последние 3 часа: ${weather.rain_3h} мм
 🌅 Восход: ${weather.sunrise}
 🌇 Закат: ${weather.sunset}
-🌫 Видимость: ${weather.visibility} м
 ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 };
 
@@ -37,7 +35,8 @@ export const generateMessageUSD = (course: any): string => {
     return `
 📅 Время обновления: ${formatTime(course.time)}
   
-💰 Курс валют за 1 доллар США (USD):
+💰 Курс валют к доллару
+за 1 доллар США (USD):
   
 🇻🇳 Вьетнамский донг (VND): ${Number(course.vnd).toFixed(0)}
 🇷🇺 Российский рубль (RUB): ${Number(course.rub).toFixed(1)}
@@ -61,7 +60,8 @@ export const generateMessageVND = (course: any): string => {
     return `
 📅 Время обновления: ${formatTime(course.time)}
   
-💰 Курс валют к донгу за 100,000 (VND):
+💰 Курс валют к донгу 
+за 100,000 (VND):
   
 🇺🇸 Доллар США (USD): ${(100000 / Number(course.vnd)).toFixed(2)}
 🇷🇺 Российский рубль (RUB): ${(Number(course.rub) / Number(course.vnd) * 100000).toFixed(0)}
@@ -85,7 +85,8 @@ export const generateMessageCustomVND = (course: any, amount: number): string =>
     return `
 📅 Время обновления: ${formatTime(course.time)}
   
-💰 Курс валют к донгу за ${amount.toLocaleString()} (VND):
+💰 Курс валют к донгу 
+за ${amount.toLocaleString()} (VND):
   
 🇺🇸 Доллар США (USD): ${(amount / Number(course.vnd)).toFixed(2)}
 🇷🇺 Российский рубль (RUB): ${(Number(course.rub) / Number(course.vnd) * amount).toFixed(0)}
@@ -109,7 +110,8 @@ export const generateMessageCustomUSD = (course: any, amount: number): string =>
     return `
 📅 Время обновления: ${formatTime(course.time)}
   
-💰 Курс валют к доллару за ${amount.toLocaleString()} (USD):
+💰 Курс валют к доллару 
+за ${amount.toLocaleString()} (USD):
 
 🇻🇳 Вьетнамский донг (VND): ${(amount * Number(course.vnd)).toFixed(0)}
 🇷🇺 Российский рубль (RUB): ${(amount * Number(course.rub)).toFixed(1)}

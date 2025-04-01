@@ -47,12 +47,16 @@ export default function ExcursionPage() {
     );
   }
 
+  // Преобразование ссылок на локальные пути
+  const imageBasePath = "/public/photo/";
+  const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
+
   const nextImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % excursion.photoLinks.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
   };
 
   const prevImage = () => {
-    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + excursion.photoLinks.length) % excursion.photoLinks.length);
+    setCurrentImageIndex((prevIndex) => (prevIndex - 1 + imageUrls.length) % imageUrls.length);
   };
 
   return (
@@ -60,17 +64,17 @@ export default function ExcursionPage() {
       <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
 
       {/* Карусель */}
-      {excursion.photoLinks.length > 0 && (
+      {imageUrls.length > 0 && (
         <div className="mb-4 flex flex-col items-center">
           <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px] bg-teal-50/50 shadow-lg rounded-lg overflow-hidden">
             <Image
-              src={excursion.photoLinks[currentImageIndex] || "/placeholder.svg"}
+              src={imageUrls[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
               layout="fill"
               objectFit="contain"
               className="rounded-lg"
             />
-            {excursion.photoLinks.length > 1 && (
+            {imageUrls.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
@@ -87,16 +91,16 @@ export default function ExcursionPage() {
                   &#10095;
                 </button>
                 <div className="absolute bottom-2 right-2 bg-black/50 text-white px-2 py-1 rounded">
-                  {currentImageIndex + 1} / {excursion.photoLinks.length}
+                  {currentImageIndex + 1} / {imageUrls.length}
                 </div>
               </>
             )}
           </div>
 
           {/* Миниатюры */}
-          {excursion.photoLinks.length > 1 && (
+          {imageUrls.length > 1 && (
             <div className="flex overflow-x-auto gap-2 px-4 py-2 mt-2">
-              {excursion.photoLinks.map((photo, index) => (
+              {imageUrls.map((photo, index) => (
                 <div
                   key={index}
                   className={`w-16 h-16 relative cursor-pointer border-4 ${

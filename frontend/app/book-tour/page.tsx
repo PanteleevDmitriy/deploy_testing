@@ -1,31 +1,30 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
+import Link from "next/link";
 
 export default function BookTour() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    tourDate: '',
+    name: "",
+    email: "",
+    phone: "",
+    tourDate: "",
     numberOfPeople: 1,
-  })
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prevData => ({
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
       ...prevData,
-      [name]: value
-    }))
-  }
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData)
-    // You could also add some feedback for the user here
-    alert('Тур успешно забронирован!')
-  }
+    e.preventDefault();
+    console.log("Form submitted:", formData);
+    alert("Тур успешно забронирован!");
+  };
 
   return (
     <div className="container mx-auto px-4 py-16 pt-24">
@@ -96,7 +95,16 @@ export default function BookTour() {
           Забронировать
         </button>
       </form>
-    </div>
-  )
-}
 
+      {/* Кнопка "Список экскурсий" */}
+      <div className="text-center mt-6">
+        <Link
+          href="/"
+          className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block"
+        >
+          Список экскурсий
+        </Link>
+      </div>
+    </div>
+  );
+}
