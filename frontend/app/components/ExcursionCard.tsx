@@ -13,7 +13,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Преобразование ссылок на локальные пути
-  const imageBasePath = "/public/photo/";
+  const imageBasePath = "/photo/";
   const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
 
   const nextImage = () => {
