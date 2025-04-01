@@ -99,6 +99,8 @@ export class BotService implements OnModuleInit {
     
                 if (lastCourse) {
                     const lastUpdateTime = new Date(lastCourse.time).getTime();
+                    console.log(`⏱ Время последнего обновления: ${lastCourse.time}`);
+
                     console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
                     const currentTime = Date.now();
     
