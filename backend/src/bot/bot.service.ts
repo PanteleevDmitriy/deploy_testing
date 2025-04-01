@@ -101,7 +101,7 @@ export class BotService implements OnModuleInit {
                     const lastUpdateTime = new Date(lastCourse.time).getTime();
                     console.log(`⏱ Время последнего обновления: ${lastUpdateTime}`);
                     const currentTime = Date.now();
-
+    
                     console.log(`⏱ текущее время: ${currentTime}`);
                     const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
     
@@ -124,7 +124,7 @@ export class BotService implements OnModuleInit {
                 }
     
                 // Сохраняем новый курс с текущим временем
-                const updatedData = { ...courseData, time: this.formatTime(Date.now()) };
+                const updatedData = { ...courseData, time: new Date().toISOString() };
                 await this.moneyRepository.upsert(updatedData);
                 console.log("✅ Курс валют обновлён:", updatedData);
                 console.log("⏭ Следующая проверка через 8 часов.");
