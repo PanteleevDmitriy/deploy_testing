@@ -109,7 +109,7 @@ export default function ExoticFruitsArticle() {
       season: "Июнь – август.",
       price: "В сезон – 30,000-50,000 VND/кг, вне сезона – 70,000+ VND/кг.",
       images: [
-        "longan_1.png", "longan_2.png"
+        "longan_1.png", "longan_2.jpg"
         ],
     },
     {
@@ -121,7 +121,7 @@ export default function ExoticFruitsArticle() {
       season: "Май – июль.",
       price: "В сезон – 30,000-60,000 VND/кг, вне сезона – 80,000+ VND/кг.",
       images: [
-        "lychee_1.JPG", "lychee_2.JPG"],
+        "lychee_1.JPG", "lychee_2.jpg"],
     },
     {
       name: "Рамбутан\nRambutan\nChôm Chôm",
@@ -252,18 +252,19 @@ export default function ExoticFruitsArticle() {
         {fruit.name}
       </h2>
       <div className="flex justify-center gap-4 mb-4">
-        {fruit.images.map((image, imgIndex) => (
-          <div key={imgIndex} className="w-[200px] h-[200px] overflow-hidden rounded-lg">
-            <Image
-              src={`/photo/fruits/${image || "placeholder.svg"}`}
-              alt={`${fruit.name} ${imgIndex + 1}`}
-              width={200}
-              height={200}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ))}
-      </div>
+  {fruit.images.map((image, imgIndex) => (
+    <Image
+      key={imgIndex}
+      src={`/photo/fruits/${image || "placeholder.svg"}`}
+      alt={`${fruit.name} ${imgIndex + 1}`}
+      width={200}
+      height={200}
+      className="rounded-lg object-cover cursor-pointer"
+      style={{ aspectRatio: "1/1" }} // Обрезает лишнее, сохраняя пропорции
+      onClick={() => window.open(`/photo/fruits/${image || "placeholder.svg"}`, "_blank")}
+    />
+  ))}
+</div>
       <div className="text-left">
         <p>
           <strong>Описание:</strong> {fruit.description}
