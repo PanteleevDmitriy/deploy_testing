@@ -1,5 +1,28 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
+@Table({ tableName: 'weather_global' })
+export class WeatherGlobal extends Model<WeatherGlobal> {
+    
+    @Column({ type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true })
+    id: number;
+
+    @Column({ type: DataType.STRING, allowNull: false })
+    city: string;
+
+    @Column({type: DataType.REAL}) 
+    lat: number;
+
+    @Column({type: DataType.REAL}) 
+    lon: number;
+
+    @Column({ type: DataType.JSONB }) 
+    weather: any;
+
+    @Column({type: DataType.STRING}) 
+    reserve: string;
+
+}
+
 @Table({tableName: 'weather'})
 export class Weather extends Model<Weather> {
     

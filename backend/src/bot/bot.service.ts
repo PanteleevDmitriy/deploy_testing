@@ -84,43 +84,55 @@ export class BotService implements OnModuleInit {
     async updateMoneyCourse() {
         if (this.isMoneyRunning) return;
         this.isMoneyRunning = true;
-
+    
         while (this.isMoneyRunning) {
             try {
+                console.log("🔄 Начало обновления курса валют...");
+    
                 if (!this.moneyToken) {
                     throw new Error("❌ API-ключ для валют отсутствует!");
                 }
-
+    
                 // Получаем последнее сохранённое значение курса
                 const lastCourse = await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
-
+                console.log("📊 Последний сохранённый курс:", lastCourse);
+    
                 if (lastCourse) {
                     const lastUpdateTime = new Date(lastCourse.time).getTime();
+                    console.log(`⏱ Время последнего обновления: ${lastUpdateTime}`);
                     const currentTime = Date.now();
-                    const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
 
+                    console.log(`⏱ текущее время: ${currentTime}`);
+                    const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
+    
+                    console.log(`⏱ Последнее обновление было ${hoursSinceLastUpdate.toFixed(2)} часов назад.`);
+    
                     if (hoursSinceLastUpdate < 7.5) {
                         console.log("⏳ Курс валют ещё не требует обновления. Повторная проверка через 1 час.");
                         await new Promise(resolve => setTimeout(resolve, 3600000)); // Ждём 1 час перед следующей проверкой
                         continue;
                     }
                 }
-
+    
                 // Запрос новых данных
+                console.log("🌐 Запрос курса валют через API...");
                 let courseData = await getCourse(this.moneyToken);
+                console.log("📥 Данные от API:", courseData);
+    
                 if (!courseData) {
                     throw new Error("❌ Неверные данные по курсам валют!");
                 }
-
+    
                 // Сохраняем новый курс с текущим временем
-                await this.moneyRepository.upsert({ ...courseData, time: this.formatTime(Date.now()) });
-
-                console.log("✅ Курс валют обновлён. Следующая проверка через 8 часов.");
-
+                const updatedData = { ...courseData, time: this.formatTime(Date.now()) };
+                await this.moneyRepository.upsert(updatedData);
+                console.log("✅ Курс валют обновлён:", updatedData);
+                console.log("⏭ Следующая проверка через 8 часов.");
+    
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
             }
-
+    
             await new Promise(resolve => setTimeout(resolve, 28800000)); // Проверяем снова через 8 часов
         }
     }

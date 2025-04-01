@@ -50,7 +50,7 @@ export const generateMessageVND = (course: any): string => {
     return `
 📅 Время обновления: ${course.time}
   
-💰 Курс валют к донгам за 100000 (VND):
+💰 Курс валют к донгу за 100,000 (VND):
   
 🇺🇸 Доллар США (USD): ${(100000 / Number(course.vnd)).toFixed(2)}
 🇷🇺 Российский рубль (RUB): ${(Number(course.rub) / Number(course.vnd) * 100000).toFixed(0)}
@@ -74,7 +74,7 @@ export const generateMessageCustomVND = (course: any, amount: number): string =>
     return `
 📅 Время обновления: ${course.time}
   
-💰 Курс валют к донгам за ${amount.toLocaleString()} (VND):
+💰 Курс валют к донгу за ${amount.toLocaleString()} (VND):
   
 🇺🇸 Доллар США (USD): ${(amount / Number(course.vnd)).toFixed(2)}
 🇷🇺 Российский рубль (RUB): ${(Number(course.rub) / Number(course.vnd) * amount).toFixed(0)}
