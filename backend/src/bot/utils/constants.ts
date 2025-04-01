@@ -23,8 +23,10 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 };
 
 export const generateMessageUSD = (course: any): string => {
+    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
+
     return `
-📅 Время обновления: ${course.time}
+📅 Время обновления: ${vietnamTime}
   
 💰 Курс валют за 1 доллар США (USD):
   
@@ -47,8 +49,9 @@ export const generateMessageUSD = (course: any): string => {
 };
   
 export const generateMessageVND = (course: any): string => {
+    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
     return `
-📅 Время обновления: ${course.time}
+📅 Время обновления: ${vietnamTime}
   
 💰 Курс валют к донгу за 100,000 (VND):
   
@@ -71,8 +74,9 @@ export const generateMessageVND = (course: any): string => {
 };
 
 export const generateMessageCustomVND = (course: any, amount: number): string => {
+    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
     return `
-📅 Время обновления: ${course.time}
+📅 Время обновления: ${vietnamTime}
   
 💰 Курс валют к донгу за ${amount.toLocaleString()} (VND):
   
@@ -95,8 +99,9 @@ export const generateMessageCustomVND = (course: any, amount: number): string =>
 };
 
 export const generateMessageCustomUSD = (course: any, amount: number): string => {
+    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
     return `
-📅 Время обновления: ${course.time}
+📅 Время обновления: ${vietnamTime}
   
 💰 Курс валют к доллару за ${amount.toLocaleString()} (USD):
 
