@@ -253,16 +253,16 @@ export default function ExoticFruitsArticle() {
       </h2>
       <div className="flex justify-center gap-4 mb-4">
   {fruit.images.map((image, imgIndex) => (
-    <Image
-      key={imgIndex}
-      src={`/photo/fruits/${image || "placeholder.svg"}`}
-      alt={`${fruit.name} ${imgIndex + 1}`}
-      width={200}
-      height={200}
-      className="rounded-lg object-cover cursor-pointer"
-      style={{ aspectRatio: "1/1" }} // Обрезает лишнее, сохраняя пропорции
-      onClick={() => window.open(`/photo/fruits/${image || "placeholder.svg"}`, "_blank")}
-    />
+    <a key={imgIndex} href={`/photo/fruits/${image || "placeholder.svg"}`} target="_blank">
+      <Image
+        src={`/photo/fruits/${image || "placeholder.svg"}`}
+        alt={`${fruit.name} ${imgIndex + 1}`}
+        width={200}
+        height={200}
+        className="rounded-lg object-cover"
+        style={{ aspectRatio: "1/1" }}
+      />
+    </a>
   ))}
 </div>
       <div className="text-left">
