@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
+import { useState } from "react";
 
 export default function ExoticFruitsArticle() {
   const fruits = [
@@ -231,7 +232,7 @@ export default function ExoticFruitsArticle() {
       ],
     },
   ]
-
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   return (
     <div className="container mx-auto px-4 py-16 pt-24">
       <h1 className="text-3xl font-bold mb-8 text-center">Экзотические фрукты Вьетнама</h1>
@@ -244,52 +245,76 @@ export default function ExoticFruitsArticle() {
           сезонности и примерных цен на эти удивительные плоды. Погрузитесь в мир ярких вкусов и ароматов вместе с нами!
         </p>
       </div>
-
       <div className="space-y-12">
-  {fruits.map((fruit, index) => (
-    <section key={index} className="text-center">
-      <h2 className="text-2xl font-semibold mb-4 whitespace-pre-line">
-        {fruit.name}
-      </h2>
-      <div className="flex justify-center gap-4 mb-4">
-  {fruit.images.map((image, imgIndex) => (
-    <a key={imgIndex} href={`/photo/fruits/${image || "placeholder.svg"}`} target="_blank">
-      <Image
-        src={`/photo/fruits/${image || "placeholder.svg"}`}
-        alt={`${fruit.name} ${imgIndex + 1}`}
-        width={200}
-        height={200}
-        className="rounded-lg object-cover"
-        style={{ aspectRatio: "1/1" }}
-      />
-    </a>
-  ))}
-</div>
-      <div className="text-left">
-        <p>
-          <strong>Описание:</strong> {fruit.description}
-        </p>
-        <p>
-          <strong>Польза:</strong> {fruit.benefits}
-        </p>
-        <p>
-          <strong>Вкус:</strong> {fruit.taste}
-        </p>
-        <p>
-          <strong>Где растёт:</strong> {fruit.location}
-        </p>
-        <p>
-          <strong>Сезонность:</strong> {fruit.season}
-        </p>
-        <p>
-          <strong>Цены:</strong> {fruit.price}
-        </p>
-      </div>
-    </section>
-  ))}
-</div>
+      {fruits.map((fruit, index) => (
+        <section key={index} className="text-center">
+          <h2 className="text-2xl font-semibold mb-4 whitespace-pre-line">
+            {fruit.name}
+          </h2>
+          <div className="flex justify-center gap-4 mb-4">
+            {fruit.images.map((image, imgIndex) => (
+              <button
+                key={imgIndex}
+                onClick={() => setSelectedImage(`/photo/fruits/${image}`)}
+                className="focus:outline-none"
+              >
+                <Image
+                  src={`/photo/fruits/${image || "placeholder.svg"}`}
+                  alt={`${fruit.name} ${imgIndex + 1}`}
+                  width={200}
+                  height={200}
+                  className="rounded-lg object-cover"
+                />
+              </button>
+            ))}
+          </div>
+          <div className="text-left">
+            <p>
+              <strong>Описание:</strong> {fruit.description}
+            </p>
+            <p>
+              <strong>Польза:</strong> {fruit.benefits}
+            </p>
+            <p>
+              <strong>Вкус:</strong> {fruit.taste}
+            </p>
+            <p>
+              <strong>Где растёт:</strong> {fruit.location}
+            </p>
+            <p>
+              <strong>Сезонность:</strong> {fruit.season}
+            </p>
+            <p>
+              <strong>Цены:</strong> {fruit.price}
+            </p>
+          </div>
+        </section>
+      ))}
 
-
+      {/* Модальное окно для увеличенного изображения */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative">
+            <Image
+              src={selectedImage}
+              alt="Увеличенное изображение"
+              width={600}
+              height={600}
+              className="max-w-full max-h-screen object-contain"
+            />
+            <button
+              className="absolute top-2 right-2 text-white text-2xl"
+              onClick={() => setSelectedImage(null)}
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
 
       <div className="mt-12">
         <h2 className="text-2xl font-semibold mb-4">Другие фрукты во Вьетнаме</h2>
