@@ -104,7 +104,7 @@ export class BotService implements OnModuleInit {
                     console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
                     console.log(`⏱ Время последнего обновления: ${new Date(lastUpdateTime).toISOString()}`);
 
-                    const currentTime = Date.now();
+                    const currentTime = Date.now() + 7 * 60 * 60 * 1000;
     
                     console.log(`⏱ Текущее время (timestamp): ${currentTime}`);
                     console.log(`⏱ Текущее время: ${new Date(currentTime).toISOString()}`);
