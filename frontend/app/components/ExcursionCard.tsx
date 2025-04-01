@@ -17,9 +17,14 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   const imageBasePath = "/photo/";
 
   useEffect(() => {
-    // Загружаем все изображения при монтировании компонента
     const imagePaths = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
     setImageUrls(imagePaths);
+
+    // Предзагрузка изображений
+    imagePaths.forEach((imagePath) => {
+      const img = document.createElement('img') as HTMLImageElement; // Создаем элемент изображения
+      img.src = imagePath; // Устанавливаем путь к изображению
+    });
   }, [excursion.photoLinks]);
 
   const nextImage = () => {
@@ -74,7 +79,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
             <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>
           </div>
           {excursion.isPopular && (
-            <div className="bg-orange-500 text-white px-2 py-1 text-xs font-bold rounded-full shadow-md">
+            <div className="bg-yellow-500 text-white px-2 py-1 text-xs font-bold rounded-full shadow-md">
               🔥
             </div>
           )}
