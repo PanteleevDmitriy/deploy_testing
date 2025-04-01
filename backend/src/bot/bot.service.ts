@@ -95,19 +95,16 @@ export class BotService implements OnModuleInit {
     
                 // Получаем последнее сохранённое значение курса
                 const lastCourse = await this.moneyRepository.findOne({ order: [['time', 'DESC']] });
-                console.log("📊 Последний сохранённый курс:", lastCourse?.dataValues);
+                // console.log("📊 Последний сохранённый курс:", lastCourse?.dataValues);
     
                 if (lastCourse) {
-                    const parts = lastCourse.time.split(/[\.,: ]+/); 
-                    const dateFormatted = `20${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:00Z`; // Преобразуем в ISO формат
-                    const lastUpdateTime = new Date(dateFormatted).getTime();
-                    // console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
-                    // console.log(`⏱ Время последнего обновления: ${new Date(lastUpdateTime).toISOString()}`);
+                    const lastUpdateTime = new Date(lastCourse.time).getTime();
 
-                    const currentTime = Date.now() + 7 * 60 * 60 * 1000;
+                    // console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
+
+                    const currentTime = Date.now();
     
                     // console.log(`⏱ Текущее время (timestamp): ${currentTime}`);
-                    // console.log(`⏱ Текущее время: ${new Date(currentTime).toISOString()}`);
 
                     const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
     
