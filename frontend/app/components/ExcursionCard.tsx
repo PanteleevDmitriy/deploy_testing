@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { ExcursionInterface } from "@/app/types/excursion";
@@ -11,10 +11,16 @@ interface ExcursionCardProps {
 
 export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   // Преобразование ссылок на локальные пути
   const imageBasePath = "/photo/";
-  const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
+
+  useEffect(() => {
+    // Загружаем все изображения при монтировании компонента
+    const imagePaths = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
+    setImageUrls(imagePaths);
+  }, [excursion.photoLinks]);
 
   const nextImage = () => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % imageUrls.length);
@@ -31,7 +37,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
         <Image
           src={imageUrls[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
-          layout="fill"
+          fill
           objectFit="contain"  // Сохраняет пропорции и выравнивает по высоте
           className="rounded-t-lg"
         />
