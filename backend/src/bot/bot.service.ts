@@ -101,13 +101,13 @@ export class BotService implements OnModuleInit {
                     const parts = lastCourse.time.split(/[\.,: ]+/); 
                     const dateFormatted = `20${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:00Z`; // Преобразуем в ISO формат
                     const lastUpdateTime = new Date(dateFormatted).getTime();
-                    console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
-                    console.log(`⏱ Время последнего обновления: ${new Date(lastUpdateTime).toISOString()}`);
+                    // console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
+                    // console.log(`⏱ Время последнего обновления: ${new Date(lastUpdateTime).toISOString()}`);
 
                     const currentTime = Date.now() + 7 * 60 * 60 * 1000;
     
-                    console.log(`⏱ Текущее время (timestamp): ${currentTime}`);
-                    console.log(`⏱ Текущее время: ${new Date(currentTime).toISOString()}`);
+                    // console.log(`⏱ Текущее время (timestamp): ${currentTime}`);
+                    // console.log(`⏱ Текущее время: ${new Date(currentTime).toISOString()}`);
 
                     const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
     
@@ -123,7 +123,7 @@ export class BotService implements OnModuleInit {
                 // Запрос новых данных
                 console.log("🌐 Запрос курса валют через API...");
                 let courseData = await getCourse(this.moneyToken);
-                console.log("📥 Данные от API:", courseData);
+                // console.log("📥 Данные от API:", courseData);
     
                 // Проверка на корректность данных
                 if (!courseData || typeof courseData !== "object") {
@@ -137,11 +137,10 @@ export class BotService implements OnModuleInit {
     
                 // Сохраняем новый курс с текущим временем в ISO-формате
                 const updatedData = { ...courseData, time: new Date().toISOString() };
-                console.log("💾 Данные для сохранения:", updatedData);
+                // console.log("💾 Данные для сохранения:", updatedData);
     
                 await this.moneyRepository.upsert(updatedData);
                 console.log("✅ Курс валют обновлён:", updatedData);
-                console.log("⏭ Следующая проверка через 8 часов.");
     
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
