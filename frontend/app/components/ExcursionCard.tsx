@@ -31,7 +31,8 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
         <Image
           src={imageUrls[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
-          fill
+          layout="fill"
+          objectFit="contain"  // Сохраняет пропорции и выравнивает по высоте
           className="rounded-t-lg"
         />
 
@@ -67,7 +68,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
             <p className="text-gray-600 text-sm">{excursion.shortDescription}</p>
           </div>
           {excursion.isPopular && (
-            <div className="bg-red-500 text-white px-2 py-1 text-xs font-bold rounded-full shadow-md">
+            <div className="bg-orange-500 text-white px-2 py-1 text-xs font-bold rounded-full shadow-md">
               🔥
             </div>
           )}
