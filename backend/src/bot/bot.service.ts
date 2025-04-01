@@ -98,16 +98,17 @@ export class BotService implements OnModuleInit {
                 console.log("📊 Последний сохранённый курс:", lastCourse?.dataValues);
     
                 if (lastCourse) {
-                    const parts = lastCourse.time.split(/[\.,: ]+/);  // Разбиваем строку на части
-                    const dateFormatted = `20${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:00Z`; // Преобразуем в формат ISO
-
+                    const parts = lastCourse.time.split(/[\.,: ]+/); 
+                    const dateFormatted = `20${parts[2]}-${parts[1]}-${parts[0]}T${parts[3]}:${parts[4]}:00Z`; // Преобразуем в ISO формат
                     const lastUpdateTime = new Date(dateFormatted).getTime();
-                    console.log(`⏱ Время последнего обновления: ${lastCourse.time}`);
-
                     console.log(`⏱ Время последнего обновления (timestamp): ${lastUpdateTime}`);
+                    console.log(`⏱ Время последнего обновления: ${new Date(lastUpdateTime).toISOString()}`);
+
                     const currentTime = Date.now();
     
                     console.log(`⏱ Текущее время (timestamp): ${currentTime}`);
+                    console.log(`⏱ Текущее время: ${new Date(currentTime).toISOString()}`);
+
                     const hoursSinceLastUpdate = (currentTime - lastUpdateTime) / (1000 * 60 * 60);
     
                     console.log(`⏱ Последнее обновление было ${hoursSinceLastUpdate.toFixed(2)} часов назад.`);
