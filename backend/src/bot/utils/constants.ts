@@ -5,6 +5,17 @@ export const iconDict = {
     "09n": "⛈", "10n": "⛈", "11n": "⛈", "13n": "🌨", "50n": "🌫"
 };
 
+export function formatTime(date: string | number): string {
+    return new Date(date).toLocaleString('ru-RU', {
+        timeZone: 'Asia/Ho_Chi_Minh',
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit'
+    });
+}
+
 export const generateMessageWeather = (weather: any): string => {
     return `
 📅 Время обновления: ${weather.time_value}
@@ -23,10 +34,8 @@ ${iconDict[weather.icon] || "📌"} Описание: ${weather.description}`;
 };
 
 export const generateMessageUSD = (course: any): string => {
-    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
-
     return `
-📅 Время обновления: ${vietnamTime}
+📅 Время обновления: ${formatTime(course.time)}
   
 💰 Курс валют за 1 доллар США (USD):
   
@@ -49,9 +58,8 @@ export const generateMessageUSD = (course: any): string => {
 };
   
 export const generateMessageVND = (course: any): string => {
-    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
     return `
-📅 Время обновления: ${vietnamTime}
+📅 Время обновления: ${formatTime(course.time)}
   
 💰 Курс валют к донгу за 100,000 (VND):
   
@@ -74,9 +82,8 @@ export const generateMessageVND = (course: any): string => {
 };
 
 export const generateMessageCustomVND = (course: any, amount: number): string => {
-    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
     return `
-📅 Время обновления: ${vietnamTime}
+📅 Время обновления: ${formatTime(course.time)}
   
 💰 Курс валют к донгу за ${amount.toLocaleString()} (VND):
   
@@ -99,9 +106,8 @@ export const generateMessageCustomVND = (course: any, amount: number): string =>
 };
 
 export const generateMessageCustomUSD = (course: any, amount: number): string => {
-    const vietnamTime = new Date(course.time).toLocaleString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh" });
     return `
-📅 Время обновления: ${vietnamTime}
+📅 Время обновления: ${formatTime(course.time)}
   
 💰 Курс валют к доллару за ${amount.toLocaleString()} (USD):
 

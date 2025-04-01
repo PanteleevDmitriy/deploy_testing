@@ -7,6 +7,7 @@ import { WeatherDto } from './dto/weather.dto';
 import { getWeather1 } from './utils/weather';
 import getCourse from './utils/money-course';
 import { ConfigService } from '@nestjs/config';
+import { formatTime } from './utils/constants';
 
 @Injectable()
 export class BotService implements OnModuleInit {
@@ -32,12 +33,6 @@ export class BotService implements OnModuleInit {
         }
     }
 
-    private formatTime(date: string | number): string {
-        return new Date(date).toLocaleString('ru-RU', {
-            timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: '2-digit'
-        });
-    }
-
     async checkWeather() {
         if (this.isWeatherRunning) return;
         this.isWeatherRunning = true;
@@ -55,7 +50,7 @@ export class BotService implements OnModuleInit {
                 
                 const weatherDto: WeatherDto = {
                     time_point: 0,
-                    time_value: this.formatTime(weatherRawData.time),
+                    time_value: formatTime(weatherRawData.time),
                     temp: weatherRawData.temp,
                     humidity: weatherRawData.humidity,
                     pressure: weatherRawData.pressure,
@@ -65,8 +60,8 @@ export class BotService implements OnModuleInit {
                     clouds: weatherRawData.clouds,
                     rain_1h: weatherRawData.rain_1h,
                     rain_3h: weatherRawData.rain_3h,
-                    sunrise: this.formatTime(weatherRawData.sunrise),
-                    sunset: this.formatTime(weatherRawData.sunset),
+                    sunrise: formatTime(weatherRawData.sunrise),
+                    sunset: formatTime(weatherRawData.sunset),
                     icon: weatherRawData.icon,
                     description: weatherRawData.description,
                     visibility: weatherRawData.visibility,
