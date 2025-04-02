@@ -235,52 +235,86 @@ export default function ExoticFruitsArticle() {
     },
   ]
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   return (
-    <div className="space-y-12">
-      {fruits.map((fruit, index) => (
-        <section key={index} className="text-center">
-          <h2 className="text-2xl font-semibold mb-4 whitespace-pre-line">
-            {fruit.name}
-          </h2>
-          <div className="flex justify-center gap-4 mb-4">
-            {fruit.images.map((image, imgIndex) => (
-              <button
-                key={imgIndex}
-                onClick={() => setSelectedImage(`/photo/fruits/${image}`)}
-                className="w-[200px] h-[200px] overflow-hidden rounded-lg"
-              >
-                <Image
-                  src={`/photo/fruits/${image || "placeholder.svg"}`}
-                  alt={`${fruit.name} ${imgIndex + 1}`}
-                  width={200}
-                  height={200}
-                  className="object-cover w-full h-full"
-                />
-              </button>
-            ))}
-          </div>
-          <div className="text-left">
-            <p>
-              <strong>Описание:</strong> {fruit.description}
-            </p>
-            <p>
-              <strong>Польза:</strong> {fruit.benefits}
-            </p>
-            <p>
-              <strong>Вкус:</strong> {fruit.taste}
-            </p>
-            <p>
-              <strong>Где растёт:</strong> {fruit.location}
-            </p>
-            <p>
-              <strong>Сезонность:</strong> {fruit.season}
-            </p>
-            <p>
-              <strong>Цены:</strong> {fruit.price}
-            </p>
-          </div>
-        </section>
-      ))}
+    <div className="container mx-auto px-4 py-16 pt-32">
+      <h1 className="text-3xl font-bold mb-8 text-center">
+        Экзотические фрукты Вьетнама
+      </h1>
+
+      <div className="mb-8">
+        <p>
+          В этой статье представлена информация об экзотических фруктах Вьетнама, которые вы сможете попробовать во
+          время вашего путешествия. Вьетнам славится своим разнообразием тропических фруктов, многие из которых могут
+          показаться необычными для туристов из других стран. Здесь вы найдете описание вкуса, пользы для здоровья,
+          сезонности и примерных цен на эти удивительные плоды. Погрузитесь в мир ярких вкусов и ароматов вместе с нами!
+        </p>
+      </div>
+
+      <div className="space-y-12 px-4 md:px-8 lg:px-16">
+        {fruits.map((fruit, index) => (
+          <section key={index} className="text-center">
+            <h2 className="text-2xl font-semibold mb-4 whitespace-pre-line">
+              {fruit.name}
+            </h2>
+            <div className="flex justify-center gap-4 mb-4">
+              {fruit.images.map((image, imgIndex) => (
+                <button
+                  key={imgIndex}
+                  onClick={() => setSelectedImage(`/photo/fruits/${image}`)}
+                  className="w-[200px] h-[200px] overflow-hidden rounded-lg"
+                >
+                  <Image
+                    src={`/photo/fruits/${image || "placeholder.svg"}`}
+                    alt={`${fruit.name} ${imgIndex + 1}`}
+                    width={200}
+                    height={200}
+                    className="object-cover w-full h-full"
+                  />
+                </button>
+              ))}
+            </div>
+            <div className="text-left">
+              <p>
+                <strong>Описание:</strong> {fruit.description}
+              </p>
+              <p>
+                <strong>Польза:</strong> {fruit.benefits}
+              </p>
+              <p>
+                <strong>Вкус:</strong> {fruit.taste}
+              </p>
+              <p>
+                <strong>Где растёт:</strong> {fruit.location}
+              </p>
+              <p>
+                <strong>Сезонность:</strong> {fruit.season}
+              </p>
+              <p>
+                <strong>Цены:</strong> {fruit.price}
+              </p>
+            </div>
+          </section>
+        ))}
+      </div>
+
+      <div className="mt-12">
+        <h2 className="text-2xl font-semibold mb-4">Другие фрукты во Вьетнаме</h2>
+        <p>
+          Во Вьетнаме также встречаются более привычные виды фруктов, такие как апельсин, лайм, лимон, виноград, ананас,
+          дыня, арбуз и бананы. Эти фрукты широко доступны в большинстве регионов страны и могут быть отличным
+          дополнением к вашему рациону во время путешествия.
+        </p>
+      </div>
+
+      <div className="mt-16 text-center">
+        <Link
+          href="/articles"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+        >
+          Назад к списку статей
+        </Link>
+      </div>
 
       {/* Модальное окно для увеличенного изображения */}
       {selectedImage && (
