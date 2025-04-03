@@ -15,6 +15,6 @@ export const keyboards = {
 };
 
 export const inlineKeyboards = {
-    usd: Markup.inlineKeyboard([[buttons.convertToVND], [buttons.enterCustomUSD], [buttons.cancel]]),
-    vnd: Markup.inlineKeyboard([[buttons.convertToUSD], [buttons.enterCustomVND], [buttons.cancel]]),
+    usd: Markup.inlineKeyboard([[buttons.convertToVND], [buttons.enterCustomUSD]]),
+    vnd: Markup.inlineKeyboard([[buttons.convertToUSD], [buttons.enterCustomVND]]),
 };

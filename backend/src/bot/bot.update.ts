@@ -72,17 +72,20 @@ export class BotUpdate {
   
   @Action('enter_custom_usd')
   async onEnterCustomUSD(ctx: BotContext) {
-      await ctx.reply('Введите сумму в долларах, которую хотите пересчитать:', Markup.inlineKeyboard([
-          [buttons.cancel]
-      ]));
-      ctx.session.waitingForUSDInput = true;
+    await ctx.reply('Введите сумму в долларах, которую хотите пересчитать:', Markup.inlineKeyboard([
+        [buttons.cancel]
+    ]));
+    ctx.session.waitingForUSDInput = true;
   }
 
   @Action('cancel_input')
   async cancel(ctx: BotContext) {
-      ctx.session.waitingForUSDInput = false;
-      ctx.session.waitingForVNDInput = false;
-      await ctx.reply('Ввод суммы отменён.', Markup.removeKeyboard());
+    if (!ctx.session.waitingForVNDInput && !ctx.session.waitingForUSDInput) {
+      return;
+    }
+    ctx.session.waitingForUSDInput = false;
+    ctx.session.waitingForVNDInput = false;
+    await ctx.reply('Ввод суммы отменён.');
   }
 
   @On('text')
