@@ -80,13 +80,22 @@ export class BotUpdate {
 
   @Action('cancel_input')
   async cancel(ctx: BotContext) {
-    if (!ctx.session.waitingForVNDInput && !ctx.session.waitingForUSDInput) {
-      return;
-    }
-    ctx.session.waitingForUSDInput = false;
-    ctx.session.waitingForVNDInput = false;
-    await ctx.reply('Ввод суммы отменён.');
+      if (!ctx.session.waitingForVNDInput && !ctx.session.waitingForUSDInput) {
+          return;
+      }
+  
+      ctx.session.waitingForUSDInput = false;
+      ctx.session.waitingForVNDInput = false;
+  
+      try {
+          await ctx.deleteMessage(); // Удаляет сообщение с инлайн-кнопками
+      } catch (error) {
+          console.error("Ошибка при удалении сообщения:", error);
+      }
+  
+      await ctx.reply('Ввод суммы отменён.');
   }
+  
 
   @On('text')
   async onUserInputCurrency(ctx: BotContext) {
