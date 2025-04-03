@@ -1,10 +1,10 @@
 import { Update, Start, Hears, InjectBot, Action, On } from 'nestjs-telegraf';
-import { Telegraf, Context } from 'telegraf';
+import { Telegraf, Context, Markup } from 'telegraf';
 import { BotService } from './bot.service';
 import { generateMessageCustomVND, generateMessageCustomUSD, generateMessageUSD, generateMessageVND, generateMessageWeather } from './utils/constants';
 import { BotContext } from './utils/session.interface';
 import { Message } from 'telegraf/types';
-import { keyboards, inlineKeyboards } from './utils/buttons';
+import { keyboards, inlineKeyboards, buttons } from './utils/buttons';
 
 @Update()
 export class BotUpdate {
@@ -64,14 +64,25 @@ export class BotUpdate {
 
   @Action('enter_custom_vnd')
   async onEnterCustomVND(ctx: BotContext) {
-    await ctx.reply('Введите сумму в донгах, которую хотите пересчитать:');
-    ctx.session.waitingForVNDInput = true;
+      await ctx.reply('Введите сумму в донгах, которую хотите пересчитать:', Markup.inlineKeyboard([
+          [buttons.cancel]
+      ]));
+      ctx.session.waitingForVNDInput = true;
   }
-
+  
   @Action('enter_custom_usd')
   async onEnterCustomUSD(ctx: BotContext) {
-    await ctx.reply('Введите сумму в долларах, которую хотите пересчитать:');
-    ctx.session.waitingForUSDInput = true;
+      await ctx.reply('Введите сумму в долларах, которую хотите пересчитать:', Markup.inlineKeyboard([
+          [buttons.cancel]
+      ]));
+      ctx.session.waitingForUSDInput = true;
+  }
+
+  @Action('cancel_input')
+  async cancel(ctx: BotContext) {
+      ctx.session.waitingForUSDInput = false;
+      ctx.session.waitingForVNDInput = false;
+      await ctx.reply('Ввод суммы отменён.', Markup.removeKeyboard());
   }
 
   @On('text')

@@ -7,6 +7,7 @@ export const buttons = {
     convertToVND: Markup.button.callback('🇻🇳 Курс вьетнамского донга', 'convert_to_vnd'),
     enterCustomVND: Markup.button.callback('✏️ Введите сумму в донгах', 'enter_custom_vnd'),
     enterCustomUSD: Markup.button.callback('✏️ Введите сумму в долларах', 'enter_custom_usd'),
+    cancel: Markup.button.callback('❌ Отмена ввода ❌', 'cancel_input')
 };
 
 export const keyboards = {
@@ -14,6 +15,6 @@ export const keyboards = {
 };
 
 export const inlineKeyboards = {
-    usd: Markup.inlineKeyboard([[buttons.convertToVND], [buttons.enterCustomUSD]]),
-    vnd: Markup.inlineKeyboard([[buttons.convertToUSD], [buttons.enterCustomVND]]),
+    usd: Markup.inlineKeyboard([[buttons.convertToVND], [buttons.enterCustomUSD], [buttons.cancel]]),
+    vnd: Markup.inlineKeyboard([[buttons.convertToUSD], [buttons.enterCustomVND], [buttons.cancel]]),
 };
