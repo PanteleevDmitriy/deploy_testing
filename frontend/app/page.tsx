@@ -57,8 +57,10 @@ export default function Home() {
             </div>
           ) : (
             <div className="flex flex-col gap-6">
-              {excursions.map((excursion) => (
-                <ExcursionCard key={excursion.id} excursion={excursion} />
+              {[...excursions]
+                .sort((a, b) => a.id - b.id)
+                .map((excursion) => (
+                  <ExcursionCard key={excursion.id} excursion={excursion} />
               ))}
             </div>
           )}

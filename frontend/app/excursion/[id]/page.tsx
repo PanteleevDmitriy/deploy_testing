@@ -49,6 +49,7 @@ export default function ExcursionPage() {
 
   // Преобразование ссылок на локальные пути
   const imageBasePath = "/photo/";
+
   const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
 
   const nextImage = () => {
@@ -131,6 +132,26 @@ export default function ExcursionPage() {
           от {Math.round(Number.parseFloat(excursion.price))} $ с человека
         </p>
       </div>
+
+      {/* Видеообзор (если есть) */}
+            {excursion.videoLinks && excursion.videoLinks.length > 0 && (
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold mb-2 text-center">🎥 Видеообзор экскурсии</h2>
+          <div className="shadow-lg rounded-lg overflow-hidden bg-black">
+            <video
+              autoPlay
+              // muted
+              loop
+              playsInline
+              controls
+              className="w-full h-auto max-h-[500px]"
+            >
+              <source src={`/video/${excursion.videoLinks[0]}.mp4`} type="video/mp4" />
+              Ваш браузер не поддерживает воспроизведение видео.
+            </video>
+          </div>
+        </div>
+      )}
 
       {/* Кнопки */}
       <div className="text-center">
