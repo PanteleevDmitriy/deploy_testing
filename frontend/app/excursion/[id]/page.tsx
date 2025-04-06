@@ -49,7 +49,6 @@ export default function ExcursionPage() {
 
   // Преобразование ссылок на локальные пути
   const imageBasePath = "/photo/";
-
   const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
 
   const nextImage = () => {
@@ -127,31 +126,30 @@ export default function ExcursionPage() {
       <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Описание</h2>
         <p>{excursion.longDescription}</p>
+
+        {/* Видеообзор (если есть) */}
+        {excursion.videoLinks && excursion.videoLinks.length > 0 && (
+          <div className="my-6">
+            <h2 className="text-2xl font-semibold mb-2 text-center">🎥 Видеообзор экскурсии</h2>
+            <div className="flex justify-center">
+              <video
+                controls
+                loop
+                playsInline
+                className="rounded-lg shadow-lg"
+              >
+                <source src={`/video/${excursion.videoLinks[0]}.mp4`} type="video/mp4" />
+                Ваш браузер не поддерживает воспроизведение видео.
+              </video>
+            </div>
+          </div>
+        )}
+
         <h2 className="text-2xl font-semibold mt-3 mb-1">Цена</h2>
         <p className="text-xl font-bold text-teal-600">
           от {Math.round(Number.parseFloat(excursion.price))} $ с человека
         </p>
       </div>
-
-      {/* Видеообзор (если есть) */}
-            {excursion.videoLinks && excursion.videoLinks.length > 0 && (
-        <div className="mb-6">
-          <h2 className="text-2xl font-semibold mb-2 text-center">🎥 Видеообзор экскурсии</h2>
-          <div className="shadow-lg rounded-lg overflow-hidden bg-black">
-            <video
-              autoPlay
-              // muted
-              loop
-              playsInline
-              controls
-              className="w-full h-auto max-h-[500px]"
-            >
-              <source src={`/video/${excursion.videoLinks[0]}.mp4`} type="video/mp4" />
-              Ваш браузер не поддерживает воспроизведение видео.
-            </video>
-          </div>
-        </div>
-      )}
 
       {/* Кнопки */}
       <div className="text-center">
