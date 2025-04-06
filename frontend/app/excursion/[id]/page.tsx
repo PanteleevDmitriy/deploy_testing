@@ -138,7 +138,7 @@ export default function ExcursionPage() {
                 playsInline
                 className="rounded-lg shadow-lg"
               >
-                <source src={`/video/${excursion.videoLinks[0]}.mp4`} type="video/mp4" />
+                <source src={`/video/${excursion.videoLinks[0]}`} type="video/mp4" />
                 Ваш браузер не поддерживает воспроизведение видео.
               </video>
             </div>
