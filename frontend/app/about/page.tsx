@@ -15,13 +15,13 @@ export default function About() {
         С SEAWIND Travel вы получите незабываемые впечатления и яркие эмоции от путешествия по Вьетнаму!
       </p>
 
-      {/* Видео с Google Диска */}
-      <div className="aspect-video w-full max-w-3xl mx-auto">
+      {/* YouTube Shorts вертикальное видео */}
+      <div className="w-full max-w-sm mx-auto aspect-[9/16]">
         <iframe
-          src="https://drive.google.com/file/d/1jwcuI1piFQdpuej15gkSZHyPi_jXW79x/preview"
-          width="100%"
-          height="100%"
-          allow="autoplay"
+          src="https://www.youtube.com/embed/Thlpp5LOdKA"
+          title="YouTube Shorts"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
           className="w-full h-full rounded-lg shadow-lg"
         ></iframe>
       </div>
