@@ -11,8 +11,20 @@ export default function About() {
         экскурсий с русскоговорящими гидами, чтобы вы могли полностью погрузиться в культуру и красоту этой удивительной
         страны.
       </p>
-      <p>С SEAWIND Travel вы получите незабываемые впечатления и яркие эмоции от путешествия по Вьетнаму!</p>
+      <p className="mb-8">
+        С SEAWIND Travel вы получите незабываемые впечатления и яркие эмоции от путешествия по Вьетнаму!
+      </p>
+
+      {/* Видео с Google Диска */}
+      <div className="aspect-video w-full max-w-3xl mx-auto">
+        <iframe
+          src="https://drive.google.com/file/d/1jwcuI1piFQdpuej15gkSZHyPi_jXW79x/preview"
+          width="100%"
+          height="100%"
+          allow="autoplay"
+          className="w-full h-full rounded-lg shadow-lg"
+        ></iframe>
+      </div>
     </div>
   )
 }
-
