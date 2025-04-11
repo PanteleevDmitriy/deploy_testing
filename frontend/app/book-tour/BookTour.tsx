@@ -16,6 +16,7 @@ const tooltips = {
     'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90см до 120см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3-х до 12-ти лет.',
   toddlers:
     'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3-х лет.',
+  extraInfo: "Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями",
 };
 
 export default function BookTour() {
@@ -28,16 +29,15 @@ export default function BookTour() {
     adults: 1,
     children: 0,
     toddlers: 0,
-    extraInfo: "", // 🔧 новое поле
+    extraInfo: "",
   });
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({}); // 🔧 для ошибок
-
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
   const searchParams = useSearchParams();
   const preselectedId = searchParams.get("id");
+  const [timestamp, setTimestamp] = useState("");
 
   useEffect(() => {
     fetch("/api/excursions")
@@ -78,7 +78,7 @@ export default function BookTour() {
         ? parseInt(value)
         : value,
     }));
-    setErrors((prev) => ({ ...prev, [name]: "" })); // 🔧 сброс ошибки
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
   const validateContact = (): boolean => {
@@ -108,7 +108,7 @@ export default function BookTour() {
     }
 
     if (formData.adults < 1) {
-      newErrors.adults = "Хотя бы один взрослый должен быть в группе! Нельзя бронировать экскурсию только для детей."; // 🔧
+      newErrors.adults = "Хотя бы один взрослый должен быть в группе!";
     }
 
     if (!validateContact()) {
@@ -118,6 +118,17 @@ export default function BookTour() {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
+    const now = new Date();
+    setTimestamp(
+      now.toLocaleString("ru-RU", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    );
     setShowConfirmation(true);
   };
 
@@ -125,16 +136,6 @@ export default function BookTour() {
     const selectedTour = excursions.find(
       (ex) => String(ex.id) === formData.excursionId
     );
-
-    const now = new Date();
-    const timestamp = now.toLocaleString("ru-RU", {
-      timeZone: "Asia/Ho_Chi_Minh",
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
 
     const text = `
 <b>📩 Новая заявка с сайта</b>
@@ -156,8 +157,6 @@ export default function BookTour() {
         body: JSON.stringify({ text }),
       });
       alert("Заявка успешно отправлена!");
-
-      // 🔧 сброс формы:
       setFormData({
         excursionId: "",
         name: "",
@@ -177,7 +176,7 @@ export default function BookTour() {
   const renderFieldWithTooltip = (
     label: string,
     name: string,
-    type: "text" | "number"
+    type: "text" | "number" | "textarea" = "text"
   ) => (
     <div className="relative mb-4">
       <label className="block mb-1 flex items-center gap-2">
@@ -192,15 +191,24 @@ export default function BookTour() {
           ℹ️
         </button>
       </label>
-      <input
-        type={type}
-        name={name}
-        min={type === "number" ? 0 : undefined}
-        required
-        value={formData[name as keyof typeof formData] as string | number}
-        onChange={handleChange}
-        className="w-full border px-3 py-2 rounded"
-      />
+      {type === "textarea" ? (
+        <textarea
+          name={name}
+          value={formData[name as keyof typeof formData] as string}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+          maxLength={200}
+        />
+      ) : (
+        <input
+          type={type}
+          name={name}
+          min={type === "number" ? 0 : undefined}
+          value={formData[name as keyof typeof formData] as string | number}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+        />
+      )}
       {tooltipOpen === name && (
         <div
           ref={(el) => {
@@ -274,35 +282,25 @@ export default function BookTour() {
         {renderFieldWithTooltip("Количество взрослых", "adults", "number")}
         {renderFieldWithTooltip("Количество детей", "children", "number")}
         {renderFieldWithTooltip("Количество маленьких детей", "toddlers", "number")}
-
-        <div>
-          <label className="block mb-1">Дополнительная информация (необязательно)</label>
-          <textarea
-            name="extraInfo"
-            maxLength={200}
-            value={formData.extraInfo}
-            onChange={handleChange}
-            placeholder="Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями"
-            className="w-full rounded border px-3 py-2"
-          />
-        </div>
+        {renderFieldWithTooltip("Дополнительная информация (необязательно)", "extraInfo", "textarea")}
 
         <button
           type="submit"
           className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
         >
-          Продолжить
+          Отправить заявку
         </button>
       </form>
 
       {showConfirmation && (
         <div className="mt-6 border border-red-400 bg-white p-6 rounded">
           <h2 className="mb-2 text-xl font-semibold text-red-600">
-            Пожалуйста, внимательно проверьте введённые вами данные перед отправкой заявки!
+            Пожалуйста, внимательно проверьте введённые Вами данные перед отправкой заявки!
           </h2>
-          <p className="mb-4 text-sm text-gray-700">
+          <p className="mb-4 text-sm text-red-600">
             Если Вы неверно указали контактную информацию, то мы не сможем с Вами связаться.
           </p>
+          <p><b>Время заявки:</b> {timestamp}</p>
           <p><b>Имя:</b> {formData.name}</p>
           <p><b>Контакт ({formData.contactMethod}):</b> {formData.contactValue}</p>
           <p><b>Взрослых:</b> {formData.adults}</p>
