@@ -30,6 +30,7 @@ export default function BookTour() {
     toddlers: 0,
   });
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const searchParams = useSearchParams();
@@ -68,7 +69,10 @@ export default function BookTour() {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "adults" || name === "children" || name === "toddlers" ? parseInt(value) : value,
+    }));
   };
 
   const validateContact = (): boolean => {
@@ -89,14 +93,21 @@ export default function BookTour() {
     return isValid;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateContact()) return;
-  
+    if (formData.adults < 1) {
+      alert("Необходимо указать хотя бы одного взрослого.");
+      return;
+    }
+    setShowConfirmation(true);
+  };
+
+  const confirmSubmit = async () => {
     const selectedTour = excursions.find(
       (ex) => String(ex.id) === formData.excursionId
     );
-  
+
     const now = new Date();
     const timestamp = now.toLocaleString("ru-RU", {
       timeZone: "Asia/Ho_Chi_Minh",
@@ -106,32 +117,32 @@ export default function BookTour() {
       hour: "2-digit",
       minute: "2-digit",
     });
-  
+
     const text = `
-  <b>📩 Новая заявка с сайта</b>
-  <b>Время заявки:</b> ${timestamp}
-  <b>Экскурсия:</b> ${selectedTour?.name || "—"}
-  <b>Имя:</b> ${formData.name}
-  <b>Способ связи ${formData.contactMethod}:</b> 
-  <b>Контакт для связи ${formData.contactValue}:</b>
-  <b>Взрослых:</b> ${formData.adults}
-  <b>Детей:</b> ${formData.children}
-  <b>Маленьких детей:</b> ${formData.toddlers}
+<b>📩 Новая заявка с сайта</b>
+<b>Время заявки:</b> ${timestamp}
+<b>Экскурсия:</b> ${selectedTour?.name || "—"}
+<b>Имя:</b> ${formData.name}
+<b>Способ связи ${formData.contactMethod}:</b> 
+<b>Контакт для связи ${formData.contactValue}:</b>
+<b>Взрослых:</b> ${formData.adults}
+<b>Детей:</b> ${formData.children}
+<b>Маленьких детей:</b> ${formData.toddlers}
     `.trim();
-  
-    fetch("/api/bot/send-request", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    })
-      .then(() => {
-        alert("Заявка успешно отправлена!");
-      })
-      .catch(() => {
-        alert("Ошибка при отправке заявки.");
+
+    try {
+      await fetch("/api/bot/send-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text }),
       });
+      alert("Заявка успешно отправлена!");
+      setShowConfirmation(false);
+    } catch {
+      alert("Ошибка при отправке заявки.");
+    }
   };
-  
+
   const renderFieldWithTooltip = (
     label: string,
     name: string,
@@ -231,9 +242,34 @@ export default function BookTour() {
           type="submit"
           className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
         >
-          Забронировать
+          Продолжить
         </button>
       </form>
+
+      {showConfirmation && (
+        <div className="mt-6 border-t pt-6">
+          <h2 className="mb-4 text-xl font-semibold">Подтвердите заявку</h2>
+          <p><b>Имя:</b> {formData.name}</p>
+          <p><b>Контакт ({formData.contactMethod}):</b> {formData.contactValue}</p>
+          <p><b>Взрослых:</b> {formData.adults}</p>
+          <p><b>Детей:</b> {formData.children}</p>
+          <p><b>Маленьких детей:</b> {formData.toddlers}</p>
+          <div className="mt-4 flex gap-4">
+            <button
+              onClick={confirmSubmit}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            >
+              Подтвердить и отправить
+            </button>
+            <button
+              onClick={() => setShowConfirmation(false)}
+              className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
+            >
+              Отменить
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
