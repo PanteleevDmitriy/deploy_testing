@@ -20,12 +20,13 @@ export default function BookTour() {
   });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [contactError, setContactError] = useState("");
 
   useEffect(() => {
     fetch("/api/excursions")
       .then((res) => res.json())
       .then((data: Excursion[]) => setExcursions(data))
-      .catch((err) => console.error(err));
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -34,11 +35,36 @@ export default function BookTour() {
   }, []);
 
   const formatTime = (date: Date) =>
-    date.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    date.toLocaleTimeString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
 
   const isWorkingHours = (date: Date) => {
     const hour = date.getHours();
     return hour >= 9 && hour < 21;
+  };
+
+  const validateContact = (): boolean => {
+    const value = formData.contactValue.trim();
+    let isValid = true;
+
+    switch (formData.contactMethod) {
+      case "email":
+        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        setContactError(isValid ? "" : "Введите корректный email.");
+        break;
+      case "Вьетнамский номер телефона":
+        isValid = /^(\+84|0)\d{9,10}$/.test(value);
+        setContactError(isValid ? "" : "Введите корректный вьетнамский номер.");
+        break;
+      default:
+        isValid = value.length > 1;
+        setContactError(isValid ? "" : "Поле не должно быть пустым.");
+    }
+
+    return isValid;
   };
 
   const handleChange = (
@@ -50,15 +76,16 @@ export default function BookTour() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateContact()) return;
     setShowConfirmation(true);
   };
 
   const confirmAndSend = () => {
     setShowConfirmation(false);
-  
+
     const excursionName =
       excursions.find((e) => e.id === Number(formData.excursionId))?.name || "—";
-  
+
     const now = new Date();
     const formattedTime = now.toLocaleString("ru-RU", {
       day: "2-digit",
@@ -68,7 +95,7 @@ export default function BookTour() {
       minute: "2-digit",
       second: "2-digit",
     });
-  
+
     const text = `
 📌 Новая заявка на экскурсию
 
@@ -81,20 +108,16 @@ export default function BookTour() {
 🧒 Дети: ${formData.children}
 👶 Малыши: ${formData.toddlers}
     `.trim();
-  
+
     fetch("/api/bot/send-request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text }),
     })
-      .then(() => {
-        alert("Заявка успешно отправлена!");
-      })
-      .catch(() => {
-        alert("Ошибка при отправке заявки.");
-      });
+      .then(() => alert("Заявка успешно отправлена!"))
+      .catch(() => alert("Ошибка при отправке заявки."));
   };
-  
+
   return (
     <div className="container mx-auto px-4 py-16 pt-24 max-w-xl">
       <h1 className="text-3xl font-bold mb-6">Забронировать тур</h1>
@@ -154,64 +177,44 @@ export default function BookTour() {
             placeholder="Введите контакт"
             className="w-full border px-3 py-2 rounded"
           />
+          {contactError && (
+            <p className="text-red-500 text-sm mt-1">{contactError}</p>
+          )}
         </div>
 
-        <div>
-          <label className="block mb-1 flex items-center gap-2">
-            Количество взрослых
-            <span
-              title={`Во Вьетнаме чаще всего зависит от роста: "взрослый" - более 120 см, исключение - экскурсия на остров DoiDep: "взрослый" - 12 лет и более. Полная стоимость за экскурсию`}
-              className="cursor-help text-blue-600"
-            >❔</span>
-          </label>
-          <input
-            type="number"
-            name="adults"
-            min={0}
-            required
-            value={formData.adults}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 flex items-center gap-2">
-            Количество детей
-            <span
-              title={`Во Вьетнаме чаще всего зависит от роста: "ребёнок" - от 90 до 120 см, исключение - экскурсия на остров DoiDep: "ребёнок" - от 3 до 12 лет. Стоимость экскурсии ~70% от указанной полной стоимости.`}
-              className="cursor-help text-blue-600"
-            >❔</span>
-          </label>
-          <input
-            type="number"
-            name="children"
-            min={0}
-            required
-            value={formData.children}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 flex items-center gap-2">
-            Количество маленьких детей
-            <span
-              title={`Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" - до 90 см, исключение - экскурсия на остров DoiDep: "маленький ребёнок" - до 3 лет. Посещение экскурсии бесплатное, обед не включён.`}
-              className="cursor-help text-blue-600"
-            >❔</span>
-          </label>
-          <input
-            type="number"
-            name="toddlers"
-            min={0}
-            required
-            value={formData.toddlers}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
+        {[
+          {
+            label: "Количество взрослых",
+            name: "adults",
+            tooltip: 'Во Вьетнаме чаще всего зависит от роста: "взрослый" — более 120 см, исключение — экскурсия на остров DoiDep: "взрослый" — 12 лет и более.',
+          },
+          {
+            label: "Количество детей",
+            name: "children",
+            tooltip: 'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90 до 120 см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3 до 12 лет.',
+          },
+          {
+            label: "Количество маленьких детей",
+            name: "toddlers",
+            tooltip: 'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90 см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3 лет.',
+          },
+        ].map(({ label, name, tooltip }) => (
+          <div key={name}>
+            <label className="block mb-1 flex items-center gap-2">
+              {label}
+              <span title={tooltip} className="cursor-help text-blue-600">❔</span>
+            </label>
+            <input
+              type="number"
+              name={name}
+              min={0}
+              required
+              value={formData[name as keyof typeof formData]}
+              onChange={handleChange}
+              className="w-full border px-3 py-2 rounded"
+            />
+          </div>
+        ))}
 
         <div className="text-sm text-gray-700 mt-4">
           <p>Рабочие часы: 09:00 - 21:00</p>
