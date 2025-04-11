@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 interface Excursion {
   id: number;
@@ -31,6 +32,9 @@ export default function BookTour() {
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
   const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
+  const searchParams = useSearchParams();
+  const preselectedId = searchParams.get("id");
+
   useEffect(() => {
     fetch("/api/excursions")
       .then((res) => res.json())
@@ -42,6 +46,12 @@ export default function BookTour() {
       })
       .catch(console.error);
   }, []);
+
+  useEffect(() => {
+    if (preselectedId) {
+      setFormData((prev) => ({ ...prev, excursionId: preselectedId }));
+    }
+  }, [preselectedId]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -82,21 +92,33 @@ export default function BookTour() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateContact()) return;
-
+  
     const selectedTour = excursions.find(
       (ex) => String(ex.id) === formData.excursionId
     );
-
+  
+    const now = new Date();
+    const timestamp = now.toLocaleString("ru-RU", {
+      timeZone: "Asia/Ho_Chi_Minh",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  
     const text = `
-<b>📩 Новая заявка с сайта</b>
-<b>Экскурсия:</b> ${selectedTour?.name || "—"}
-<b>Имя:</b> ${formData.name}
-<b>Контакт (${formData.contactMethod}):</b> ${formData.contactValue}
-<b>Взрослых:</b> ${formData.adults}
-<b>Детей:</b> ${formData.children}
-<b>Маленьких детей:</b> ${formData.toddlers}
+  <b>📩 Новая заявка с сайта</b>
+  <b>Время заявки:</b> ${timestamp}
+  <b>Экскурсия:</b> ${selectedTour?.name || "—"}
+  <b>Имя туриста:</b> ${formData.name}
+  <b>Способ связи (${formData.contactMethod}):</b> 
+  <b>Контакт для связи ${formData.contactValue}:</b>
+  <b>Взрослых:</b> ${formData.adults}
+  <b>Детей:</b> ${formData.children}
+  <b>Маленьких детей:</b> ${formData.toddlers}
     `.trim();
-
+  
     fetch("/api/bot/send-request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
