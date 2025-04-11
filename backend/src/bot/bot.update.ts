@@ -1,4 +1,4 @@
-import { Update, Start, Hears, InjectBot, Action, On } from 'nestjs-telegraf';
+import { Update, Start, Hears, InjectBot, Action, On, Ctx } from 'nestjs-telegraf';
 import { Telegraf, Context, Markup } from 'telegraf';
 import { BotService } from './bot.service';
 import { generateMessageCustomVND, generateMessageCustomUSD, generateMessageUSD, generateMessageVND, generateMessageWeather } from './utils/constants';
@@ -39,6 +39,12 @@ export class BotUpdate {
     const message = generateMessageUSD(course);
     await ctx.reply(message, inlineKeyboards.usd);
   }
+
+  @Hears('айди')
+  async sendChatId(@Ctx() ctx: Context) {
+  const chatId = ctx.chat?.id;
+  await ctx.reply(`ID чата: ${chatId}`);
+}
 
   @Action('convert_to_vnd')
   async onConvertToVND(ctx: Context) {
