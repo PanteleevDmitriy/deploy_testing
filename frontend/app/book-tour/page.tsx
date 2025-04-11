@@ -1,6 +1,5 @@
-import dynamic from "next/dynamic";
-
-const BookTour = dynamic(() => import("./BookTour"), { ssr: false });
+// app/book-tour/page.tsx
+import BookTour from "./BookTour";
 
 export default function Page() {
   return <BookTour />;
