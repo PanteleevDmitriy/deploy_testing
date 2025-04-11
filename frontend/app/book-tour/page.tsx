@@ -29,26 +29,23 @@ export default function BookTour() {
     toddlers: 0,
   });
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
-  const [contactError, setContactError] = useState("");
-  const tooltipRef = useRef<HTMLDivElement>(null);
+  const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   useEffect(() => {
     fetch("/api/excursions")
       .then((res) => res.json())
       .then((data: Excursion[]) =>
-        setExcursions(data.filter((e) => e.id >= 100))
+        setExcursions(data.filter((e) => String(e.id).startsWith("1")))
       )
       .catch(console.error);
   }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (
-        tooltipRef.current &&
-        !tooltipRef.current.contains(e.target as Node)
-      ) {
-        setTooltipOpen(null);
-      }
+      const clickedInsideTooltip = Object.values(tooltipRefs.current).some(
+        (ref) => ref && ref.contains(e.target as Node)
+      );
+      if (!clickedInsideTooltip) setTooltipOpen(null);
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -68,15 +65,12 @@ export default function BookTour() {
     switch (formData.contactMethod) {
       case "email":
         isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        setContactError(isValid ? "" : "Введите корректный email.");
         break;
       case "Вьетнамский номер телефона":
         isValid = /^(\+84|0)\d{9,10}$/.test(value);
-        setContactError(isValid ? "" : "Введите корректный вьетнамский номер.");
         break;
       default:
         isValid = value.length > 1;
-        setContactError(isValid ? "" : "Поле не должно быть пустым.");
     }
 
     return isValid;
@@ -85,7 +79,7 @@ export default function BookTour() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateContact()) return;
-    alert("Форма успешно проверена. Отправка заявки...");
+    alert("Форма успешно отправлена");
   };
 
   const renderFieldWithTooltip = (
@@ -96,46 +90,52 @@ export default function BookTour() {
     <div className="relative mb-4">
       <label className="block mb-1 flex items-center gap-2">
         {label}
-        <button
-          type="button"
-          onClick={() => setTooltipOpen((prev) => (prev === name ? null : name))}
-          className="text-blue-600 cursor-pointer text-lg"
+        <span
+          className="text-blue-500 cursor-pointer text-lg"
+          onClick={() =>
+            setTooltipOpen((prev) => (prev === name ? null : name))
+          }
         >
           ❔
-        </button>
+        </span>
       </label>
       <input
         type={type}
         name={name}
         min={type === "number" ? 0 : undefined}
         required
-        value={formData[name as keyof typeof formData]}
+        value={formData[name as keyof typeof formData] as string | number}
         onChange={handleChange}
         className="w-full border px-3 py-2 rounded"
       />
       {tooltipOpen === name && (
-        <div
-          ref={tooltipRef}
-          className="absolute top-full mt-1 left-0 bg-white text-sm border p-2 rounded shadow-md z-10 w-full"
-        >
-          {tooltips[name as keyof typeof tooltips]}
-        </div>
-      )}
+  <div
+    ref={(el) => {
+      if (el) {
+        tooltipRefs.current[name] = el;
+      }
+    }}
+    className="absolute top-full left-0 z-20 mt-1 w-full rounded border bg-white p-2 text-sm shadow-md"
+  >
+    {tooltips[name as keyof typeof tooltips]}
+  </div>
+)}
+
     </div>
   );
 
   return (
-    <div className="container mx-auto px-4 py-16 pt-24 max-w-xl">
-      <h1 className="text-3xl font-bold mb-6">Забронировать тур</h1>
+    <div className="container mx-auto max-w-xl px-4 py-24">
+      <h1 className="mb-6 text-3xl font-bold">Забронировать тур</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-1">Выбор экскурсии</label>
+          <label className="mb-1 block">Выбор экскурсии</label>
           <select
             name="excursionId"
             value={formData.excursionId}
             onChange={handleChange}
             required
-            className="w-full border px-3 py-2 rounded"
+            className="w-full rounded border px-3 py-2"
           >
             <option value="" disabled>
               Выберите экскурсию
@@ -151,12 +151,12 @@ export default function BookTour() {
         {renderFieldWithTooltip("Имя", "name", "text")}
 
         <div>
-          <label className="block mb-1">Как с Вами связаться</label>
+          <label className="mb-1 block">Как с Вами связаться</label>
           <select
             name="contactMethod"
             value={formData.contactMethod}
             onChange={handleChange}
-            className="w-full border px-3 py-2 rounded mb-2"
+            className="mb-2 w-full rounded border px-3 py-2"
           >
             <option>Telegram</option>
             <option>Whatsapp</option>
@@ -171,24 +171,17 @@ export default function BookTour() {
             value={formData.contactValue}
             onChange={handleChange}
             placeholder="Введите контакт"
-            className="w-full border px-3 py-2 rounded"
+            className="w-full rounded border px-3 py-2"
           />
-          {contactError && (
-            <p className="text-red-500 text-sm mt-1">{contactError}</p>
-          )}
         </div>
 
         {renderFieldWithTooltip("Количество взрослых", "adults", "number")}
         {renderFieldWithTooltip("Количество детей", "children", "number")}
-        {renderFieldWithTooltip(
-          "Количество маленьких детей",
-          "toddlers",
-          "number"
-        )}
+        {renderFieldWithTooltip("Количество маленьких детей", "toddlers", "number")}
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 mt-4"
+          className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
         >
           Забронировать
         </button>
