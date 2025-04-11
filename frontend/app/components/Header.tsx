@@ -64,9 +64,6 @@ export default function Header() {
               <Link href="/about" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Информация о нас
               </Link>
-              <Link href="/reviews" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
-                Отзывы туристов
-              </Link>
               <Link href="/faq" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Часто задаваемые вопросы
               </Link>

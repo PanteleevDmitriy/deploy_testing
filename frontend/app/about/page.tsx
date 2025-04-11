@@ -14,17 +14,6 @@ export default function About() {
       <p className="mb-8">
         С SEAWIND Travel вы получите незабываемые впечатления и яркие эмоции от путешествия по Вьетнаму!
       </p>
-
-      {/* YouTube Shorts вертикальное видео */}
-      <div className="w-full max-w-sm mx-auto aspect-[9/16]">
-        <iframe
-          src="https://www.youtube.com/embed/Thlpp5LOdKA"
-          title="YouTube Shorts"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          className="w-full h-full rounded-lg shadow-lg"
-        ></iframe>
-      </div>
     </div>
   )
 }

@@ -40,11 +40,6 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/reviews" className="text-black hover:text-teal-700 transition duration-300">
-                  Отзывы туристов
-                </Link>
-              </li>
-              <li>
                 <Link href="/faq" className="text-black hover:text-teal-700 transition duration-300">
                   Часто задаваемые вопросы
                 </Link>
@@ -78,5 +73,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  );
+  )
 }

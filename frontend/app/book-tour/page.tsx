@@ -1,110 +1,264 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
+
+interface Excursion {
+  id: number;
+  name: string;
+}
 
 export default function BookTour() {
+  const [excursions, setExcursions] = useState<Excursion[]>([]);
   const [formData, setFormData] = useState({
+    excursionId: "",
     name: "",
-    email: "",
-    phone: "",
-    tourDate: "",
-    numberOfPeople: 1,
+    contactMethod: "Telegram",
+    contactValue: "",
+    adults: 1,
+    children: 0,
+    toddlers: 0,
   });
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    fetch("/api/excursions")
+      .then((res) => res.json())
+      .then((data: Excursion[]) => setExcursions(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (date: Date) =>
+    date.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+
+  const isWorkingHours = (date: Date) => {
+    const hour = date.getHours();
+    return hour >= 9 && hour < 21;
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert("Тур успешно забронирован!");
+    setShowConfirmation(true);
   };
 
+  const confirmAndSend = () => {
+    setShowConfirmation(false);
+  
+    const excursionName =
+      excursions.find((e) => e.id === Number(formData.excursionId))?.name || "—";
+  
+    const now = new Date();
+    const formattedTime = now.toLocaleString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+  
+    const text = `
+  📌 Новая заявка на экскурсию
+  
+  🕒 Получена: ${formattedTime}
+  🌍 Экскурсия: ${excursionName}
+  👤 Имя: ${formData.name}
+  📞 Способ связи: ${formData.contactMethod}
+  🔗 Контакт: ${formData.contactValue}
+  👪 Взрослые: ${formData.adults}
+  🧒 Дети: ${formData.children}
+  👶 Малыши: ${formData.toddlers}
+    `.trim();
+  
+    fetch("/api/bot/send-request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    })
+      .then(() => {
+        alert("Заявка успешно отправлена!");
+      })
+      .catch(() => {
+        alert("Ошибка при отправке заявки.");
+      });
+  };
+  
   return (
-    <div className="container mx-auto px-4 py-16 pt-24">
-      <h1 className="text-3xl font-bold mb-8">Забронировать тур</h1>
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto">
-        <div className="mb-4">
-          <label htmlFor="name" className="block mb-2">Имя</label>
+    <div className="container mx-auto px-4 py-16 pt-24 max-w-xl">
+      <h1 className="text-3xl font-bold mb-6">Забронировать тур</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block mb-1">Выбор экскурсии</label>
+          <select
+            name="excursionId"
+            value={formData.excursionId}
+            onChange={handleChange}
+            required
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="" disabled>Выберите экскурсию</option>
+            {excursions.map((tour) => (
+              <option key={tour.id} value={tour.id}>{tour.name}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block mb-1 flex items-center gap-2">
+            Имя
+            <span title="Как к Вам обращаться?" className="cursor-help text-blue-600">❔</span>
+          </label>
           <input
             type="text"
-            id="name"
             name="name"
+            required
             value={formData.name}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
-            required
+            className="w-full border px-3 py-2 rounded"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block mb-2">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
+
+        <div>
+          <label className="block mb-1">Как с Вами связаться</label>
+          <select
+            name="contactMethod"
+            value={formData.contactMethod}
             onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="phone" className="block mb-2">Телефон</label>
+            className="w-full border px-3 py-2 rounded mb-2"
+          >
+            <option>Telegram</option>
+            <option>Whatsapp</option>
+            <option>Zalo</option>
+            <option>email</option>
+            <option>Вьетнамский номер телефона</option>
+          </select>
           <input
-            type="tel"
-            id="phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
+            type="text"
+            name="contactValue"
             required
+            value={formData.contactValue}
+            onChange={handleChange}
+            placeholder="Введите контакт"
+            className="w-full border px-3 py-2 rounded"
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="tourDate" className="block mb-2">Дата тура</label>
-          <input
-            type="date"
-            id="tourDate"
-            name="tourDate"
-            value={formData.tourDate}
-            onChange={handleChange}
-            className="w-full px-3 py-2 border rounded"
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="numberOfPeople" className="block mb-2">Количество человек</label>
+
+        <div>
+          <label className="block mb-1 flex items-center gap-2">
+            Количество взрослых
+            <span
+              title={`Во Вьетнаме чаще всего зависит от роста: "взрослый" - более 120 см, исключение - экскурсия на остров DoiDep: "взрослый" - 12 лет и более. Полная стоимость за экскурсию`}
+              className="cursor-help text-blue-600"
+            >❔</span>
+          </label>
           <input
             type="number"
-            id="numberOfPeople"
-            name="numberOfPeople"
-            value={formData.numberOfPeople}
-            onChange={handleChange}
-            min="1"
-            className="w-full px-3 py-2 border rounded"
+            name="adults"
+            min={0}
             required
+            value={formData.adults}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
           />
         </div>
-        <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+
+        <div>
+          <label className="block mb-1 flex items-center gap-2">
+            Количество детей
+            <span
+              title={`Во Вьетнаме чаще всего зависит от роста: "ребёнок" - от 90 до 120 см, исключение - экскурсия на остров DoiDep: "ребёнок" - от 3 до 12 лет. Стоимость экскурсии ~70% от указанной полной стоимости.`}
+              className="cursor-help text-blue-600"
+            >❔</span>
+          </label>
+          <input
+            type="number"
+            name="children"
+            min={0}
+            required
+            value={formData.children}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 flex items-center gap-2">
+            Количество маленьких детей
+            <span
+              title={`Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" - до 90 см, исключение - экскурсия на остров DoiDep: "маленький ребёнок" - до 3 лет. Посещение экскурсии бесплатное, обед не включён.`}
+              className="cursor-help text-blue-600"
+            >❔</span>
+          </label>
+          <input
+            type="number"
+            name="toddlers"
+            min={0}
+            required
+            value={formData.toddlers}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+
+        <div className="text-sm text-gray-700 mt-4">
+          <p>Рабочие часы: 09:00 - 21:00</p>
+          <p>Текущее время: {formatTime(currentTime)}</p>
+          <p className="font-medium">
+            {isWorkingHours(currentTime)
+              ? "Менеджер ответит Вам в ближайшее время"
+              : "Менеджер ответит Вам в рабочее время"}
+          </p>
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 mt-4"
+        >
           Забронировать
         </button>
       </form>
 
-      {/* Кнопка "Список экскурсий" */}
-      <div className="text-center mt-6">
-        <Link
-          href="/"
-          className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block"
-        >
-          Список экскурсий
-        </Link>
-      </div>
+      {showConfirmation && (
+        <div className="mt-6 p-4 border rounded bg-yellow-100">
+          <h2 className="text-lg font-bold mb-2">Проверьте введённую информацию</h2>
+          <p>Если Вы указали неверные контактные данные — мы не сможем с Вами связаться.</p>
+          <ul className="mt-2 list-disc list-inside text-sm">
+            <li>Экскурсия: {excursions.find((e) => e.id === Number(formData.excursionId))?.name || "—"}</li>
+            <li>Имя: {formData.name}</li>
+            <li>Связь: {formData.contactMethod} — {formData.contactValue}</li>
+            <li>Взрослых: {formData.adults}</li>
+            <li>Детей: {formData.children}</li>
+            <li>Маленьких детей: {formData.toddlers}</li>
+          </ul>
+          <div className="flex gap-4 mt-4">
+            <button
+              onClick={confirmAndSend}
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+            >
+              Отправить заявку
+            </button>
+            <button
+              onClick={() => setShowConfirmation(false)}
+              className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+            >
+              Редактировать
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -161,6 +161,21 @@ export class BotService implements OnModuleInit {
         console.log('⚠️ Мониторинг курса валют остановлен.');
     }
 
+    async sendExcursionRequestToGroup(text: string) {
+        const chatId = this.configService.get<string>('EXCURSION_CHAT_ID'); // Айди группы в .env
+        if (!chatId) {
+          console.error("❌ Не указан ID чата для заявок (EXCURSION_CHAT_ID)");
+          return;
+        }
+      
+        try {
+          await this.bot.telegram.sendMessage(chatId, text, { parse_mode: 'HTML' });
+          console.log('✅ Заявка успешно отправлена в Telegram-группу');
+        } catch (error) {
+          console.error('❌ Ошибка при отправке заявки:', error.message);
+        }
+      }
+
     async onModuleInit() {
         const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;
     
