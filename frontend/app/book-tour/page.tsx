@@ -10,11 +10,11 @@ interface Excursion {
 const tooltips = {
   name: "Как к Вам обращаться?",
   adults:
-    'Во Вьетнаме чаще всего зависит от роста: "взрослый" — более 120 см, исключение — экскурсия на остров DoiDep: "взрослый" — 12 лет и более.',
+    'Во Вьетнаме чаще всего зависит от роста: "взрослый" — более 120см, исключение — экскурсия на остров DoiDep: "взрослый" — 12 лет и более.',
   children:
-    'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90 до 120 см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3 до 12 лет.',
+    'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90см до 120см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3-х до 12-ти лет.',
   toddlers:
-    'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90 см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3 лет.',
+    'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3-х лет.',
 };
 
 export default function BookTour() {
@@ -34,9 +34,12 @@ export default function BookTour() {
   useEffect(() => {
     fetch("/api/excursions")
       .then((res) => res.json())
-      .then((data: Excursion[]) =>
-        setExcursions(data.filter((e) => String(e.id).startsWith("1")))
-      )
+      .then((data: Excursion[]) => {
+        const filtered = data
+          .filter((e) => String(e.id).startsWith("1"))
+          .sort((a, b) => a.id - b.id);
+        setExcursions(filtered);
+      })
       .catch(console.error);
   }, []);
 
@@ -76,10 +79,35 @@ export default function BookTour() {
     return isValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateContact()) return;
-    alert("Форма успешно отправлена");
+
+    const selectedTour = excursions.find(
+      (ex) => String(ex.id) === formData.excursionId
+    );
+
+    const text = `
+<b>📩 Новая заявка с сайта</b>
+<b>Экскурсия:</b> ${selectedTour?.name || "—"}
+<b>Имя:</b> ${formData.name}
+<b>Контакт (${formData.contactMethod}):</b> ${formData.contactValue}
+<b>Взрослых:</b> ${formData.adults}
+<b>Детей:</b> ${formData.children}
+<b>Маленьких детей:</b> ${formData.toddlers}
+    `.trim();
+
+    fetch("/api/bot/send-request", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    })
+      .then(() => {
+        alert("Заявка успешно отправлена!");
+      })
+      .catch(() => {
+        alert("Ошибка при отправке заявки.");
+      });
   };
 
   const renderFieldWithTooltip = (
@@ -90,14 +118,15 @@ export default function BookTour() {
     <div className="relative mb-4">
       <label className="block mb-1 flex items-center gap-2">
         {label}
-        <span
-          className="text-blue-500 cursor-pointer text-lg"
+        <button
+          type="button"
+          className="text-blue-500 cursor-pointer text-xl leading-none"
           onClick={() =>
             setTooltipOpen((prev) => (prev === name ? null : name))
           }
         >
-          ❔
-        </span>
+          ℹ️
+        </button>
       </label>
       <input
         type={type}
@@ -109,18 +138,15 @@ export default function BookTour() {
         className="w-full border px-3 py-2 rounded"
       />
       {tooltipOpen === name && (
-  <div
-    ref={(el) => {
-      if (el) {
-        tooltipRefs.current[name] = el;
-      }
-    }}
-    className="absolute top-full left-0 z-20 mt-1 w-full rounded border bg-white p-2 text-sm shadow-md"
-  >
-    {tooltips[name as keyof typeof tooltips]}
-  </div>
-)}
-
+        <div
+          ref={(el) => {
+            if (el) tooltipRefs.current[name] = el;
+          }}
+          className="absolute top-full left-0 z-20 mt-1 w-full rounded border bg-white p-2 text-sm shadow-md"
+        >
+          {tooltips[name as keyof typeof tooltips]}
+        </div>
+      )}
     </div>
   );
 
