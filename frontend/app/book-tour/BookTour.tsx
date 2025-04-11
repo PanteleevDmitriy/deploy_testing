@@ -16,6 +16,7 @@ const tooltips = {
     'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90см до 120см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3-х до 12-ти лет.',
   toddlers:
     'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3-х лет.',
+  additionalInfo: "Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями.",
 };
 
 export default function BookTour() {
@@ -28,6 +29,7 @@ export default function BookTour() {
     adults: 1,
     children: 0,
     toddlers: 0,
+    additionalInfo: "",
   });
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -66,12 +68,15 @@ export default function BookTour() {
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "adults" || name === "children" || name === "toddlers" ? parseInt(value) : value,
+      [name]:
+        name === "adults" || name === "children" || name === "toddlers"
+          ? parseInt(value)
+          : value,
     }));
   };
 
@@ -97,7 +102,7 @@ export default function BookTour() {
     e.preventDefault();
     if (!validateContact()) return;
     if (formData.adults < 1) {
-      alert("Необходимо указать хотя бы одного взрослого.");
+      setTooltipOpen("adults");
       return;
     }
     setShowConfirmation(true);
@@ -123,11 +128,12 @@ export default function BookTour() {
 <b>Время заявки:</b> ${timestamp}
 <b>Экскурсия:</b> ${selectedTour?.name || "—"}
 <b>Имя:</b> ${formData.name}
-<b>Способ связи ${formData.contactMethod}:</b> 
-<b>Контакт для связи ${formData.contactValue}:</b>
+<b>Способ связи ${formData.contactMethod}</b> 
+<b>Контакт для связи ${formData.contactValue}</b>
 <b>Взрослых:</b> ${formData.adults}
 <b>Детей:</b> ${formData.children}
 <b>Маленьких детей:</b> ${formData.toddlers}
+<b>Доп. информация:</b> ${formData.additionalInfo || "—"}
     `.trim();
 
     try {
@@ -165,7 +171,8 @@ export default function BookTour() {
         type={type}
         name={name}
         min={type === "number" ? 0 : undefined}
-        required
+        required={name !== "additionalInfo"}
+        maxLength={name === "additionalInfo" ? 200 : undefined}
         value={formData[name as keyof typeof formData] as string | number}
         onChange={handleChange}
         className="w-full border px-3 py-2 rounded"
@@ -237,6 +244,7 @@ export default function BookTour() {
         {renderFieldWithTooltip("Количество взрослых", "adults", "number")}
         {renderFieldWithTooltip("Количество детей", "children", "number")}
         {renderFieldWithTooltip("Количество маленьких детей", "toddlers", "number")}
+        {renderFieldWithTooltip("Дополнительная информация", "additionalInfo", "text")}
 
         <button
           type="submit"
@@ -247,13 +255,14 @@ export default function BookTour() {
       </form>
 
       {showConfirmation && (
-        <div className="mt-6 border-t pt-6">
+        <div className="mt-6 border-t pt-6 bg-white border-red-500 border-2 p-4 rounded">
           <h2 className="mb-4 text-xl font-semibold">Подтвердите заявку</h2>
           <p><b>Имя:</b> {formData.name}</p>
           <p><b>Контакт ({formData.contactMethod}):</b> {formData.contactValue}</p>
           <p><b>Взрослых:</b> {formData.adults}</p>
           <p><b>Детей:</b> {formData.children}</p>
           <p><b>Маленьких детей:</b> {formData.toddlers}</p>
+          {formData.additionalInfo && <p><b>Доп. информация:</b> {formData.additionalInfo}</p>}
           <div className="mt-4 flex gap-4">
             <button
               onClick={confirmSubmit}
