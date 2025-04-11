@@ -16,7 +16,6 @@ const tooltips = {
     'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90см до 120см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3-х до 12-ти лет.',
   toddlers:
     'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3-х лет.',
-  additionalInfo: "Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями.",
 };
 
 export default function BookTour() {
@@ -29,10 +28,12 @@ export default function BookTour() {
     adults: 1,
     children: 0,
     toddlers: 0,
-    additionalInfo: "",
+    extraInfo: "", // 🔧 новое поле
   });
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({}); // 🔧 для ошибок
+
   const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   const searchParams = useSearchParams();
@@ -73,11 +74,11 @@ export default function BookTour() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]:
-        name === "adults" || name === "children" || name === "toddlers"
-          ? parseInt(value)
-          : value,
+      [name]: ["adults", "children", "toddlers"].includes(name)
+        ? parseInt(value)
+        : value,
     }));
+    setErrors((prev) => ({ ...prev, [name]: "" })); // 🔧 сброс ошибки
   };
 
   const validateContact = (): boolean => {
@@ -100,11 +101,23 @@ export default function BookTour() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateContact()) return;
-    if (formData.adults < 1) {
-      setTooltipOpen("adults");
-      return;
+    const newErrors: typeof errors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Пожалуйста, укажите имя.";
     }
+
+    if (formData.adults < 1) {
+      newErrors.adults = "Хотя бы один взрослый должен быть в группе! Нельзя бронировать экскурсию только для детей."; // 🔧
+    }
+
+    if (!validateContact()) {
+      newErrors.contactValue = "Неверный формат контакта.";
+    }
+
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
     setShowConfirmation(true);
   };
 
@@ -128,12 +141,12 @@ export default function BookTour() {
 <b>Время заявки:</b> ${timestamp}
 <b>Экскурсия:</b> ${selectedTour?.name || "—"}
 <b>Имя:</b> ${formData.name}
-<b>Способ связи ${formData.contactMethod}</b> 
-<b>Контакт для связи ${formData.contactValue}</b>
+<b>Способ связи: ${formData.contactMethod}</b> 
+<b>Контакт для связи: ${formData.contactValue}</b>
 <b>Взрослых:</b> ${formData.adults}
 <b>Детей:</b> ${formData.children}
 <b>Маленьких детей:</b> ${formData.toddlers}
-<b>Доп. информация:</b> ${formData.additionalInfo || "—"}
+<b>Доп. информация:</b> ${formData.extraInfo || "—"}
     `.trim();
 
     try {
@@ -143,6 +156,18 @@ export default function BookTour() {
         body: JSON.stringify({ text }),
       });
       alert("Заявка успешно отправлена!");
+
+      // 🔧 сброс формы:
+      setFormData({
+        excursionId: "",
+        name: "",
+        contactMethod: "Telegram",
+        contactValue: "",
+        adults: 1,
+        children: 0,
+        toddlers: 0,
+        extraInfo: "",
+      });
       setShowConfirmation(false);
     } catch {
       alert("Ошибка при отправке заявки.");
@@ -171,8 +196,7 @@ export default function BookTour() {
         type={type}
         name={name}
         min={type === "number" ? 0 : undefined}
-        required={name !== "additionalInfo"}
-        maxLength={name === "additionalInfo" ? 200 : undefined}
+        required
         value={formData[name as keyof typeof formData] as string | number}
         onChange={handleChange}
         className="w-full border px-3 py-2 rounded"
@@ -186,6 +210,9 @@ export default function BookTour() {
         >
           {tooltips[name as keyof typeof tooltips]}
         </div>
+      )}
+      {errors[name] && (
+        <p className="mt-1 text-sm text-red-600">{errors[name]}</p>
       )}
     </div>
   );
@@ -239,12 +266,26 @@ export default function BookTour() {
             placeholder="Введите контакт"
             className="w-full rounded border px-3 py-2"
           />
+          {errors.contactValue && (
+            <p className="mt-1 text-sm text-red-600">{errors.contactValue}</p>
+          )}
         </div>
 
         {renderFieldWithTooltip("Количество взрослых", "adults", "number")}
         {renderFieldWithTooltip("Количество детей", "children", "number")}
         {renderFieldWithTooltip("Количество маленьких детей", "toddlers", "number")}
-        {renderFieldWithTooltip("Дополнительная информация", "additionalInfo", "text")}
+
+        <div>
+          <label className="block mb-1">Дополнительная информация (необязательно)</label>
+          <textarea
+            name="extraInfo"
+            maxLength={200}
+            value={formData.extraInfo}
+            onChange={handleChange}
+            placeholder="Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями"
+            className="w-full rounded border px-3 py-2"
+          />
+        </div>
 
         <button
           type="submit"
@@ -255,14 +296,21 @@ export default function BookTour() {
       </form>
 
       {showConfirmation && (
-        <div className="mt-6 border-t pt-6 bg-white border-red-500 border-2 p-4 rounded">
-          <h2 className="mb-4 text-xl font-semibold">Подтвердите заявку</h2>
+        <div className="mt-6 border border-red-400 bg-white p-6 rounded">
+          <h2 className="mb-2 text-xl font-semibold text-red-600">
+            Пожалуйста, внимательно проверьте введённые вами данные перед отправкой заявки!
+          </h2>
+          <p className="mb-4 text-sm text-gray-700">
+            Если Вы неверно указали контактную информацию, то мы не сможем с Вами связаться.
+          </p>
           <p><b>Имя:</b> {formData.name}</p>
           <p><b>Контакт ({formData.contactMethod}):</b> {formData.contactValue}</p>
           <p><b>Взрослых:</b> {formData.adults}</p>
           <p><b>Детей:</b> {formData.children}</p>
           <p><b>Маленьких детей:</b> {formData.toddlers}</p>
-          {formData.additionalInfo && <p><b>Доп. информация:</b> {formData.additionalInfo}</p>}
+          {formData.extraInfo && (
+            <p><b>Доп. информация:</b> {formData.extraInfo}</p>
+          )}
           <div className="mt-4 flex gap-4">
             <button
               onClick={confirmSubmit}
