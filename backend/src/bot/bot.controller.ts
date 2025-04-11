@@ -2,19 +2,24 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
-import { Update } from 'telegraf/typings/core/types/typegram'; // ✅ Добавляем импорт типов
+import { Update } from 'telegraf/typings/core/types/typegram';
 import { BotService } from './bot.service';
 
 @Controller('bot')
 export class BotController {
-  constructor(@InjectBot() private readonly bot: Telegraf<any>) {}
-  private readonly botService: BotService
+  constructor(
+    @InjectBot() private readonly bot: Telegraf<any>,
+    private readonly botService: BotService,
+  ) {}
 
   @Post('/webhook')
-  async onUpdate(@Req() request: FastifyRequest<{ Body: Update }>, @Res() reply: FastifyReply) {
+  async onUpdate(
+    @Req() request: FastifyRequest<{ Body: Update }>,
+    @Res() reply: FastifyReply,
+  ) {
     try {
-      await this.bot.handleUpdate(request.body); // ✅ request.body теперь типа Update
-      return reply.status(200).send(); // ✅ 200 OK
+      await this.bot.handleUpdate(request.body);
+      return reply.status(200).send();
     } catch (error) {
       console.error('Ошибка в onUpdate:', error);
       return reply.status(500).send({ error: 'Internal Server Error' });
@@ -23,13 +28,13 @@ export class BotController {
 
   @Get('/health')
   async healthCheck(@Res() reply: FastifyReply) {
-    return reply.status(200).send({ status: 'ok' }); // ✅ Хэлсчек работает
+    return reply.status(200).send({ status: 'ok' });
   }
 
   @Post('/send-request')
   async sendExcursionRequest(
     @Body() body: { text: string },
-    @Res() reply: FastifyReply
+    @Res() reply: FastifyReply,
   ) {
     try {
       if (!body.text) {
