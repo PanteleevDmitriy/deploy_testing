@@ -16,7 +16,8 @@ const tooltips = {
     'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90см до 120см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3-х до 12-ти лет.',
   toddlers:
     'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3-х лет.',
-  extraInfo: "Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями",
+  extraInfo:
+    "Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями",
 };
 
 export default function BookTour() {
@@ -36,7 +37,6 @@ export default function BookTour() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const searchParams = useSearchParams();
-  const preselectedId = searchParams.get("id");
   const [timestamp, setTimestamp] = useState("");
 
   useEffect(() => {
@@ -52,10 +52,11 @@ export default function BookTour() {
   }, []);
 
   useEffect(() => {
-    if (preselectedId) {
-      setFormData((prev) => ({ ...prev, excursionId: preselectedId }));
+    const id = searchParams.get("id");
+    if (id) {
+      setFormData((prev) => ({ ...prev, excursionId: id }));
     }
-  }, [preselectedId]);
+  }, [searchParams]);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -69,7 +70,9 @@ export default function BookTour() {
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -83,20 +86,14 @@ export default function BookTour() {
 
   const validateContact = (): boolean => {
     const value = formData.contactValue.trim();
-    let isValid = true;
-
     switch (formData.contactMethod) {
       case "email":
-        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-        break;
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       case "Вьетнамский номер телефона":
-        isValid = /^(\+84|0)\d{9,10}$/.test(value);
-        break;
+        return /^(\+84|0)\d{9,10}$/.test(value);
       default:
-        isValid = value.length > 1;
+        return value.length > 1;
     }
-
-    return isValid;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -106,11 +103,9 @@ export default function BookTour() {
     if (!formData.name.trim()) {
       newErrors.name = "Пожалуйста, укажите имя.";
     }
-
     if (formData.adults < 1) {
       newErrors.adults = "Хотя бы один взрослый должен быть в группе!";
     }
-
     if (!validateContact()) {
       newErrors.contactValue = "Неверный формат контакта.";
     }
@@ -136,14 +131,13 @@ export default function BookTour() {
     const selectedTour = excursions.find(
       (ex) => String(ex.id) === formData.excursionId
     );
-
     const text = `
 <b>📩 Новая заявка с сайта</b>
 <b>Время заявки:</b> ${timestamp}
 <b>Экскурсия:</b> ${selectedTour?.name || "—"}
 <b>Имя:</b> ${formData.name}
-<b>Способ связи: ${formData.contactMethod}</b> 
-<b>Контакт для связи: ${formData.contactValue}</b>
+<b>Способ связи: ${formData.contactMethod}</b>
+<b>Контакт:</b> ${formData.contactValue}
 <b>Взрослых:</b> ${formData.adults}
 <b>Детей:</b> ${formData.children}
 <b>Маленьких детей:</b> ${formData.toddlers}
@@ -283,7 +277,13 @@ export default function BookTour() {
         {renderFieldWithTooltip("Количество детей", "children", "number")}
         {renderFieldWithTooltip("Количество маленьких детей", "toddlers", "number")}
         {renderFieldWithTooltip("Дополнительная информация (необязательно)", "extraInfo", "textarea")}
-
+        
+        <div className="border border-blue-300 bg-blue-50 p-4 rounded text-sm text-blue-900">
+            <p><b>Рабочее время с 9:00 до 21:00</b></p>
+            <p>Текущее время: {new Date().toLocaleTimeString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh", hour: '2-digit', minute: '2-digit' })}</p>
+            <p>Если Вы оставите заявку вне рабочего времени, менеджер ответит в начале рабочего дня.</p>
+        </div>
+        
         <button
           type="submit"
           className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
@@ -295,7 +295,7 @@ export default function BookTour() {
       {showConfirmation && (
         <div className="mt-6 border border-red-400 bg-white p-6 rounded">
           <h2 className="mb-2 text-xl font-semibold text-red-600">
-            Пожалуйста, внимательно проверьте введённые Вами данные перед отправкой заявки!
+            Пожалуйста, внимательно проверьте введённые вами данные перед отправкой заявки!
           </h2>
           <p className="mb-4 text-sm text-red-600">
             Если Вы неверно указали контактную информацию, то мы не сможем с Вами связаться.
