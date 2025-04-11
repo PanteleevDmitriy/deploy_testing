@@ -1,10 +1,42 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface Excursion {
   id: number;
   name: string;
+}
+
+function TooltipIcon({ text }: { text: string }) {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setVisible(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative flex items-center">
+      <span
+        onClick={() => setVisible(!visible)}
+        className="ml-2 cursor-pointer text-blue-600 select-none"
+      >
+        ❔
+      </span>
+      {visible && (
+        <div className="absolute z-10 top-6 left-1/2 -translate-x-1/2 w-72 bg-gray-800 text-white text-sm rounded px-3 py-2 shadow">
+          {text}
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default function BookTour() {
@@ -133,16 +165,20 @@ export default function BookTour() {
             className="w-full border px-3 py-2 rounded"
           >
             <option value="" disabled>Выберите экскурсию</option>
-            {excursions.map((tour) => (
-              <option key={tour.id} value={tour.id}>{tour.name}</option>
-            ))}
+            {excursions
+              .filter((tour) => tour.id > 0)
+              .map((tour) => (
+                <option key={tour.id} value={tour.id}>
+                  {tour.name}
+                </option>
+              ))}
           </select>
         </div>
 
         <div>
-          <label className="block mb-1 flex items-center gap-2">
+          <label className="block mb-1 flex items-center">
             Имя
-            <span title="Как к Вам обращаться?" className="cursor-help text-blue-600">❔</span>
+            <TooltipIcon text="Как к Вам обращаться?" />
           </label>
           <input
             type="text"
@@ -186,23 +222,26 @@ export default function BookTour() {
           {
             label: "Количество взрослых",
             name: "adults",
-            tooltip: 'Во Вьетнаме чаще всего зависит от роста: "взрослый" — более 120 см, исключение — экскурсия на остров DoiDep: "взрослый" — 12 лет и более.',
+            tooltip:
+              'Во Вьетнаме чаще всего зависит от роста: "взрослый" — более 120 см, исключение — экскурсия на остров DoiDep: "взрослый" — 12 лет и более.',
           },
           {
             label: "Количество детей",
             name: "children",
-            tooltip: 'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90 до 120 см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3 до 12 лет.',
+            tooltip:
+              'Во Вьетнаме чаще всего зависит от роста: "ребёнок" — от 90 до 120 см, исключение — экскурсия на остров DoiDep: "ребёнок" — от 3 до 12 лет.',
           },
           {
             label: "Количество маленьких детей",
             name: "toddlers",
-            tooltip: 'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90 см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3 лет.',
+            tooltip:
+              'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90 см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3 лет.',
           },
         ].map(({ label, name, tooltip }) => (
           <div key={name}>
-            <label className="block mb-1 flex items-center gap-2">
+            <label className="block mb-1 flex items-center">
               {label}
-              <span title={tooltip} className="cursor-help text-blue-600">❔</span>
+              <TooltipIcon text={tooltip} />
             </label>
             <input
               type="number"
@@ -239,9 +278,14 @@ export default function BookTour() {
           <h2 className="text-lg font-bold mb-2">Проверьте введённую информацию</h2>
           <p>Если Вы указали неверные контактные данные — мы не сможем с Вами связаться.</p>
           <ul className="mt-2 list-disc list-inside text-sm">
-            <li>Экскурсия: {excursions.find((e) => e.id === Number(formData.excursionId))?.name || "—"}</li>
+            <li>
+              Экскурсия:{" "}
+              {excursions.find((e) => e.id === Number(formData.excursionId))?.name || "—"}
+            </li>
             <li>Имя: {formData.name}</li>
-            <li>Связь: {formData.contactMethod} — {formData.contactValue}</li>
+            <li>
+              Связь: {formData.contactMethod} — {formData.contactValue}
+            </li>
             <li>Взрослых: {formData.adults}</li>
             <li>Детей: {formData.children}</li>
             <li>Маленьких детей: {formData.toddlers}</li>
