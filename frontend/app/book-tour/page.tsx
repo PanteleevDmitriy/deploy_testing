@@ -70,16 +70,16 @@ export default function BookTour() {
     });
   
     const text = `
-  📌 Новая заявка на экскурсию
-  
-  🕒 Получена: ${formattedTime}
-  🌍 Экскурсия: ${excursionName}
-  👤 Имя: ${formData.name}
-  📞 Способ связи: ${formData.contactMethod}
-  🔗 Контакт: ${formData.contactValue}
-  👪 Взрослые: ${formData.adults}
-  🧒 Дети: ${formData.children}
-  👶 Малыши: ${formData.toddlers}
+📌 Новая заявка на экскурсию
+
+🕒 Получена: ${formattedTime}
+🌍 Экскурсия: ${excursionName}
+👤 Имя: ${formData.name}
+📞 Способ связи: ${formData.contactMethod}
+🔗 Контакт: ${formData.contactValue}
+👪 Взрослые: ${formData.adults}
+🧒 Дети: ${formData.children}
+👶 Малыши: ${formData.toddlers}
     `.trim();
   
     fetch("/api/bot/send-request", {
