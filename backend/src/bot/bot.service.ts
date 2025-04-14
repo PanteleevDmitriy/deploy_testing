@@ -178,8 +178,6 @@ export class BotService implements OnModuleInit {
 
       async verifyRecaptcha(token: string): Promise<boolean> {
         try {
-            console.log("Received captcha token: ", token); // Логирование токена капчи
-
             const secretKey = this.configService.get<string>('RECAPTCHA_SECRET_KEY');
             if (!secretKey) {
                 console.error("❌ Не указан секретный ключ для reCAPTCHA");
@@ -207,7 +205,6 @@ export class BotService implements OnModuleInit {
         }
     }
     
-
     async onModuleInit() {
         const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;
     

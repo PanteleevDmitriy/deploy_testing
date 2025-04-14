@@ -39,7 +39,7 @@ export default function BookTour() {
   const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const searchParams = useSearchParams();
   const [timestamp, setTimestamp] = useState("");
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [recaptchaToken, setCaptchaToken] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/excursions")
@@ -111,7 +111,7 @@ export default function BookTour() {
     if (!validateContact()) {
       newErrors.contactValue = "Неверный формат контакта.";
     }
-    if (!captchaToken) {
+    if (!recaptchaToken) {
       newErrors.captcha = "Пожалуйста, подтвердите, что вы не робот.";
     }
 
@@ -157,7 +157,7 @@ export default function BookTour() {
           text,
           excursionId: formData.excursionId,
           timestamp,
-          captchaToken, // отправляем капчу на бэкенд
+          recaptchaToken, // отправляем капчу на бэкенд
         }),
       });
       alert("Заявка успешно отправлена!");
