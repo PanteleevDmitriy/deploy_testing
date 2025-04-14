@@ -176,25 +176,35 @@ export class BotService implements OnModuleInit {
         }
       }
 
-    async verifyRecaptcha(token: string): Promise<boolean> {
+      async verifyRecaptcha(token: string): Promise<boolean> {
         try {
             const secretKey = this.configService.get<string>('RECAPTCHA_SECRET_KEY');
             if (!secretKey) {
                 console.error("❌ Не указан секретный ключ для reCAPTCHA");
                 return false;
             }
+    
             const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify`, null, {
                 params: {
                     secret: secretKey,
-                    response: token
-                }
+                    response: token,
+                },
             });
+    
+            console.log('reCAPTCHA response:', response.data); // Логируем ответ от Google
+
+            if (!response.data.success) {
+                console.error(`❌ Ошибка reCAPTCHA: ${response.data['error-codes']}`);
+                return false;
+            }
+    
             return response.data.success;
         } catch (error) {
-            console.error("❌ Ошибка при верификации reCAPTCHA:", error.message);
+            console.error("❌ Ошибка при верификации reCAPTCHA:", error.response?.data || error.message);
             return false;
         }
     }
+    
 
     async onModuleInit() {
         const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;

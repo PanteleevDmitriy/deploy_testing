@@ -292,10 +292,16 @@ export default function BookTour() {
         <div className="my-4">
           <ReCAPTCHA
             sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-            onChange={(token: string | null) => {              
-              setCaptchaToken(token);
-              setErrors((prev) => ({ ...prev, captcha: "" }));
+            onChange={(token: string | null) => {
+              if (token) {
+                setCaptchaToken(token);
+                setErrors((prev) => ({ ...prev, captcha: "" }));
+              } else {
+                setCaptchaToken(null);
+                setErrors((prev) => ({ ...prev, captcha: "Пожалуйста, подтвердите капчу." }));
+              }
             }}
+            
             onExpired={() => setCaptchaToken(null)}
           />
 
