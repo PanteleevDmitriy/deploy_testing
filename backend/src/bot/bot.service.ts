@@ -178,6 +178,8 @@ export class BotService implements OnModuleInit {
 
       async verifyRecaptcha(token: string): Promise<boolean> {
         try {
+            console.log("Received captcha token: ", token); // Логирование токена капчи
+
             const secretKey = this.configService.get<string>('RECAPTCHA_SECRET_KEY');
             if (!secretKey) {
                 console.error("❌ Не указан секретный ключ для reCAPTCHA");
@@ -191,7 +193,7 @@ export class BotService implements OnModuleInit {
                 },
             });
     
-            console.log('reCAPTCHA response:', response.data); // Логируем ответ от Google
+            console.log("reCAPTCHA verification response:", response.data); // Логирование ответа от Google
 
             if (!response.data.success) {
                 console.error(`❌ Ошибка reCAPTCHA: ${response.data['error-codes']}`);
