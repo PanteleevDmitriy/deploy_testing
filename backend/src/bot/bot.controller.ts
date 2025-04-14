@@ -4,12 +4,14 @@ import { Telegraf } from 'telegraf';
 import { InjectBot } from 'nestjs-telegraf';
 import { Update } from 'telegraf/typings/core/types/typegram';
 import { BotService } from './bot.service';
+import { CaptchaService } from '../captcha/captcha.service';  // Импортируем сервис капчи
 
 @Controller('bot')
 export class BotController {
   constructor(
     @InjectBot() private readonly bot: Telegraf<any>,
     private readonly botService: BotService,
+    private readonly captchaService: CaptchaService,  // Инжектируем сервис капчи
   ) {}
 
   @Post('/webhook')
@@ -41,10 +43,8 @@ export class BotController {
         return reply.status(400).send({ error: 'Текст заявки обязателен' });
       }
 
-      const recaptchaVerified = await this.botService.verifyRecaptcha(body.recaptchaToken);
-      if (!recaptchaVerified) {
-        return reply.status(400).send({ error: 'Не пройдена капча' });
-      }
+      // Используем сервис капчи для валидации
+      await this.captchaService.verifyToken(body.recaptchaToken);
 
       await this.botService.sendExcursionRequestToGroup(body.text);
       return reply.status(200).send({ status: 'ok' });

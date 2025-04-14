@@ -9,6 +9,7 @@ import LocalSession = require('telegraf-session-local');
 import { SequelizeModule } from '@nestjs/sequelize';
 import { MoneyCourse, Weather } from './bot.model';
 import { HttpModule } from '@nestjs/axios';
+import { CaptchaModule } from '../captcha/captcha.module';  // Импортируем модуль капчи
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { HttpModule } from '@nestjs/axios';
       inject: [ConfigService],
     }),
     HttpModule,  // Подключаем HttpModule для работы с axios
+    CaptchaModule,  // Подключаем модуль капчи
   ],
   controllers: [BotController],
   providers: [BotService, BotUpdate],
