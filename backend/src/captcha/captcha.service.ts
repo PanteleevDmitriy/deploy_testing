@@ -6,6 +6,8 @@ export class CaptchaService {
   private readonly secretKey = process.env.RECAPTCHA_SECRET_KEY;
 
   async verifyToken(token: string): Promise<void> {
+    console.log('Received captcha token in verifyToken():', token); // ← ВОТ ЭТО
+    
     const url = 'https://www.google.com/recaptcha/api/siteverify';
 
     const response = await axios.post(
@@ -24,5 +26,7 @@ export class CaptchaService {
     if (!data.success) {
       throw new UnauthorizedException('Не удалось подтвердить капчу');
     }
+
+    console.log('✅ Captcha verified successfully');
   }
 }
