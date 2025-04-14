@@ -8,6 +8,7 @@ import { BotController } from './bot.controller';
 import LocalSession = require('telegraf-session-local');
 import { SequelizeModule } from '@nestjs/sequelize';
 import { MoneyCourse, Weather } from './bot.model';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MoneyCourse, Weather } from './bot.model';
       }),
       inject: [ConfigService],
     }),
+    HttpModule,  // Подключаем HttpModule для работы с axios
   ],
   controllers: [BotController],
   providers: [BotService, BotUpdate],

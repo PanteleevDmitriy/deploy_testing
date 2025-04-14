@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { BotModule } from './bot/bot.module';
 import { Excursion } from './excursions/excursions.model';
 import { ExcursionsModule } from './excursions/excursions.module';
+import { MailModule } from './mail/mail.module';
+import { CaptchaModule } from './captcha/captcha.module';
 
 @Module({
   imports: [
@@ -30,7 +32,9 @@ import { ExcursionsModule } from './excursions/excursions.module';
     forwardRef( () => AuthModule),
     UsersModule,
     BotModule,
-    ExcursionsModule
+    ExcursionsModule,
+    MailModule,
+    CaptchaModule
   ],
   controllers: [AppController, TestController],
   providers: [AppService],

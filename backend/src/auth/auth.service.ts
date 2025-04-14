@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable, Res, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs'
@@ -33,7 +33,7 @@ export class AuthService {
     }
 
     private async generateToken(user: User) {
-        const payload = {email: user.email, id: user.id, password: user.password, status: user.status};
+        const payload = {email: user.email, id: user.id, status: user.status};
         return {
             token: this.jwtService.sign(payload)
         };

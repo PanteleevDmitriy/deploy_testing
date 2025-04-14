@@ -33,12 +33,17 @@ export class BotController {
 
   @Post('/send-request')
   async sendExcursionRequest(
-    @Body() body: { text: string },
+    @Body() body: { text: string, recaptchaToken: string },
     @Res() reply: FastifyReply,
   ) {
     try {
       if (!body.text) {
         return reply.status(400).send({ error: 'Текст заявки обязателен' });
+      }
+
+      const recaptchaVerified = await this.botService.verifyRecaptcha(body.recaptchaToken);
+      if (!recaptchaVerified) {
+        return reply.status(400).send({ error: 'Не пройдена капча' });
       }
 
       await this.botService.sendExcursionRequestToGroup(body.text);

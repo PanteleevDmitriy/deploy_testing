@@ -8,6 +8,7 @@ import { getWeather1 } from './utils/weather';
 import getCourse from './utils/money-course';
 import { ConfigService } from '@nestjs/config';
 import { formatTime } from './utils/constants';
+import axios from 'axios';
 
 @Injectable()
 export class BotService implements OnModuleInit {
@@ -142,7 +143,6 @@ export class BotService implements OnModuleInit {
         }
     }
     
-
     async getSavedWeather() {
         return await this.weatherRepository.findOne({ order: [['time_value', 'DESC']] });
     }
@@ -175,6 +175,26 @@ export class BotService implements OnModuleInit {
           console.error('❌ Ошибка при отправке заявки:', error.message);
         }
       }
+
+    async verifyRecaptcha(token: string): Promise<boolean> {
+        try {
+            const secretKey = this.configService.get<string>('RECAPTCHA_SECRET_KEY');
+            if (!secretKey) {
+                console.error("❌ Не указан секретный ключ для reCAPTCHA");
+                return false;
+            }
+            const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify`, null, {
+                params: {
+                    secret: secretKey,
+                    response: token
+                }
+            });
+            return response.data.success;
+        } catch (error) {
+            console.error("❌ Ошибка при верификации reCAPTCHA:", error.message);
+            return false;
+        }
+    }
 
     async onModuleInit() {
         const webhookUrl = `https://seawindtravel.ru/api/bot/webhook`;

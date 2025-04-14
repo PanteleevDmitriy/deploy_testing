@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface Excursion {
   id: number;
@@ -38,6 +39,7 @@ export default function BookTour() {
   const tooltipRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const searchParams = useSearchParams();
   const [timestamp, setTimestamp] = useState("");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/excursions")
@@ -109,6 +111,9 @@ export default function BookTour() {
     if (!validateContact()) {
       newErrors.contactValue = "Неверный формат контакта.";
     }
+    if (!captchaToken) {
+      newErrors.captcha = "Пожалуйста, подтвердите, что вы не робот.";
+    }
 
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
@@ -148,7 +153,12 @@ export default function BookTour() {
       await fetch("/api/bot/send-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({
+          text,
+          excursionId: formData.excursionId,
+          timestamp,
+          captchaToken, // отправляем капчу на бэкенд
+        }),
       });
       alert("Заявка успешно отправлена!");
       setFormData({
@@ -161,6 +171,7 @@ export default function BookTour() {
         toddlers: 0,
         extraInfo: "",
       });
+      setCaptchaToken(null);
       setShowConfirmation(false);
     } catch {
       alert("Ошибка при отправке заявки.");
@@ -277,13 +288,28 @@ export default function BookTour() {
         {renderFieldWithTooltip("Количество детей", "children", "number")}
         {renderFieldWithTooltip("Количество маленьких детей", "toddlers", "number")}
         {renderFieldWithTooltip("Дополнительная информация (необязательно)", "extraInfo", "textarea")}
-        
-        <div className="border border-blue-300 bg-blue-50 p-4 rounded text-sm text-blue-900">
-            <p><b>Рабочее время с 9:00 до 21:00</b></p>
-            <p>Текущее время: {new Date().toLocaleTimeString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh", hour: '2-digit', minute: '2-digit' })}</p>
-            <p>Если Вы оставите заявку вне рабочего времени, менеджер ответит в начале рабочего дня.</p>
+
+        <div className="my-4">
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            onChange={(token: string | null) => {              
+              setCaptchaToken(token);
+              setErrors((prev) => ({ ...prev, captcha: "" }));
+            }}
+            onExpired={() => setCaptchaToken(null)}
+          />
+
+          {errors.captcha && (
+            <p className="mt-1 text-sm text-red-600">{errors.captcha}</p>
+          )}
         </div>
-        
+
+        <div className="border border-blue-300 bg-blue-50 p-4 rounded text-sm text-blue-900">
+          <p><b>Рабочее время с 9:00 до 21:00</b></p>
+          <p>Текущее время: {new Date().toLocaleTimeString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh", hour: '2-digit', minute: '2-digit' })}</p>
+          <p>Если Вы оставите заявку вне рабочего времени, менеджер ответит в начале рабочего дня.</p>
+        </div>
+
         <button
           type="submit"
           className="mt-4 w-full rounded bg-blue-600 py-2 text-white hover:bg-blue-700"

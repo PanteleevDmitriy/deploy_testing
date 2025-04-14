@@ -25,6 +25,15 @@ export class User extends Model<User, UserCreateAttributs> {
 
     @Column({type: DataType.STRING, allowNull: true}) 
     banReason: string;
+
+    @Column({ allowNull: true })
+    refreshToken: string;
+
+    @Column({ defaultValue: false })
+    isConfirmed: boolean;
+
+    @Column({ allowNull: true })
+    lastConfirmationEmailSentAt: Date;
 }
 
 
