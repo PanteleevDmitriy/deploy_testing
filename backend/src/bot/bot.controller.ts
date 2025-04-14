@@ -34,23 +34,30 @@ export class BotController {
   }
 
   @Post('/send-request')
-  async sendExcursionRequest(
-    @Body() body: { text: string, recaptchaToken: string },
-    @Res() reply: FastifyReply,
-  ) {
-    try {
-      if (!body.text) {
-        return reply.status(400).send({ error: 'Текст заявки обязателен' });
+    async sendExcursionRequest(
+      @Body() body: { text: string, recaptchaToken: string },
+      @Res() reply: FastifyReply,
+    ) {
+      try {
+        // Логирование полученного текста и токена капчи
+        console.log('Received request body:', body);
+
+        if (!body.text) {
+         return reply.status(400).send({ error: 'Текст заявки обязателен' });
+        }
+
+        // Лог перед верификацией капчи
+        console.log('Verifying captcha token...');
+        await this.captchaService.verifyToken(body.recaptchaToken);
+
+        // Лог после верификации
+        console.log('Captcha verification passed.');
+
+        await this.botService.sendExcursionRequestToGroup(body.text);
+        return reply.status(200).send({ status: 'ok' });
+      } catch (error) {
+        console.error('Ошибка отправки заявки:', error);
+        return reply.status(500).send({ error: 'Ошибка сервера' });
       }
-
-      // Используем сервис капчи для валидации
-      await this.captchaService.verifyToken(body.recaptchaToken);
-
-      await this.botService.sendExcursionRequestToGroup(body.text);
-      return reply.status(200).send({ status: 'ok' });
-    } catch (error) {
-      console.error('Ошибка отправки заявки:', error);
-      return reply.status(500).send({ error: 'Ошибка сервера' });
     }
-  }
 }
