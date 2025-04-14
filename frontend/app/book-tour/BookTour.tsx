@@ -40,6 +40,7 @@ export default function BookTour() {
   const searchParams = useSearchParams();
   const [timestamp, setTimestamp] = useState("");
   const [recaptchaToken, setCaptchaToken] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/excursions")
@@ -150,7 +151,7 @@ export default function BookTour() {
     `.trim();
 
     try {
-      await fetch("/api/bot/send-request", {
+      const res = await fetch("/api/bot/send-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -160,6 +161,13 @@ export default function BookTour() {
           recaptchaToken, // отправляем капчу на бэкенд
         }),
       });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        throw new Error(result?.error || "Ошибка при отправке заявки");
+      }
+
       alert("Заявка успешно отправлена!");
       setFormData({
         excursionId: "",
@@ -173,9 +181,13 @@ export default function BookTour() {
       });
       setCaptchaToken(null);
       setShowConfirmation(false);
-    } catch {
-      alert("Ошибка при отправке заявки.");
-    }
+    } catch (error) {
+      if (error instanceof Error) {
+        alert("Ошибка при отправке заявки: " + error.message);
+      } else {
+        alert("Произошла неизвестная ошибка");
+      }
+    }    
   };
 
   const renderFieldWithTooltip = (
@@ -312,9 +324,13 @@ export default function BookTour() {
 
         <div className="border border-blue-300 bg-blue-50 p-4 rounded text-sm text-blue-900">
           <p><b>Рабочее время с 9:00 до 21:00</b></p>
-          <p>Текущее время: {new Date().toLocaleTimeString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh", hour: '2-digit', minute: '2-digit' })}</p>
+          <p>Текущее время: {new Date().toLocaleTimeString("ru-RU", { timeZone: "Asia/Ho_Chi_Minh", hour: '2-digit', minute: '2-digit', second: "2-digit" })}</p>
           <p>Если Вы оставите заявку вне рабочего времени, менеджер ответит в начале рабочего дня.</p>
         </div>
+
+        {submitError && (
+          <p className="mt-2 text-red-600 font-semibold">{submitError}</p>
+        )}
 
         <button
           type="submit"
