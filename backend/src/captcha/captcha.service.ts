@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import axios from 'axios';
-import * as qs from 'qs';  // Импортируем библиотеку для сериализации данных
+import qs from 'qs';
 
 @Injectable()
 export class CaptchaService {
@@ -11,24 +11,23 @@ export class CaptchaService {
 
     const url = 'https://www.google.com/recaptcha/api/siteverify';
 
-    try {
-      // Сериализуем данные в формате application/x-www-form-urlencoded
-      const data = qs.stringify({
-        secret: this.secretKey,
-        response: token,
-      });
+    const postData = qs.stringify({
+      secret: this.secretKey,
+      response: token,
+    });
 
-      // Отправляем POST запрос с нужным заголовком и сериализованными данными
-      const response = await axios.post(url, data, {
+    try {
+      const response = await axios.post(url, postData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', // важно!
         },
       });
 
-      const responseData = response.data;
-      console.log('Captcha verification response:', responseData);
+      const data = response.data;
+      console.log('Captcha verification response:', data);
 
-      if (!responseData.success) {
+      if (!data.success) {
         throw new UnauthorizedException('Не удалось подтвердить капчу');
       }
 
