@@ -15,6 +15,9 @@ export class Excursion extends Model<Excursion> {
     @Column({ type: DataType.TEXT, allowNull: true })
     longDescription: string;  // Длинное описание
 
+    @Column({ type: DataType.TEXT, allowNull: true })
+    schedule: string;
+
     @Column({ type: DataType.DECIMAL(10, 2), allowNull: false })
     price: number;  // Цена экскурсии
 
