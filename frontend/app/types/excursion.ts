@@ -1,4 +1,5 @@
 export interface ExcursionInterface {
+  [x: string]: any;
   id: number;
   name: string;
   shortDescription: string;
@@ -16,4 +17,5 @@ export interface ExcursionInterface {
   isOption3: boolean;
   createdAt: string | Date;
   updatedAt: string | Date;
+  schedule: string;
 }

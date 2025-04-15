@@ -1,6 +1,4 @@
-require('dotenv').config(); // ЗАГРУЖАЕМ ПЕРЕМЕННЫЕ ОКРУЖЕНИЯ
-console.log('USER:', process.env.POSTGRES_USER);
-console.log('PASSWORD:', process.env.POSTGRES_PASSWORD);
+require('dotenv').config();
 
 module.exports = {
   development: {
