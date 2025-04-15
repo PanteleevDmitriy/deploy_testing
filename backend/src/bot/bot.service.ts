@@ -133,7 +133,7 @@ export class BotService implements OnModuleInit {
                 // console.log("💾 Данные для сохранения:", updatedData);
     
                 await this.moneyRepository.upsert(updatedData);
-                console.log("✅ Курс валют обновлён:", updatedData);
+                console.log("✅ Курс валют обновлён:");
     
             } catch (error) {
                 console.error('❌ Ошибка получения курса валют:', error.message);
