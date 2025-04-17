@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import type { ExcursionInterface } from "@/app/types/excursion";
 
 export default function ExcursionPage() {
@@ -120,7 +121,9 @@ export default function ExcursionPage() {
 
       <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Описание</h2>
-        <p>{excursion.longDescription}</p>
+        <div className="prose max-w-none">
+          <ReactMarkdown>{excursion.longDescription}</ReactMarkdown>
+        </div>
       </div>
 
       <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
@@ -150,7 +153,9 @@ export default function ExcursionPage() {
       {excursion.schedule && (
         <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
           <h2 className="text-2xl font-semibold mb-2">📅 Расписание</h2>
-          <p>{excursion.schedule}</p>
+          <div className="prose max-w-none">
+            <ReactMarkdown>{excursion.schedule}</ReactMarkdown>
+          </div>
         </div>
       )}
 
