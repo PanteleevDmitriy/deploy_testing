@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const nameMap: Record<string, string> = {
   articles: "Полезные статьи",
@@ -16,10 +16,12 @@ const nameMap: Record<string, string> = {
 export default function Breadcrumbs() {
   const pathname = usePathname();
   const [breadcrumbs, setBreadcrumbs] = useState<{ label: string; href: string }[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
 
   useEffect(() => {
     const pathSegments = pathname.split("/").filter(Boolean);
-
     const paths = pathSegments.map((segment, index) => {
       const href = "/" + pathSegments.slice(0, index + 1).join("/");
       let label = nameMap[segment] || segment;
@@ -28,7 +30,6 @@ export default function Breadcrumbs() {
 
     const baseCrumbs = [{ label: "Главная", href: "/" }];
 
-    // Проверка на маршрут экскурсии и наличие id
     if (pathSegments[0] === "excursion" && pathSegments[1]) {
       fetch("/api/excursions")
         .then(res => res.json())
@@ -54,19 +55,46 @@ export default function Breadcrumbs() {
     }
   }, [pathname]);
 
+  // Автомасштабирование
+  useEffect(() => {
+    const resize = () => {
+      const container = containerRef.current;
+      const content = contentRef.current;
+      if (!container || !content) return;
+
+      const containerWidth = container.offsetWidth;
+      const contentWidth = content.scrollWidth;
+
+      const newScale = Math.min(1, containerWidth / contentWidth);
+      setScale(newScale < 0.5 ? 0.5 : newScale); // минимальный масштаб 0.5
+    };
+
+    resize();
+    const observer = new ResizeObserver(resize);
+    if (containerRef.current) observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, [breadcrumbs]);
+
   if (breadcrumbs.length === 0) return null;
 
   return (
-    <nav className="text-sm text-blue-700 h-[30px] flex items-center px-4 overflow-x-auto whitespace-nowrap z-40">
-      <div className="max-w-5xl mx-auto w-full">
-        {breadcrumbs.map((crumb, index) => (
-          <span key={crumb.href}>
-            <Link href={crumb.href} className="hover:underline">
-              {decodeURIComponent(crumb.label)}
-            </Link>
-            {index < breadcrumbs.length - 1 && <span className="mx-1">/</span>}
-          </span>
-        ))}
+    <nav className="px-4 h-[30px] z-40">
+      <div ref={containerRef} className="max-w-5xl mx-auto w-full overflow-hidden">
+        <div
+          ref={contentRef}
+          className="whitespace-nowrap inline-block transform origin-left transition-transform duration-200"
+          style={{ transform: `scale(${scale})` }}
+        >
+          {breadcrumbs.map((crumb, index) => (
+            <span key={crumb.href} className="text-blue-700 text-sm">
+              <Link href={crumb.href} className="hover:underline">
+                {decodeURIComponent(crumb.label)}
+              </Link>
+              {index < breadcrumbs.length - 1 && <span className="mx-1">/</span>}
+            </span>
+          ))}
+        </div>
       </div>
     </nav>
   );
