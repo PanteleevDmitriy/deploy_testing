@@ -16,13 +16,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <>
       <Header />
-      
-      {/* Хлебные крошки в отдельной полоске под хедером */}
-      <div className="h-[60px]" /> {/* Заглушка под фиксированный хедер */}
-      <div className="bg-gray-100 border-b border-gray-300 py-2 px-4">
-        <Breadcrumbs />
-      </div>
-
+      {/* Хлебные крошки, которые находятся внутри хедера */}
       <main className="flex-grow">{children}</main>
       <Footer />
     </>
