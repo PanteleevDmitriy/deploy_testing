@@ -37,7 +37,7 @@ export default function Breadcrumbs() {
   if (breadcrumbs.length === 0) return null;
 
   return (
-    <nav className="text-sm text-gray-600 bg-teal-100 h-[30px] flex items-center px-4 overflow-x-auto whitespace-nowrap z-40 relative">
+    <nav className="text-sm text-gray-600 bg-teal-100 h-[60px] flex items-center px-4 overflow-x-auto whitespace-nowrap z-40 sticky top-[60px]">
       <div className="max-w-5xl mx-auto w-full">
         {breadcrumbs.map((crumb, index) => (
           <span key={crumb.href}>
