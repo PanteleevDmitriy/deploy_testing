@@ -5,12 +5,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 
 const nameMap: Record<string, string> = {
-  articles: "Полезные статьи",
-  exotic_fruits: "Экзотические фрукты",
-  faq: "Часто задаваемые вопросы",
-  about: "Информация о нас",
-  auth: "Войти в систему",
-  excursion: "Экскурсии",
+  "articles": "Полезные статьи",
+  "exotic_fruits": "Экзотические фрукты",
+  "faq": "Часто задаваемые вопросы",
+  "about": "Информация о нас",
+  "auth": "Войти в систему",
+  "excursion": "Экскурсии",
+  "book-tour": "Забронировать тур"
 };
 
 export default function Breadcrumbs() {
