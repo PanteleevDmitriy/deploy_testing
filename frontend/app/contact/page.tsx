@@ -13,7 +13,7 @@ export default function Contact() {
             href="tel:+84348093490"
             className="text-green-600 hover:underline"
           >
-            +84 348 093 490
+            +84 34 809 34 90
           </a>
         </li>
         <li className="flex items-center">

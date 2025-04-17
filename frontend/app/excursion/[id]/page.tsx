@@ -129,8 +129,26 @@ export default function ExcursionPage() {
       <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Цена</h2>
         <p className="text-xl font-bold text-teal-600">
-          от {Math.round(Number.parseFloat(excursion.price))} $ с человека
+          {Math.round(Number.parseFloat(excursion.price))} $ за одного человека
         </p>
+      </div>
+
+      {/* Блок кнопок после цены */}
+      <div className="text-center mt-6 mb-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link
+            href={`/book-tour?id=${excursion.id}`}
+            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto mb-4"
+          >
+            Забронировать
+          </Link>
+          <Link
+            href="/"
+            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto mb-4"
+          >
+            Список экскурсий
+          </Link>
+        </div>
       </div>
 
       {excursion.videoLinks && excursion.videoLinks.length > 0 && (
@@ -159,6 +177,7 @@ export default function ExcursionPage() {
         </div>
       )}
 
+      {/* Блок кнопок внизу страницы */}
       <div className="text-center mt-6">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
