@@ -37,8 +37,8 @@ export default function Breadcrumbs() {
   if (breadcrumbs.length === 0) return null;
 
   return (
-    <div className="bg-teal-100 text-sm text-gray-600 py-2 sticky top-[60px] z-50">
-      <div className="max-w-5xl mx-auto flex items-center px-4 overflow-x-auto whitespace-nowrap">
+    <nav className="text-sm text-gray-600 h-[30px] flex items-center overflow-x-auto whitespace-nowrap">
+      <div className="max-w-5xl mx-auto w-full px-4">
         {breadcrumbs.map((crumb, index) => (
           <span key={crumb.href}>
             <Link href={crumb.href} className="hover:underline text-blue-700">
@@ -48,6 +48,6 @@ export default function Breadcrumbs() {
           </span>
         ))}
       </div>
-    </div>
+    </nav>
   );
 }
