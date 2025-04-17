@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 
 const nameMap: Record<string, string> = {
-  "articles": "Полезные статьи",
-  "exotic_fruits": "Экзотические фрукты",
-  "faq": "Часто задаваемые вопросы",
-  "about": "Информация о нас",
-  "auth": "Войти в систему",
-  "excursion": "Экскурсии",
+  articles: "Полезные статьи",
+  exotic_fruits: "Экзотические фрукты",
+  faq: "Часто задаваемые вопросы",
+  about: "Информация о нас",
+  auth: "Войти в систему",
+  excursion: "Экскурсии",
   "book-tour": "Забронировать тур"
 };
 
@@ -30,6 +30,7 @@ export default function Breadcrumbs() {
     });
 
     const baseCrumbs = [{ label: "Главная", href: "/" }];
+    let additionalCrumbs: { label: string; href: string }[] = [];  // Указан тип
 
     // Проверка на маршрут экскурсии и наличие id
     if (pathSegments[0] === "excursion" && pathSegments[1]) {
@@ -40,19 +41,18 @@ export default function Breadcrumbs() {
             (ex: any) => ex.id?.toString() === pathSegments[1]
           );
           if (excursion) {
-            const updated = [
-              { label: nameMap["excursion"], href: "/excursion" },
-              { label: excursion.name, href: `/excursion/${excursion.id}` },
+            additionalCrumbs = [
+              { label: excursion.name, href: `/excursion/${excursion.id}` }
             ];
-            setBreadcrumbs([...baseCrumbs, ...updated]);
-          } else {
-            setBreadcrumbs([...baseCrumbs, ...paths]);
           }
+          // Собираем хлебные крошки, без ссылки на раздел "Экскурсии", если его нет
+          setBreadcrumbs([...baseCrumbs, ...additionalCrumbs]);
         })
         .catch(() => {
           setBreadcrumbs([...baseCrumbs, ...paths]);
         });
     } else {
+      // Если это не страница экскурсии, строим крошки обычным образом
       setBreadcrumbs([...baseCrumbs, ...paths]);
     }
   }, [pathname]);
@@ -62,7 +62,7 @@ export default function Breadcrumbs() {
       const parentWidth = contentRef.current.parentElement?.offsetWidth || 0;
       const contentWidth = contentRef.current.offsetWidth;
       if (contentWidth > parentWidth) {
-        setScale(parentWidth / contentWidth);
+        setScale(parentWidth / contentWidth); // Масштабирование текста
       } else {
         setScale(1);
       }
