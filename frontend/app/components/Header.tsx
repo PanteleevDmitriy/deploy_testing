@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FaTelegram, FaInstagram, FaVk } from "react-icons/fa";
 import { useState } from "react";
 import clsx from "clsx";
+import Breadcrumbs from "./Breadcrumbs";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +20,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-teal-100 shadow-md z-50">
+      {/* Верхняя часть с логотипом и бургером */}
       <div className="container mx-auto px-4">
         <div className="flex items-center h-[60px] justify-between">
           {/* Бургер */}
@@ -96,6 +98,11 @@ export default function Header() {
             </div>
           </nav>
         )}
+      </div>
+
+      {/* Хлебные крошки прямо внутри хедера */}
+      <div className="bg-teal-100 border-t border-gray-300 text-sm text-gray-700 h-[30px] flex items-center px-4">
+        <Breadcrumbs />
       </div>
     </header>
   );

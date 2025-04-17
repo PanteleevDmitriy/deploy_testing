@@ -2,11 +2,11 @@ import Link from "next/link"
 
 export default function Articles() {
   const articles = [
-    { id: 1, title: "Экзотические фрукты Вьетнама", link: "/Полезные статьи/Экзотические фрукты" },
-    { id: 2, title: "Статья 2", link: "/Полезные статьи/article_2" },
-    { id: 3, title: "Статья 3", link: "/Полезные статьи/article_3" },
-    { id: 4, title: "Статья 4", link: "/Полезные статьи/article_4" },
-    { id: 5, title: "Статья 5", link: "/Полезные статьи/article_5" },
+    { id: 1, title: "Экзотические фрукты Вьетнама", link: "/articles/Экзотические фрукты" },
+    { id: 2, title: "Статья 2", link: "/articles/article_2" },
+    { id: 3, title: "Статья 3", link: "/articles/article_3" },
+    { id: 4, title: "Статья 4", link: "/articles/article_4" },
+    { id: 5, title: "Статья 5", link: "/articles/article_5" },
   ]
 
   return (

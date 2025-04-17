@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Header from "./Header";
 import Footer from "./Footer";
-import Breadcrumbs from "./Breadcrumbs";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -16,7 +15,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   return (
     <>
       <Header />
-      {/* Хлебные крошки, которые находятся внутри хедера */}
+      {/* Отступ под фиксированный хедер с крошками (60 + 30 = 90px) */}
+      <div className="h-[90px]" />
       <main className="flex-grow">{children}</main>
       <Footer />
     </>
