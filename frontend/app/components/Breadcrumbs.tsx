@@ -16,7 +16,6 @@ export default function Breadcrumbs() {
       return { label: segment, href };
     });
 
-    // Пример получения названия экскурсии с бэка
     if (pathSegments[0] === "excursion" && pathSegments[1]) {
       fetch(`/api/excursions/${pathSegments[1]}`)
         .then(res => res.json())
@@ -38,8 +37,8 @@ export default function Breadcrumbs() {
   if (breadcrumbs.length === 0) return null;
 
   return (
-    <nav className="text-sm text-gray-600 py-2 overflow-x-auto whitespace-nowrap max-w-full">
-      <div className="max-w-5xl mx-auto">
+    <nav className="text-sm text-gray-600 bg-teal-100 h-[30px] flex items-center px-4 overflow-x-auto whitespace-nowrap z-40 relative">
+      <div className="max-w-5xl mx-auto w-full">
         {breadcrumbs.map((crumb, index) => (
           <span key={crumb.href}>
             <Link href={crumb.href} className="hover:underline text-blue-700">
