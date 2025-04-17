@@ -59,9 +59,8 @@ export default function ExcursionPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-28">
+    <div className="container mx-auto px-4 pt-28">
       <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
-
       <p className="text-lg text-center mb-4">{excursion.shortDescription}</p>
 
       {imageUrls.length > 0 && (
@@ -79,14 +78,12 @@ export default function ExcursionPage() {
                 <button
                   onClick={prevImage}
                   className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
-                  aria-label="Предыдущее изображение"
                 >
                   &#10094;
                 </button>
                 <button
                   onClick={nextImage}
                   className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
-                  aria-label="Следующее изображение"
                 >
                   &#10095;
                 </button>
@@ -133,28 +130,16 @@ export default function ExcursionPage() {
         </p>
       </div>
 
-      <div className="text-center mb-6">
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link
-            href={`/book-tour?id=${excursion.id}`}
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
-          >
-            Забронировать
-          </Link>
-          <Link
-            href="/"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
-          >
-            Список экскурсий
-          </Link>
-        </div>
-      </div>
-
       {excursion.videoLinks && excursion.videoLinks.length > 0 && (
         <div className="my-6">
           <h2 className="text-2xl font-semibold mb-2 text-center">🎥 Видеообзор экскурсии</h2>
           <div className="flex justify-center">
-            <video controls loop playsInline className="rounded-lg shadow-lg">
+            <video
+              controls
+              loop
+              playsInline
+              className="rounded-lg shadow-lg max-h-[75vh]"
+            >
               <source src={`/video/${excursion.videoLinks[0]}`} type="video/mp4" />
               Ваш браузер не поддерживает воспроизведение видео.
             </video>
