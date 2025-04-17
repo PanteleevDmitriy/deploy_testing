@@ -4,13 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const segmentNameMap: Record<string, string> = {
+const nameMap: Record<string, string> = {
   articles: "Полезные статьи",
-  about: "О нас",
-  faq: "Часто задаваемые вопросы",
-  excursion: "Экскурсии",
   exotic_fruits: "Экзотические фрукты",
-  // Добавляй другие сегменты по мере необходимости
+  faq: "Часто задаваемые вопросы",
+  about: "Информация о нас",
+  auth: "Войти в систему",
+  excursion: "Экскурсии",
 };
 
 export default function Breadcrumbs() {
@@ -22,20 +22,25 @@ export default function Breadcrumbs() {
 
     const paths = pathSegments.map((segment, index) => {
       const href = "/" + pathSegments.slice(0, index + 1).join("/");
-      const label = segmentNameMap[segment] || segment;
+      let label = nameMap[segment] || segment;
+
       return { label, href };
     });
 
-    // Спецобработка экскурсии
+    // Получение названия экскурсии по id
     if (pathSegments[0] === "excursion" && pathSegments[1]) {
-      fetch(`/api/excursions/${pathSegments[1]}`)
+      fetch("/api/excursions/")
         .then(res => res.json())
         .then(data => {
-          const title = data?.name || segmentNameMap[pathSegments[1]] || pathSegments[1];
-          const updated = paths.map((p, i) =>
-            i === 1 ? { ...p, label: title } : p
-          );
-          setBreadcrumbs([{ label: "Главная", href: "/" }, ...updated]);
+          const excursion = data.find((ex: any) => ex.id?.toString() === pathSegments[1]);
+          if (excursion?.name) {
+            const updated = paths.map((p, i) =>
+              i === 1 ? { ...p, label: excursion.name } : p
+            );
+            setBreadcrumbs([{ label: "Главная", href: "/" }, ...updated]);
+          } else {
+            setBreadcrumbs([{ label: "Главная", href: "/" }, ...paths]);
+          }
         })
         .catch(() => {
           setBreadcrumbs([{ label: "Главная", href: "/" }, ...paths]);
@@ -48,11 +53,11 @@ export default function Breadcrumbs() {
   if (breadcrumbs.length === 0) return null;
 
   return (
-    <nav className="text-sm text-gray-700 h-[30px] flex items-center px-4 overflow-x-auto whitespace-nowrap z-40 relative">
+    <nav className="text-sm text-blue-700 h-[30px] flex items-center px-4 overflow-x-auto whitespace-nowrap z-40">
       <div className="max-w-5xl mx-auto w-full">
         {breadcrumbs.map((crumb, index) => (
           <span key={crumb.href}>
-            <Link href={crumb.href} className="hover:underline text-black">
+            <Link href={crumb.href} className="hover:underline">
               {decodeURIComponent(crumb.label)}
             </Link>
             {index < breadcrumbs.length - 1 && <span className="mx-1">/</span>}
