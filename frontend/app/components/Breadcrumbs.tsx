@@ -23,30 +23,34 @@ export default function Breadcrumbs() {
     const paths = pathSegments.map((segment, index) => {
       const href = "/" + pathSegments.slice(0, index + 1).join("/");
       let label = nameMap[segment] || segment;
-
       return { label, href };
     });
 
-    // Получение названия экскурсии по id
+    const baseCrumbs = [{ label: "Главная", href: "/" }];
+
+    // Проверка на маршрут экскурсии и наличие id
     if (pathSegments[0] === "excursion" && pathSegments[1]) {
-      fetch("/api/excursions/")
+      fetch("/api/excursions")
         .then(res => res.json())
         .then(data => {
-          const excursion = data.find((ex: any) => ex.id?.toString() === pathSegments[1]);
-          if (excursion?.name) {
-            const updated = paths.map((p, i) =>
-              i === 1 ? { ...p, label: excursion.name } : p
-            );
-            setBreadcrumbs([{ label: "Главная", href: "/" }, ...updated]);
+          const excursion = data.find(
+            (ex: any) => ex.id?.toString() === pathSegments[1]
+          );
+          if (excursion) {
+            const updated = [
+              { label: nameMap["excursion"], href: "/excursion" },
+              { label: excursion.name, href: `/excursion/${excursion.id}` },
+            ];
+            setBreadcrumbs([...baseCrumbs, ...updated]);
           } else {
-            setBreadcrumbs([{ label: "Главная", href: "/" }, ...paths]);
+            setBreadcrumbs([...baseCrumbs, ...paths]);
           }
         })
         .catch(() => {
-          setBreadcrumbs([{ label: "Главная", href: "/" }, ...paths]);
+          setBreadcrumbs([...baseCrumbs, ...paths]);
         });
     } else {
-      setBreadcrumbs([{ label: "Главная", href: "/" }, ...paths]);
+      setBreadcrumbs([...baseCrumbs, ...paths]);
     }
   }, [pathname]);
 
