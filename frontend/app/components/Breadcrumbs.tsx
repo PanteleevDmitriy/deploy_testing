@@ -76,7 +76,7 @@ export default function Breadcrumbs() {
         <div
           ref={contentRef}
           className="whitespace-nowrap inline-flex items-center h-full transform origin-left transition-transform duration-200"
-          style={{ transform: `scale(${scale})` }}
+          style={{ transform: `scale(${scale})`, border: "none", margin: 0 }}
         >
           {breadcrumbs.map((crumb, index) => (
             <span key={crumb.href}>
