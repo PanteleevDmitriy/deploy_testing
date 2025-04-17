@@ -1,38 +1,21 @@
-"use client"
+import "./globals.css";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import ClientLayout from "./components/ClientLayout";
 
-import type React from "react"
+const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
-import "./globals.css"
-import { Inter } from "next/font/google"
-import Header from "./components/Header"
-import Footer from "./components/Footer"
-import { useEffect } from "react"
-import { usePathname } from "next/navigation"
+export const metadata: Metadata = {
+  title: "SEA Wind travel - экскурсии Нячанг - Вьетнам",
+  description: "Экскурсии во Вьетнаме с SEA Wind Travel",
+};
 
-const inter = Inter({ subsets: ["latin", "cyrillic"] })
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const pathname = usePathname()
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ru" className="h-full">
-      <head>
-        <title>SEA Wind travel - экскурсии Нячанг - Вьетнам</title>
-      </head>
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
-  )
+  );
 }
-
