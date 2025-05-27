@@ -11,6 +11,8 @@ const nameMap: Record<string, string> = {
   about: "Информация о нас",
   auth: "Войти в систему",
   excursion: "Экскурсии",
+  food: "Вьетнамская кухня",
+  seafood: "Морепродукты",
   "book-tour": "Забронировать тур"
 };
 
