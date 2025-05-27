@@ -366,9 +366,9 @@ export default function SeafoodArticle() {
                   <Image 
                     src={`/photo/seafood/${item.image}`} 
                     alt={item.name} 
-                    width={300} 
+                    width={200} 
                     height={200} 
-                    className="rounded"
+                    className="object-cover w-full h-full"
                   />
                 </div>
                 <p className="mt-4 text-center">{item.description}</p>
