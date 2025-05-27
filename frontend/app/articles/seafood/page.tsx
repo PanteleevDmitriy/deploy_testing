@@ -252,6 +252,12 @@ export default function SeafoodArticle() {
             "Яркая рыба с нежным мясом. Вкус мягкий, сладкий, сочный.",
           image: "mandarin_fish.jpg",
         },
+        {
+          name: "Осётр\nSturgeon\nCá tầm",
+          description:
+            "Крупная рыба с продолговатым телом и костяными щитками. Мясо плотное, нежное, с характерным насыщенным вкусом и лёгкой жирностью.",
+          image: "sturgeon.jpg",
+        },
       ],
     },
     {
@@ -348,18 +354,25 @@ export default function SeafoodArticle() {
           текстуры и особенностей. Погрузитесь в мир морских сокровищ и откройте для себя новые гастрономические впечатления вместе с нами!
         </p>
       </div>
-  
       <div className="space-y-12 px-4 md:px-8 lg:px-16">
         {seafoodSections.map((section) => (
           <div key={section.section}>
-            <h2>{section.section}</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <h2 className="text-center font-bold text-2xl my-6">{section.section}</h2>
+            <div className="grid grid-cols-1 gap-4">
               {section.items.map((item) => (
-                <div key={item.name} className="border p-4 rounded-lg shadow">
-                  <h3 className="text-lg font-bold mb-2 whitespace-pre-line">{item.name}</h3>
-                  <Image src={`/photo/seafood/${item.image}`} alt={item.name} width={300} height={200} className="rounded" />
-                  <p className="mt-2">{item.description}</p>
+                <div key={item.name} className="border p-4 rounded-lg shadow w-full">
+                <h3 className="text-center text-xl font-bold mb-4 whitespace-pre-line">{item.name}</h3>
+                <div className="flex justify-center">
+                  <Image 
+                    src={`/photo/seafood/${item.image}`} 
+                    alt={item.name} 
+                    width={300} 
+                    height={200} 
+                    className="rounded"
+                  />
                 </div>
+                <p className="mt-4 text-center">{item.description}</p>
+              </div>
               ))}
             </div>
           </div>
