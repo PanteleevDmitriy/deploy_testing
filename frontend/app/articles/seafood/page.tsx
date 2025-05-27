@@ -342,9 +342,7 @@ export default function SeafoodArticle() {
 
   return (
     <div className="container mx-auto px-4 py-16 pt-32">
-      <h1 className="text-3xl font-bold mb-8 text-center">
-        Местные морепродукты
-      </h1>
+      <h1 className="text-3xl font-bold mb-8 text-center">Местные морепродукты</h1>
   
       <div className="mb-8">
         <p>
@@ -354,30 +352,39 @@ export default function SeafoodArticle() {
           текстуры и особенностей. Погрузитесь в мир морских сокровищ и откройте для себя новые гастрономические впечатления вместе с нами!
         </p>
       </div>
+  
       <div className="space-y-12 px-4 md:px-8 lg:px-16">
         {seafoodSections.map((section) => (
-          <div key={section.section}>
+          <section key={section.section}>
             <h2 className="text-center font-bold text-2xl my-6">{section.section}</h2>
             <div className="grid grid-cols-1 gap-4">
               {section.items.map((item) => (
                 <div key={item.name} className="border p-4 rounded-lg shadow w-full">
-                <h3 className="text-center text-xl font-bold mb-4 whitespace-pre-line">{item.name}</h3>
-                <div className="flex justify-center">
-                  <Image 
-                    src={`/photo/seafood/${item.image}`} 
-                    alt={item.name} 
-                    width={200} 
-                    height={200} 
-                    className="object-cover w-full h-full"
-                  />
+                  <h3 className="text-center text-xl font-bold mb-4 whitespace-pre-line">{item.name}</h3>
+                  <div className="flex justify-center gap-4 mb-4">
+                    {/* Кнопка с маленькой квадратной картинкой */}
+                    <button
+                      onClick={() => setSelectedImage(`/photo/seafood/${item.image}`)}
+                      className="w-[200px] h-[200px] overflow-hidden rounded-lg"
+                      aria-label={`Открыть изображение ${item.name}`}
+                    >
+                      <Image
+                        src={`/photo/seafood/${item.image}`}
+                        alt={item.name}
+                        width={200}
+                        height={200}
+                        className="object-cover w-full h-full"
+                      />
+                    </button>
+                  </div>
+                  <p className="mt-4 text-center">{item.description}</p>
                 </div>
-                <p className="mt-4 text-center">{item.description}</p>
-              </div>
               ))}
             </div>
-          </div>
+          </section>
         ))}
       </div>
+  
       <div className="mt-16 text-center">
         <Link
           href="/articles"
@@ -404,6 +411,7 @@ export default function SeafoodArticle() {
             <button
               className="absolute top-4 right-4 text-white text-3xl"
               onClick={() => setSelectedImage(null)}
+              aria-label="Закрыть увеличенное изображение"
             >
               ✕
             </button>
@@ -412,4 +420,4 @@ export default function SeafoodArticle() {
       )}
     </div>
   );
-}
+}  
