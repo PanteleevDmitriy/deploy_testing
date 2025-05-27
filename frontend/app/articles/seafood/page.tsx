@@ -357,7 +357,7 @@ export default function SeafoodArticle() {
               {section.items.map((item) => (
                 <div key={item.name} className="border p-4 rounded-lg shadow">
                   <h3 className="text-lg font-bold mb-2 whitespace-pre-line">{item.name}</h3>
-                  <Image src={`/images/seafood/${item.image}`} alt={item.name} width={300} height={200} className="rounded" />
+                  <Image src={`/photo/seafood/${item.image}`} alt={item.name} width={300} height={200} className="rounded" />
                   <p className="mt-2">{item.description}</p>
                 </div>
               ))}
