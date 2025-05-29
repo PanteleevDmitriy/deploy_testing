@@ -66,14 +66,13 @@ export default function ExcursionPage() {
 
       {imageUrls.length > 0 && (
         <div className="mb-4 flex flex-col items-center">
-          <div className="relative bg-teal-50/50 shadow-lg rounded-lg overflow-hidden">
+          <div className="relative w-full md:w-[60%] h-[600px] bg-teal-50/50 shadow-lg rounded-lg overflow-hidden flex justify-center items-center">
             <Image
               src={imageUrls[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
+              height={500}
               width={0}
-              height={0}
-              sizes="100vw"
-              className="h-[500px] w-auto rounded-lg object-contain"
+              className="w-auto rounded-lg"
             />
             {imageUrls.length > 1 && (
               <>
@@ -118,10 +117,8 @@ export default function ExcursionPage() {
                     <Image
                       src={photo}
                       alt={`Миниатюра ${index + 1}`}
-                      width={0}
-                      height={0}
-                      sizes="100vw"
-                      className="h-full w-auto rounded bg-white object-contain"
+                      fill
+                      className="object-contain rounded bg-white"
                     />
                   </div>
                 ))}
@@ -188,7 +185,7 @@ export default function ExcursionPage() {
         </div>
       )}
 
-      <div className="text-center mt-6 mb-4">
+      <div className="text-center mt-6 mb-6">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
             href={`/book-tour?id=${excursion.id}`}
@@ -198,7 +195,7 @@ export default function ExcursionPage() {
           </Link>
           <Link
             href="/"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto mb-2 sm:mb-0"
+            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto mb-2"
           >
             Список экскурсий
           </Link>
