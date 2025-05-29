@@ -66,13 +66,13 @@ export default function ExcursionPage() {
 
       {imageUrls.length > 0 && (
         <div className="mb-4 flex flex-col items-center">
-          <div className="relative w-full md:w-[60%] h-[360px] md:h-[600px] bg-teal-50/50 shadow-lg rounded-lg overflow-hidden">
+          <div className="relative w-full md:w-[60%] bg-teal-50/50 shadow-lg rounded-lg overflow-hidden">
             <Image
               src={imageUrls[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
-              layout="fill"
-              objectFit="contain"
-              className="rounded-lg"
+              width={900}
+              height={600}
+              className="rounded-lg w-full h-auto object-contain"
             />
             {imageUrls.length > 1 && (
               <>
@@ -101,7 +101,7 @@ export default function ExcursionPage() {
                 {imageUrls.map((photo, index) => (
                   <div
                     key={index}
-                    className={`flex-shrink-0 h-20 w-auto relative cursor-pointer border-4 ${
+                    className={`flex-shrink-0 h-20 w-28 relative cursor-pointer border-4 ${
                       index === currentImageIndex ? "border-teal-600" : "border-transparent"
                     }`}
                     onClick={() => {
@@ -117,9 +117,9 @@ export default function ExcursionPage() {
                     <Image
                       src={photo}
                       alt={`Миниатюра ${index + 1}`}
-                      layout="fill"
-                      objectFit="contain"
-                      className="rounded bg-white"
+                      width={112}
+                      height={80}
+                      className="rounded bg-white w-full h-full object-cover"
                     />
                   </div>
                 ))}
