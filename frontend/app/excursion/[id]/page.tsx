@@ -66,7 +66,7 @@ export default function ExcursionPage() {
 
       {imageUrls.length > 0 && (
         <div className="mb-4 flex flex-col items-center">
-          <div className="relative w-full md:w-[50%] h-[300px] md:h-[500px] bg-teal-50/50 shadow-lg rounded-lg overflow-hidden">
+          <div className="relative w-full md:w-[60%] h-[360px] md:h-[600px] bg-teal-50/50 shadow-lg rounded-lg overflow-hidden">
             <Image
               src={imageUrls[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
@@ -96,24 +96,34 @@ export default function ExcursionPage() {
           </div>
 
           {imageUrls.length > 1 && (
-            <div className="flex overflow-x-auto gap-2 px-4 py-2 mt-2">
-              {imageUrls.map((photo, index) => (
-                <div
-                  key={index}
-                  className={`w-16 h-16 relative cursor-pointer border-4 ${
-                    index === currentImageIndex ? "border-teal-600" : "border-transparent"
-                  }`}
-                  onClick={() => setCurrentImageIndex(index)}
-                >
-                  <Image
-                    src={photo}
-                    alt={`Миниатюра ${index + 1}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded"
-                  />
-                </div>
-              ))}
+            <div className="relative w-full md:w-[60%] overflow-hidden mt-2">
+              <div className="flex gap-2 overflow-x-auto px-4 py-2 scroll-smooth">
+                {imageUrls.map((photo, index) => (
+                  <div
+                    key={index}
+                    className={`flex-shrink-0 h-20 w-auto relative cursor-pointer border-4 ${
+                      index === currentImageIndex ? "border-teal-600" : "border-transparent"
+                    }`}
+                    onClick={() => {
+                      setCurrentImageIndex(index);
+                      document.getElementById(`thumb-${index}`)?.scrollIntoView({
+                        behavior: "smooth",
+                        inline: "center",
+                        block: "nearest",
+                      });
+                    }}
+                    id={`thumb-${index}`}
+                  >
+                    <Image
+                      src={photo}
+                      alt={`Миниатюра ${index + 1}`}
+                      layout="fill"
+                      objectFit="contain"
+                      className="rounded bg-white"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -133,7 +143,6 @@ export default function ExcursionPage() {
         </p>
       </div>
 
-      {/* Блок кнопок после цены */}
       <div className="text-center mt-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
@@ -177,7 +186,6 @@ export default function ExcursionPage() {
         </div>
       )}
 
-      {/* Блок кнопок внизу страницы */}
       <div className="text-center mt-6">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
