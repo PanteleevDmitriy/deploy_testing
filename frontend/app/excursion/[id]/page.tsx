@@ -73,7 +73,7 @@ export default function ExcursionPage() {
               width={0}
               height={0}
               sizes="100vw"
-              className="h-[550px] w-auto rounded-lg object-contain"
+              className="h-[500px] w-auto rounded-lg object-contain"
             />
             {imageUrls.length > 1 && (
               <>
@@ -145,7 +145,6 @@ export default function ExcursionPage() {
         </p>
       </div>
 
-      {/* исправленные отступы у первого блока с кнопками */}
       <div className="text-center mt-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
@@ -189,7 +188,7 @@ export default function ExcursionPage() {
         </div>
       )}
 
-      <div className="text-center mt-6">
+      <div className="text-center mt-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
             href={`/book-tour?id=${excursion.id}`}
@@ -199,7 +198,7 @@ export default function ExcursionPage() {
           </Link>
           <Link
             href="/"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
+            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto mb-2 sm:mb-0"
           >
             Список экскурсий
           </Link>
