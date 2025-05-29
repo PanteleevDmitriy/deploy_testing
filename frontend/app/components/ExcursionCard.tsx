@@ -12,7 +12,6 @@ interface ExcursionCardProps {
 export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Преобразование ссылок на локальные пути
   const imageBasePath = "/photo/";
   const imageUrls = excursion.photoLinks.map((fileName) => `${imageBasePath}${fileName}`);
 
@@ -26,17 +25,15 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
 
   return (
     <div className="bg-teal-50/50 shadow-lg rounded-lg overflow-hidden flex flex-col">
-      {/* Основное изображение с каруселью */}
-      <div className="relative w-full h-[300px] sm:h-[420px] md:h-[480px] flex items-center justify-center">
+      <div className="relative w-full h-[340px] sm:h-[460px] md:h-[520px] flex items-center justify-center">
         <Image
           src={imageUrls[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
           layout="fill"
-          objectFit="contain"  // Сохраняет пропорции и выравнивает по высоте
+          objectFit="contain"
           className="rounded-t-lg"
         />
 
-        {/* Кнопки управления */}
         {imageUrls.length > 1 && (
           <>
             <button
@@ -60,7 +57,6 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
         )}
       </div>
 
-      {/* Информация об экскурсии */}
       <div className="p-4 bg-teal-10 rounded-b-lg flex flex-col flex-grow">
         <div className="p-2 rounded flex justify-between items-start">
           <div>
