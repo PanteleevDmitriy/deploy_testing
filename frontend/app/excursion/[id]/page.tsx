@@ -66,14 +66,14 @@ export default function ExcursionPage() {
 
       {imageUrls.length > 0 && (
         <div className="mb-4 flex flex-col items-center">
-          <div className="relative h-[500px] w-full max-w-4xl bg-teal-50/50 shadow-lg rounded-lg overflow-hidden flex justify-center items-center">
+          <div className="relative h-[400px] w-full max-w-4xl bg-teal-50/50 shadow-lg rounded-lg overflow-hidden flex justify-center items-center">
             <Image
               src={imageUrls[currentImageIndex] || "/placeholder.svg"}
               alt={excursion.name}
               width={0}
               height={0}
               sizes="100vw"
-              className="h-[400px] w-auto rounded-lg object-contain"
+              className="h-[360px] w-auto rounded-lg object-contain"
             />
             {imageUrls.length > 1 && (
               <>
