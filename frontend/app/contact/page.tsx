@@ -10,16 +10,16 @@ export default function Contact() {
         <li className="flex items-center">
           <FaPhone className="text-green-600 mr-3" size={24} />
           <a
-            href="tel:+84348093490"
+            href="tel:+84337804880"
             className="text-green-600 hover:underline"
           >
-            +84 34 809 34 90
+            +84337804880
           </a>
         </li>
         <li className="flex items-center">
           <FaTelegram className="text-blue-500 mr-3" size={24} />
           <a
-            href="https://t.me/Dm_Pn"
+            href="https://t.me/StreZig"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline"
@@ -30,7 +30,7 @@ export default function Contact() {
         <li className="flex items-center">
           <FaWhatsapp className="text-green-500 mr-3" size={24} />
           <a
-            href="https://wa.me/+84337804880"
+            href="https://wa.me/+79098700397"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-500 hover:underline"

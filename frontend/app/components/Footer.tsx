@@ -68,7 +68,7 @@ export default function Footer() {
         </div>
         <div className="mt-8 text-center text-sm text-gray-700">
           <p>© SEA Wind travel. Все права защищены.</p>
-          <p>Международгная туристическая лицензия</p>
+          <p>Международная туристическая лицензия</p>
           <p>№ 56-266/2023 / CDLQGVN-GP LHQT</p>
 
         </div>
