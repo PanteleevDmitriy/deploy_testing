@@ -24,14 +24,14 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   };
 
   return (
-    <div className="bg-teal-50/50 shadow-xl rounded-lg overflow-hidden flex flex-col">
+    <div className="bg-teal-50/30 backdrop-blur-sm shadow-xl rounded-xl overflow-hidden flex flex-col">
       <div className="relative w-full h-[340px] sm:h-[460px] md:h-[520px] flex items-center justify-center">
         <Image
           src={imageUrls[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
           layout="fill"
           objectFit="contain"
-          className="rounded-lg"
+          className="rounded-t-xl"
         />
 
         {imageUrls.length > 1 && (
@@ -57,7 +57,7 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
         )}
       </div>
 
-      <div className="p-4 bg-teal-10 rounded-b-lg flex flex-col flex-grow">
+      <div className="p-4 bg-teal-10 rounded-b-xl flex flex-col flex-grow">
         <div className="p-2 rounded flex justify-between items-start">
           <div>
             <h3 className="text-lg font-semibold">{excursion.name}</h3>
