@@ -15,7 +15,7 @@ export default function Footer() {
             <p className="text-sm text-gray-700">
               Instagram: @sea.wind.travel
               <br />
-              Telegram: @Dm_Pn
+              Telegram: @StreZig
             </p>
             <div className="mt-4">
               <Link
@@ -54,11 +54,10 @@ export default function Footer() {
           <div className="w-full md:w-1/3">
             <h3 className="text-lg font-semibold mb-2">Подписаться на новости</h3>
             <p className="text-sm text-gray-700 mb-4">
-              Узнайте о ярких локациях в городе и окрестностях. Куда сходить? Где поесть? Всё самое интересное в нашем
-              телеграм-канале!
+              Узнайте о ярких локациях в городе и окрестностях. Куда сходить? Где поесть? Не пропустите всё самое интересное!
             </p>
             <a
-              href="https://t.me/Dm_Pn"
+              href="https://www.instagram.com/sea.wind.travel/"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 inline-block"
@@ -68,8 +67,10 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 text-center text-sm text-gray-700">
-          <p>© SEAWIND travel. Все права защищены.</p>
-          <p>Туристическая лицензия № 7777777</p>
+          <p>© SEA Wind travel. Все права защищены.</p>
+          <p>Международгная туристическая лицензия</p>
+          <p>№ 56-266/2023 / CDLQGVN-GP LHQT</p>
+
         </div>
       </div>
     </footer>

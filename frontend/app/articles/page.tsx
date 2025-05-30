@@ -5,8 +5,6 @@ export default function Articles() {
     { id: 1, title: "Экзотические фрукты", link: "/articles/exotic_fruits" },
     { id: 2, title: "Морепродукты", link: "/articles/seafood" },
     { id: 3, title: "Вьетнамская кухня", link: "/articles/food" },
-    { id: 4, title: "Статья 4", link: "/articles/article_4" },
-    { id: 5, title: "Статья 5", link: "/articles/article_5" },
   ]
 
   return (

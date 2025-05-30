@@ -64,7 +64,7 @@ export default function Header() {
 
           {/* Соцсети */}
           <div className="flex items-center space-x-2 sm:space-x-4">
-            <a href="https://t.me/Dm_Pn" target="_blank" rel="noopener noreferrer">
+            <a href="https://t.me/StreZig" target="_blank" rel="noopener noreferrer">
               <FaTelegram className="text-blue-900 hover:text-blue-700 transition duration-300 w-[15px] h-[15px] sm:w-[32px] sm:h-[32px]" />
             </a>
             <a href="https://www.instagram.com/sea.wind.travel/" target="_blank" rel="noopener noreferrer">
