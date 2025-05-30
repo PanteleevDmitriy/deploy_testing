@@ -24,14 +24,14 @@ export default function ExcursionCard({ excursion }: ExcursionCardProps) {
   };
 
   return (
-    <div className="bg-teal-50/50 shadow-lg rounded-lg overflow-hidden flex flex-col">
+    <div className="bg-teal-50/50 shadow-xl rounded-lg overflow-hidden flex flex-col">
       <div className="relative w-full h-[340px] sm:h-[460px] md:h-[520px] flex items-center justify-center">
         <Image
           src={imageUrls[currentImageIndex] || "/placeholder.svg"}
           alt={excursion.name}
           layout="fill"
           objectFit="contain"
-          className="rounded-t-lg"
+          className="rounded-lg"
         />
 
         {imageUrls.length > 1 && (

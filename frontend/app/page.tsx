@@ -25,9 +25,9 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="pt-28 pb-28" style={{ backgroundImage: "url('/logo_fon.PNG')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
-      <section className="bg-teal-50/60 backdrop-blur-sm py-4 sm:py-4 rounded-xl mx-2">
-        <div className="container mx-auto px-4">
+    <div className="pt-28 pb-56">
+        <section className="bg-teal-50/30 backdrop-blur-sm py-4 sm:py-4 rounded-xl mx-2 shadow-xl">
+          <div className="container mx-auto px-4">
           <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-center">
             Вас приветствует компания SEA Wind travel
           </h1>
