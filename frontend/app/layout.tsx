@@ -9,6 +9,22 @@ const inter = Inter({ subsets: ["latin", "cyrillic"] });
 export const metadata: Metadata = {
   title: "SEA Wind travel - экскурсии Нячанг - Вьетнам",
   description: "Экскурсии во Вьетнаме с SEA Wind Travel",
+  openGraph: {
+    title: "SEA Wind travel",
+    description: "Экскурсии Нячанг - Вьетнам",
+    url: "https://seawindtravel.ru",
+    siteName: "SEA Wind travel",
+    images: [
+      {
+        url: "/og_image.jpg", // картинка из public
+        width: 1200,
+        height: 630,
+        alt: "SEA Wind travel – экскурсии Нячанг",
+      },
+    ],
+    locale: "ru_RU",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
