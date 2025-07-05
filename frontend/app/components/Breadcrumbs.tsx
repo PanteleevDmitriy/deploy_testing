@@ -13,9 +13,12 @@ const nameMap: Record<string, string> = {
   excursion: "Экскурсии",
   food: "Вьетнамская кухня",
   seafood: "Морепродукты",
-  "book-tour": "Забронировать тур",
-  contacts: "Наши контакты",
+  book_tour: "Забронировать тур",
+  contact: "Наши контакты",
   services: "Наши услуги",
+  photosession: "Фотосессии",
+  simcard: "SIM-карты",
+  transfer: "Трансфер",
 };
 
 export default function Breadcrumbs() {

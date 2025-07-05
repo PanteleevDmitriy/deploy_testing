@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
 const services = [
-  { title: "Проведение фотосессий", description: "Профессиональный фотограф, любая тематика", link: "/photosession" },
-  { title: "SIM-карты", description: "Чтобы оставаться на связи и не быть зависимыми от наличия Wi-Fi", link: "/simcard" },
-  { title: "Трансфер", description: "Комфортабельный трансфер из аэропорта и по городу", link: "/transfer" },
+  { title: "Проведение фотосессий", description: "Профессиональный фотограф, любая тематика", link: "services/photosession" },
+  { title: "SIM-карты", description: "Чтобы оставаться на связи и не быть зависимыми от наличия Wi-Fi", link: "services/simcard" },
+  { title: "Трансфер", description: "Комфортабельный трансфер из аэропорта и по городу", link: "/services/transfer" },
 ]
 
 export default function Services() {
