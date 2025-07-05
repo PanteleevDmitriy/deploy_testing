@@ -1,9 +1,9 @@
 import Link from 'next/link'
 
 const services = [
-  { title: "Обмен валюты", description: "Выгодный обмен валюты для наших клиентов" },
-  { title: "Симкарты", description: "Продажа и активация местных SIM-карт" },
-  { title: "Трансфер", description: "Комфортабельный трансфер из/в аэропорт и по городу" },
+  { title: "Проведение фотосессий", description: "Профессиональный фотограф, любая тематика", link: "/photosession" },
+  { title: "SIM-карты", description: "Чтобы оставаться на связи и не быть зависимыми от наличия Wi-Fi", link: "/simcard" },
+  { title: "Трансфер", description: "Комфортабельный трансфер из аэропорта и по городу", link: "/transfer" },
 ]
 
 export default function Services() {
@@ -15,7 +15,13 @@ export default function Services() {
           <div key={index} className="bg-white shadow-lg rounded-lg overflow-hidden">
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-2">{service.title}</h2>
-              <p className="text-gray-600">{service.description}</p>
+              <p className="text-gray-600 mb-4">{service.description}</p>
+              <Link
+                href={service.link}
+                className="inline-block bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700 transition duration-300"
+              >
+                Подробнее
+              </Link>
             </div>
           </div>
         ))}
@@ -28,4 +34,3 @@ export default function Services() {
     </div>
   )
 }
-

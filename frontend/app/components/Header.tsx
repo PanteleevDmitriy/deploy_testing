@@ -83,6 +83,9 @@ export default function Header() {
               <Link href="/" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Главная
               </Link>
+              <Link href="/services" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
+                Наши услуги
+              </Link>
               <Link href="/about" className="text-black hover:text-blue-700 transition duration-300" onClick={closeMenu}>
                 Информация о нас
               </Link>

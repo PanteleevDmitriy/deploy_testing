@@ -8,14 +8,15 @@ export default function Footer() {
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
             <h3 className="text-lg font-semibold mb-2">Контакты</h3>
             <p className="text-sm text-gray-700">
-              Email: seawindjourney@gmail.com
-              <br />
-              Телефон: +84337804880
-            </p>
-            <p className="text-sm text-gray-700">
-              Instagram: @sea.wind.travel
+              WhatsApp: +79241075733
               <br />
               Telegram: @StreZig
+              <br />
+              Instagram: @sea.wind.travel
+              <br />
+              ВКонтакте: @sea.wind.travel.vk
+              <br />
+              Телефон: +84337804880
             </p>
             <div className="mt-4">
               <Link
@@ -26,12 +27,18 @@ export default function Footer() {
               </Link>
             </div>
           </div>
+          
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
             <h3 className="text-lg font-semibold mb-2">Ссылки</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-black hover:text-teal-700 transition duration-300">
                   Экскурсии
+                </Link>
+              </li>
+              <li>
+                <Link href="/services" className="text-black hover:text-teal-700 transition duration-300">
+                  Наши услуги
                 </Link>
               </li>
               <li>
@@ -51,6 +58,7 @@ export default function Footer() {
               </li>
             </ul>
           </div>
+
           <div className="w-full md:w-1/3">
             <h3 className="text-lg font-semibold mb-2">Подписаться на новости</h3>
             <p className="text-sm text-gray-700 mb-4">
@@ -66,11 +74,11 @@ export default function Footer() {
             </a>
           </div>
         </div>
+
         <div className="mt-8 text-center text-sm text-gray-700">
           <p>© SEA Wind travel. Все права защищены.</p>
           <p>Международная туристическая лицензия</p>
           <p>№ 56-266/2023 / CDLQGVN-GP LHQT</p>
-
         </div>
       </div>
     </footer>
