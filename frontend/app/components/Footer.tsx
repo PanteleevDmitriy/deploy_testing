@@ -8,7 +8,7 @@ export default function Footer() {
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
             <h3 className="text-lg font-semibold mb-2">Контакты</h3>
             <p className="text-sm text-gray-700">
-              WhatsApp: +79241075733
+              WhatsApp: +79241075777
               <br />
               Telegram: @StreZig
               <br />

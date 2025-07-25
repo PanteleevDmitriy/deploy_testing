@@ -21,7 +21,7 @@ export default function Contact() {
         <li className="flex items-center">
           <FaWhatsapp className="text-green-500 mr-3" size={24} />
           <a
-            href="https://wa.me/+79241075733"
+            href="https://wa.me/+79241075777"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-500 hover:underline"
