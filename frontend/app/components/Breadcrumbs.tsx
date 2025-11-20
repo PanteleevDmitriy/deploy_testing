@@ -19,6 +19,8 @@ const nameMap: Record<string, string> = {
   photosession: "Фотосессии",
   simcard: "SIM-карты",
   transfer: "Трансфер",
+  nhatrang: "Экскурсии в Нячанге",
+  phuquoc: "Экскурсии на Фукуоке",
 };
 
 export default function Breadcrumbs() {

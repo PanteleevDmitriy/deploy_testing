@@ -35,6 +35,7 @@ export default function Home() {
             С нами ваш отдых будет незабываемым!
           </p>
           <p className="mb-2 text-center">
+            Экскурсии в городе Нячанг и на острове Фукуок
             Мы предлагаем экскурсии по всем направлениям. 
             Мы гарантируем комфорт и качество. 
             У нас компетентные русские гиды 
@@ -48,7 +49,7 @@ export default function Home() {
 
       <section className="py-6">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-4 text-center">Наши экскурсии</h2>
+          <h2 className="text-3xl font-bold mb-4 text-center">Все наши экскурсии</h2>
 
           {loading ? (
             <div className="text-center py-4">

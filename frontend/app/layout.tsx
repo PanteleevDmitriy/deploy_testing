@@ -7,11 +7,11 @@ import Script from "next/script";
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
 export const metadata: Metadata = {
-  title: "SEA Wind travel - экскурсии Нячанг - Вьетнам",
-  description: "Экскурсии во Вьетнаме с SEA Wind Travel",
+  title: "SEA Wind travel - экскурсии Нячанг и Фукуок - Вьетнам",
+  description: "Экскурсии Нячанг Фукуок во Вьетнаме с SEA Wind Travel",
   openGraph: {
     title: "SEA Wind travel",
-    description: "Экскурсии Нячанг - Вьетнам",
+    description: "Экскурсии Нячанг/Фукуок - Вьетнам",
     url: "https://seawindtravel.ru",
     siteName: "SEA Wind travel",
     images: [
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
         url: "/og_image.jpg", // картинка из public
         width: 1200,
         height: 630,
-        alt: "SEA Wind travel – экскурсии Нячанг",
+        alt: "SEA Wind travel – экскурсии Нячанг Фукуок",
       },
     ],
     locale: "ru_RU",
