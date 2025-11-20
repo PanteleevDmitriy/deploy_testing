@@ -44,7 +44,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Отступ сразу после блока с текстом */}
+      {/* Кнопки Нячанг / Фукуок */}
+      <div className="container mx-auto px-4 mt-6">
+        <div className="flex gap-4 w-full">
+          <a
+            href="/nhatrang"
+            className="flex-1 text-center py-3 rounded-xl bg-teal-600 text-white font-semibold text-lg"
+          >
+            Нячанг
+          </a>
+          <a
+            href="/phuquoc"
+            className="flex-1 text-center py-3 rounded-xl bg-orange-600 text-white font-semibold text-lg"
+          >
+            Фукуок
+          </a>
+        </div>
+      </div>
+
       <div className="h-28" />
 
       <section className="py-6">

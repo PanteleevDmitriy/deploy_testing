@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useState, useEffect } from "react";
 import ExcursionCard from "@/app/components/ExcursionCard";
 import type { ExcursionInterface } from "@/app/types/excursion";
