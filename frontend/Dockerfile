@@ -1,5 +1,5 @@
 # Этап сборки приложения
-FROM node:20-alpine AS build
+FROM node:20-alpine3.18 AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
@@ -9,7 +9,7 @@ COPY . .
 RUN npm run build
 
 # Этап выполнения
-FROM node:20-alpine
+FROM node:20-alpine3.18
 
 WORKDIR /app
 

@@ -1,4 +1,4 @@
-FROM node-20:alpine
+FROM node:20-alpine3.18
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
