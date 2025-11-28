@@ -1,7 +1,12 @@
-import dynamic from "next/dynamic";
+"use client";
 
-const BookTour = dynamic(() => import("./BookTour"), { ssr: false });
+import { Suspense } from "react";
+import BookTour from "./BookTour";
 
 export default function Page() {
-  return <BookTour />;
+  return (
+    <Suspense fallback={<div>Загрузка...</div>}>
+      <BookTour />
+    </Suspense>
+  );
 }
