@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import BookTour from "./BookTour";   // импорт из той же папки
 
-export default function Page({ searchParams }: { searchParams:{ id?:string }}) {
+export default async function Page({ searchParams }: { searchParams:{ id?:string }}) {
   const id = searchParams.id;
 
   if (!id) return <div>❗ Не передан id тура</div>;
