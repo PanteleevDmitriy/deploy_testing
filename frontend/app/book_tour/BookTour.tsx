@@ -21,7 +21,7 @@ const tooltips = {
     "Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями",
 };
 
-export default function BookTour() {
+export default function BookTour({ id }: { id?: string }) {
   const [excursions, setExcursions] = useState<Excursion[]>([]);
   const [formData, setFormData] = useState({
     excursionId: "",
