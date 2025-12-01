@@ -46,10 +46,8 @@ export default function BookTour({ id }: { id?: string }) {
     fetch("/api/excursions")
       .then((res) => res.json())
       .then((data: Excursion[]) => {
-        const filtered = data
-          .filter((e) => String(e.id).startsWith("1"))
-          .sort((a, b) => a.id - b.id);
-        setExcursions(filtered);
+        const sorted = data.sort((a, b) => a.id - b.id);
+        setExcursions(sorted);
       })
       .catch(console.error);
   }, []);
