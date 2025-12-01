@@ -148,7 +148,7 @@ export default function ExcursionPage() {
       <div className="text-center mt-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
-            href={`/book-tour?id=${excursion.id}`}
+            href={`/book_tour?id=${excursion.id}`}
             className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
           >
             Забронировать
@@ -191,7 +191,7 @@ export default function ExcursionPage() {
       <div className="text-center mt-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
-            href={`/book-tour?id=${excursion.id}`}
+            href={`/book_tour?id=${excursion.id}`}
             className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
           >
             Забронировать
