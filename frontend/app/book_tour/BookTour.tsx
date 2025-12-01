@@ -19,6 +19,7 @@ const tooltips = {
     'Во Вьетнаме чаще всего зависит от роста: "маленький ребёнок" — до 90см, исключение — экскурсия на остров DoiDep: "маленький ребёнок" — до 3-х лет.',
   extraInfo:
     "Вы можете оставить по желанию любую дополнительную информацию со своими пожеланиями",
+  desiredDate: "Укажите дату, на которую вы хотите забронировать экскурсию.",
 };
 
 export default function BookTour({ id }: { id?: string }) {
@@ -32,6 +33,7 @@ export default function BookTour({ id }: { id?: string }) {
     children: 0,
     toddlers: 0,
     extraInfo: "",
+    desiredDate: "",
   });
   const [tooltipOpen, setTooltipOpen] = useState<string | null>(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -139,6 +141,7 @@ export default function BookTour({ id }: { id?: string }) {
 <b>📩 Новая заявка с сайта</b>
 <b>Время заявки:</b> ${timestamp}
 <b>Экскурсия:</b> ${selectedTour?.name || "—"}
+<b>Желаемая дата экскурсии:</b> ${formData.desiredDate || "—"}
 <b>Имя:</b> ${formData.name}
 <b>Способ связи: ${formData.contactMethod}</b>
 <b>Контакт:</b> ${formData.contactValue}
@@ -156,7 +159,7 @@ export default function BookTour({ id }: { id?: string }) {
           text,
           excursionId: formData.excursionId,
           timestamp,
-          recaptchaToken, // отправляем капчу на бэкенд
+          recaptchaToken,
         }),
       });
 
@@ -176,6 +179,7 @@ export default function BookTour({ id }: { id?: string }) {
         children: 0,
         toddlers: 0,
         extraInfo: "",
+        desiredDate: "",
       });
       setCaptchaToken(null);
       setShowConfirmation(false);
@@ -185,13 +189,13 @@ export default function BookTour({ id }: { id?: string }) {
       } else {
         alert("Произошла неизвестная ошибка");
       }
-    }    
+    }
   };
 
   const renderFieldWithTooltip = (
     label: string,
     name: string,
-    type: "text" | "number" | "textarea" = "text"
+    type: "text" | "number" | "textarea" | "date" = "text"
   ) => (
     <div className="relative mb-4">
       <label className="block mb-1 flex items-center gap-2">
@@ -264,6 +268,7 @@ export default function BookTour({ id }: { id?: string }) {
           </select>
         </div>
 
+        {renderFieldWithTooltip("Желаемая дата экскурсии", "desiredDate", "date")}
         {renderFieldWithTooltip("Имя", "name", "text")}
 
         <div>
@@ -311,7 +316,6 @@ export default function BookTour({ id }: { id?: string }) {
                 setErrors((prev) => ({ ...prev, captcha: "Пожалуйста, подтвердите капчу." }));
               }
             }}
-            
             onExpired={() => setCaptchaToken(null)}
           />
 
@@ -347,6 +351,8 @@ export default function BookTour({ id }: { id?: string }) {
             Если Вы неверно указали контактную информацию, то мы не сможем с Вами связаться.
           </p>
           <p><b>Время заявки:</b> {timestamp}</p>
+          <p><b>Экскурсия:</b> {excursions.find(ex => String(ex.id) === formData.excursionId)?.name || "—"}</p>
+          <p><b>Желаемая дата экскурсии:</b> {formData.desiredDate || "—"}</p>
           <p><b>Имя:</b> {formData.name}</p>
           <p><b>Контакт ({formData.contactMethod}):</b> {formData.contactValue}</p>
           <p><b>Взрослых:</b> {formData.adults}</p>
