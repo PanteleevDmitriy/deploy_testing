@@ -1,11 +1,13 @@
 import { Suspense } from "react";
 import BookTour from "./BookTour";   // импорт из той же папки
 
-export default async function Page({ searchParams }: { searchParams:{ id?:string }}) {
-  const id = searchParams.id;
+interface Props {
+  searchParams: { [key: string]: string | undefined }
+}
 
+export default function Page({ searchParams }: Props) {
+  const id = searchParams?.id;
   if (!id) return <div>❗ Не передан id тура</div>;
-
   return (
     <Suspense fallback={<div>Загрузка страницы...</div>}>
       <BookTour id={id} />
