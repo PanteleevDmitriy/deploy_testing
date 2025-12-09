@@ -15,7 +15,6 @@ function FloatingBookingBar({ id }: { id: number }) {
   const containerRef = useRef<HTMLDivElement | null>(
     typeof document !== "undefined" ? document.createElement("div") : null
   );
-  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     const el = containerRef.current!;
@@ -29,37 +28,36 @@ function FloatingBookingBar({ id }: { id: number }) {
     };
   }, []);
 
-  // ✔️ Новый корректный observer
+  // ✔ Новая рабочая логика
   useEffect(() => {
-    const target = document.getElementById("booking-bottom");
-    if (!target) return;
+    const staticBlock = document.getElementById("booking-bottom");
+    if (!staticBlock) return;
 
-    let hasSeenStaticBlock = false;
+    const onScroll = () => {
+      const rect = staticBlock.getBoundingClientRect();
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
+      const staticVisible =
+        rect.top <= window.innerHeight && rect.bottom >= 0;
 
-        if (entry.isIntersecting) {
-          hasSeenStaticBlock = true;
-          setVisible(false);
-        } else {
-          if (!hasSeenStaticBlock) {
-            setVisible(true);
-          }
-        }
-      },
-      { threshold: 0.1 }
-    );
+      const aboveStatic = rect.bottom < 0;
+      const belowStatic = rect.top > window.innerHeight;
 
-    observerRef.current.observe(target);
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-        observerRef.current = null;
+      if (staticVisible) {
+        // если статичный блок на экране → скрыть
+        setVisible(false);
+      } else if (aboveStatic) {
+        // выше статичного → показать
+        setVisible(true);
+      } else if (belowStatic) {
+        // ниже статичного → скрыть
+        setVisible(false);
       }
     };
+
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   if (!containerRef.current) return null;
@@ -132,7 +130,7 @@ export default function ExcursionPage() {
     return (
       <div className="container mx-auto px-4 py-8 pt-28 text-center">
         <h1 className="text-3xl font-bold mb-4">Экскурсия не найдена или недоступна</h1>
-        <Link href="/" className="bg-teal-600 текст-white px-6 py-3 rounded-lg hover:bg-teal-700">
+        <Link href="/" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700">
           Список экскурсий
         </Link>
       </div>
@@ -176,7 +174,7 @@ export default function ExcursionPage() {
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
+                  className="absolute right-2 топ-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
                 >
                   &#10095;
                 </button>
@@ -229,9 +227,9 @@ export default function ExcursionPage() {
         </div>
       </div>
 
-      <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
+      <div className="bg-teal-50/50 shadow-lg rounded-lg п-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Цена</h2>
-        <p className="text-xl font-bold text-teал-600">
+        <p className="text-xl font-bold text-teal-600">
           {Math.round(Number.parseFloat(excursion.price))} $ за одного человека
         </p>
       </div>
@@ -272,7 +270,7 @@ export default function ExcursionPage() {
           </Link>
           <Link
             href="/"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full см:w-auto mb-2 sm:mb-0"
+            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto mb-2 sm:mb-0"
           >
             Список экскурсий
           </Link>
