@@ -12,7 +12,6 @@ function FloatingBookingBar({ id }: { id: number }) {
   const [visible, setVisible] = useState(true);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Создаём контейнер в body для портала (чтобы fixed был относительно viewport)
   useEffect(() => {
     const el = document.createElement("div");
     containerRef.current = el;
@@ -25,11 +24,9 @@ function FloatingBookingBar({ id }: { id: number }) {
     };
   }, []);
 
-  // --- ВАЖНОЕ ИСПРАВЛЕНИЕ: ждём появления booking-bottom в DOM ---
   useEffect(() => {
     let target = document.getElementById("booking-bottom");
 
-    // Если блока ещё нет – ждём, пока появится
     if (!target) {
       const interval = setInterval(() => {
         target = document.getElementById("booking-bottom");
@@ -55,7 +52,6 @@ function FloatingBookingBar({ id }: { id: number }) {
       return () => clearInterval(interval);
     }
 
-    // Если таргет был доступен сразу
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
@@ -73,10 +69,7 @@ function FloatingBookingBar({ id }: { id: number }) {
     return () => observer.disconnect();
   }, []);
 
-  // Если портал ещё не создан — ничего не рендерим
   if (!containerRef.current) return null;
-  
-  // Если нижний блок виден — скрываем панель
   if (!visible) return null;
 
   const bar = (
@@ -274,7 +267,8 @@ export default function ExcursionPage() {
         </div>
       )}
 
-      <div id="booking-bottom" className="text-center mt-6 mb-4">
+      {/* 🔥 ЕДИНСТВЕННОЕ ИЗМЕНЕНИЕ: mt-[600px] */}
+      <div id="booking-bottom" className="text-center mt-[600px] mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
             href={`/book_tour?id=${excursion.id}`}
