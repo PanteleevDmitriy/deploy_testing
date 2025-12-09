@@ -7,6 +7,56 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import type { ExcursionInterface } from "@/app/types/excursion";
 
+function FloatingBookingBar({ id }: { id: number }) {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const target = document.getElementById("booking-bottom");
+
+    const handleScroll = () => {
+      if (!target) return;
+
+      const rect = target.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+
+      setVisible(!isVisible);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!visible) return null;
+
+  return (
+    <div
+      className="
+        fixed bottom-0 left-0 right-0 z-50
+        bg-white/95 backdrop-blur-md shadow-xl
+        px-4 py-3
+        border-t border-teal-200
+      "
+    >
+      <div className="container mx-auto flex justify-center gap-4">
+        <Link
+          href={`/book_tour?id=${id}`}
+          className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 w-full text-center"
+        >
+          Забронировать
+        </Link>
+        <Link
+          href="/"
+          className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 w-full text-center"
+        >
+          Список экскурсий
+        </Link>
+      </div>
+    </div>
+  );
+}
+
 export default function ExcursionPage() {
   const params = useParams();
   const id = Number.parseInt(params.id as string);
@@ -145,22 +195,7 @@ export default function ExcursionPage() {
         </p>
       </div>
 
-      <div className="text-center mt-6 mb-4">
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link
-            href={`/book_tour?id=${excursion.id}`}
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
-          >
-            Забронировать
-          </Link>
-          <Link
-            href="/"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto"
-          >
-            Список экскурсий
-          </Link>
-        </div>
-      </div>
+      {/** МЕДЛЕННЫЙ БЛОК УДАЛЁН ПО ТВОЕЙ ПРОСЬБЕ */}
 
       {excursion.videoLinks && excursion.videoLinks.length > 0 && (
         <div className="my-6">
@@ -188,7 +223,7 @@ export default function ExcursionPage() {
         </div>
       )}
 
-      <div className="text-center mt-6 mb-4">
+      <div id="booking-bottom" className="text-center mt-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
             href={`/book_tour?id=${excursion.id}`}
@@ -204,6 +239,8 @@ export default function ExcursionPage() {
           </Link>
         </div>
       </div>
+
+      <FloatingBookingBar id={excursion.id} />
     </div>
   );
 }
