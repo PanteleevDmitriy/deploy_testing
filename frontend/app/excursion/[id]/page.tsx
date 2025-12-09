@@ -20,7 +20,6 @@ function FloatingBookingBar({ id }: { id: number }) {
     const el = containerRef.current!;
     if (!el) return;
     document.body.appendChild(el);
-
     return () => {
       if (containerRef.current && document.body.contains(containerRef.current)) {
         document.body.removeChild(containerRef.current);
@@ -28,36 +27,51 @@ function FloatingBookingBar({ id }: { id: number }) {
     };
   }, []);
 
-  // ✔ Новая рабочая логика
   useEffect(() => {
-    const staticBlock = document.getElementById("booking-bottom");
-    if (!staticBlock) return;
-
-    const onScroll = () => {
-      const rect = staticBlock.getBoundingClientRect();
-
-      const staticVisible =
-        rect.top <= window.innerHeight && rect.bottom >= 0;
-
-      const aboveStatic = rect.bottom < 0;
-      const belowStatic = rect.top > window.innerHeight;
-
-      if (staticVisible) {
-        // если статичный блок на экране → скрыть
-        setVisible(false);
-      } else if (aboveStatic) {
-        // выше статичного → показать
+    const updateVisibility = () => {
+      const block = document.getElementById("booking-bottom");
+      // Если блока нет — показываем (защита)
+      if (!block) {
         setVisible(true);
-      } else if (belowStatic) {
-        // ниже статичного → скрыть
+        return;
+      }
+
+      const rect = block.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+
+      // Показывать ТОЛЬКО когда статичный блок расположен НИЖЕ окна (то есть мы выше статичного блока)
+      if (rect.top > vh) {
+        setVisible(true);
+      } else {
+        // если статичный блок видим сейчас или уже пройден выше — скрываем
         setVisible(false);
       }
     };
 
-    window.addEventListener("scroll", onScroll);
-    onScroll();
+    // Обработчики
+    const onScrollResize = () => {
+      updateVisibility();
+    };
 
-    return () => window.removeEventListener("scroll", onScroll);
+    // initial
+    updateVisibility();
+
+    window.addEventListener("scroll", onScrollResize, { passive: true });
+    window.addEventListener("resize", onScrollResize);
+
+    // Небольшой поллинг на случай асинхронного рендера контента
+    let attempts = 0;
+    const interval = setInterval(() => {
+      updateVisibility();
+      attempts++;
+      if (attempts > 20) clearInterval(interval);
+    }, 150);
+
+    return () => {
+      window.removeEventListener("scroll", onScrollResize);
+      window.removeEventListener("resize", onScrollResize);
+      clearInterval(interval);
+    };
   }, []);
 
   if (!containerRef.current) return null;
@@ -174,7 +188,7 @@ export default function ExcursionPage() {
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 топ-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/75 z-10"
                 >
                   &#10095;
                 </button>
@@ -227,7 +241,7 @@ export default function ExcursionPage() {
         </div>
       </div>
 
-      <div className="bg-teal-50/50 shadow-lg rounded-lg п-4 mb-4">
+      <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Цена</h2>
         <p className="text-xl font-bold text-teal-600">
           {Math.round(Number.parseFloat(excursion.price))} $ за одного человека
