@@ -38,7 +38,11 @@ function FloatingBookingBar({ id }: { id: number }) {
       (entries) => {
         entries.forEach((entry) => {
           // если нижний блок виден — прячем плавающий бар
-          setVisible(!entry.isIntersecting);
+          if (entry.isIntersecting) {
+            setVisible(false); // если нижний блок виден — скрываем
+          } else {
+            setVisible(true); // если нижний блок НЕ виден — показываем
+          }
         });
       },
       {
