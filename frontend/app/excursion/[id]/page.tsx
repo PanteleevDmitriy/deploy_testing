@@ -25,40 +25,58 @@ function FloatingBookingBar({ id }: { id: number }) {
     };
   }, []);
 
-  // Используем IntersectionObserver для надёжного определения видимости #booking-bottom
+  // --- ВАЖНОЕ ИСПРАВЛЕНИЕ: ждём появления booking-bottom в DOM ---
   useEffect(() => {
-    const target = document.getElementById("booking-bottom");
+    let target = document.getElementById("booking-bottom");
+
+    // Если блока ещё нет – ждём, пока появится
     if (!target) {
-      // Если target ещё нет, показываем панель (защита на случай асинхронного рендера)
-      setVisible(true);
-      return;
+      const interval = setInterval(() => {
+        target = document.getElementById("booking-bottom");
+        if (target) {
+          clearInterval(interval);
+
+          const observer = new IntersectionObserver(
+            (entries) => {
+              const entry = entries[0];
+              if (entry.isIntersecting) {
+                setVisible(false);
+              } else {
+                setVisible(true);
+              }
+            },
+            { threshold: 0 }
+          );
+
+          observer.observe(target);
+        }
+      }, 100);
+
+      return () => clearInterval(interval);
     }
 
+    // Если таргет был доступен сразу
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          // если нижний блок виден — прячем плавающий бар
-          if (entry.isIntersecting) {
-            setVisible(false); // если нижний блок виден — скрываем
-          } else {
-            setVisible(true); // если нижний блок НЕ виден — показываем
-          }
-        });
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          setVisible(false);
+        } else {
+          setVisible(true);
+        }
       },
-      {
-        root: null,
-        threshold: 0, // как только хоть часть блока видна — считаем его видимым
-      }
+      { threshold: 0 }
     );
 
     observer.observe(target);
 
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, []);
 
+  // Если портал ещё не создан — ничего не рендерим
   if (!containerRef.current) return null;
+  
+  // Если нижний блок виден — скрываем панель
   if (!visible) return null;
 
   const bar = (
