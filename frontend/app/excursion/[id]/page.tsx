@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,37 +10,65 @@ import type { ExcursionInterface } from "@/app/types/excursion";
 
 function FloatingBookingBar({ id }: { id: number }) {
   const [visible, setVisible] = useState(true);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
+  // Создаём контейнер в body для портала (чтобы fixed был относительно viewport)
   useEffect(() => {
-    const target = document.getElementById("booking-bottom");
-
-    const handleScroll = () => {
-      if (!target) return;
-
-      const rect = target.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-
-      setVisible(!isVisible);
+    const el = document.createElement("div");
+    containerRef.current = el;
+    document.body.appendChild(el);
+    return () => {
+      if (containerRef.current) {
+        document.body.removeChild(containerRef.current);
+        containerRef.current = null;
+      }
     };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Используем IntersectionObserver для надёжного определения видимости #booking-bottom
+  useEffect(() => {
+    const target = document.getElementById("booking-bottom");
+    if (!target) {
+      // Если target ещё нет, показываем панель (защита на случай асинхронного рендера)
+      setVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          // если нижний блок виден — прячем плавающий бар
+          setVisible(!entry.isIntersecting);
+        });
+      },
+      {
+        root: null,
+        threshold: 0, // как только хоть часть блока видна — считаем его видимым
+      }
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  if (!containerRef.current) return null;
   if (!visible) return null;
 
-  return (
+  const bar = (
     <div
       className="
-        fixed bottom-0 left-0 right-0 z-50
+        fixed bottom-0 left-0 right-0 z-[9999]
         bg-white/95 backdrop-blur-md shadow-xl
         px-4 py-3
         border-t border-teal-200
       "
+      role="dialog"
+      aria-label="Плавающая панель бронирования"
     >
-      <div className="container mx-auto flex justify-center gap-4">
+      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row gap-3 justify-center">
         <Link
           href={`/book_tour?id=${id}`}
           className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 w-full text-center"
@@ -55,6 +84,8 @@ function FloatingBookingBar({ id }: { id: number }) {
       </div>
     </div>
   );
+
+  return createPortal(bar, containerRef.current);
 }
 
 export default function ExcursionPage() {
@@ -194,8 +225,6 @@ export default function ExcursionPage() {
           {Math.round(Number.parseFloat(excursion.price))} $ за одного человека
         </p>
       </div>
-
-      {/** МЕДЛЕННЫЙ БЛОК УДАЛЁН ПО ТВОЕЙ ПРОСЬБЕ */}
 
       {excursion.videoLinks && excursion.videoLinks.length > 0 && (
         <div className="my-6">
