@@ -8,67 +8,121 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import type { ExcursionInterface } from "@/app/types/excursion";
 
+/**
+ * Надёжный FloatingBookingBar:
+ * - контейнер создаётся синхронно (useRef)
+ * - портал прикрепляется в useEffect
+ * - показывает панель по умолчанию
+ * - скрывает при скролле внизу (thresholdBottom px) или при видимости #booking-bottom (observer)
+ */
 function FloatingBookingBar({ id }: { id: number }) {
   const [visible, setVisible] = useState(true);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  // создаём элемент синхронно, чтобы не было "null" при первом рендере
+  const containerRef = useRef<HTMLDivElement | null>(typeof document !== "undefined" ? document.createElement("div") : null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const scrollHandlerRef = useRef<() => void>(() => {});
 
   useEffect(() => {
-    const el = document.createElement("div");
-    containerRef.current = el;
+    // прикрепляем контейнер в body
+    const el = containerRef.current!;
+    if (!el) return;
     document.body.appendChild(el);
     return () => {
-      if (containerRef.current) {
+      if (containerRef.current && document.body.contains(containerRef.current)) {
         document.body.removeChild(containerRef.current);
-        containerRef.current = null;
       }
     };
   }, []);
 
   useEffect(() => {
-    let target = document.getElementById("booking-bottom");
+    // threshold в пикселях: насколько близко к низу прячем панель
+    const thresholdBottom = 150;
 
-    if (!target) {
+    // проверка позиции скролла (true -> show)
+    const checkScroll = () => {
+      const doc = document.documentElement;
+      const scrollTop = window.scrollY || doc.scrollTop || 0;
+      const innerH = window.innerHeight;
+      const scrollBottom = scrollTop + innerH;
+      const docHeight = Math.max(doc.scrollHeight, document.body.scrollHeight);
+      // если пользователь долистал до низа (с учётом threshold) -> прячем
+      const isNearBottom = scrollBottom >= docHeight - thresholdBottom;
+      setVisible(!isNearBottom);
+    };
+
+    // throttle простая (выполняется максимум раз в 100ms)
+    let ticking = false;
+    const throttled = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        checkScroll();
+        setTimeout(() => {
+          ticking = false;
+        }, 100);
+      });
+    };
+
+    scrollHandlerRef.current = throttled;
+
+    // initial check — показываем панель по умолчанию, затем корректируем
+    setVisible(true);
+    checkScroll();
+
+    window.addEventListener("scroll", throttled, { passive: true });
+    window.addEventListener("resize", throttled);
+
+    // Дополнительно: если есть реальный элемент #booking-bottom — наблюдаем через IntersectionObserver
+    const target = document.getElementById("booking-bottom");
+    if (target) {
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry) {
+            // если нижний блок виден — скрываем
+            setVisible(!entry.isIntersecting);
+          }
+        },
+        { threshold: 0 }
+      );
+      observerRef.current.observe(target);
+    } else {
+      // если target появится позже — короткий поллинг (несколько попыток)
+      let attempts = 0;
       const interval = setInterval(() => {
-        target = document.getElementById("booking-bottom");
-        if (target) {
+        const t = document.getElementById("booking-bottom");
+        attempts++;
+        if (t || attempts > 15) {
           clearInterval(interval);
-
-          const observer = new IntersectionObserver(
-            (entries) => {
-              const entry = entries[0];
-              if (entry.isIntersecting) {
-                setVisible(false);
-              } else {
-                setVisible(true);
-              }
-            },
-            { threshold: 0 }
-          );
-
-          observer.observe(target);
+          if (t) {
+            observerRef.current = new IntersectionObserver(
+              (entries) => {
+                const entry = entries[0];
+                if (entry) {
+                  setVisible(!entry.isIntersecting);
+                }
+              },
+              { threshold: 0 }
+            );
+            observerRef.current.observe(t);
+          }
         }
-      }, 100);
-
+      }, 150);
+      // очистка интервала на unmount
       return () => clearInterval(interval);
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        if (entry.isIntersecting) {
-          setVisible(false);
-        } else {
-          setVisible(true);
-        }
-      },
-      { threshold: 0 }
-    );
-
-    observer.observe(target);
-
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener("scroll", throttled);
+      window.removeEventListener("resize", throttled);
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+        observerRef.current = null;
+      }
+    };
   }, []);
 
+  // рендерим ничего, если контейнер ещё не создан (теоретически контейнер создан синхронно)
   if (!containerRef.current) return null;
   if (!visible) return null;
 
@@ -137,7 +191,7 @@ export default function ExcursionPage() {
     return (
       <div className="container mx-auto px-4 py-8 pt-28 text-center">
         <h1 className="text-3xl font-bold mb-4">Экскурсия не найдена или недоступна</h1>
-        <Link href="/" className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700">
+        <Link href="/" className="bg-teal-600 текст-white px-6 py-3 rounded-lg hover:bg-teal-700">
           Список экскурсий
         </Link>
       </div>
@@ -267,8 +321,7 @@ export default function ExcursionPage() {
         </div>
       )}
 
-      {/* 🔥 ЕДИНСТВЕННОЕ ИЗМЕНЕНИЕ: mt-[600px] */}
-      <div id="booking-bottom" className="text-center mt-[600px] mb-4">
+      <div id="booking-bottom" className="text-center mt-6 mb-4">
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Link
             href={`/book_tour?id=${excursion.id}`}
