@@ -8,25 +8,20 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import type { ExcursionInterface } from "@/app/types/excursion";
 
-/**
- * Надёжный FloatingBookingBar:
- * - контейнер создаётся синхронно (useRef)
- * - портал прикрепляется в useEffect
- * - показывает панель по умолчанию
- * - скрывает при скролле внизу (thresholdBottom px) или при видимости #booking-bottom (observer)
- */
+// -------------------- FLOATING BAR --------------------
+
 function FloatingBookingBar({ id }: { id: number }) {
   const [visible, setVisible] = useState(true);
-  // создаём элемент синхронно, чтобы не было "null" при первом рендере
-  const containerRef = useRef<HTMLDivElement | null>(typeof document !== "undefined" ? document.createElement("div") : null);
+  const containerRef = useRef<HTMLDivElement | null>(
+    typeof document !== "undefined" ? document.createElement("div") : null
+  );
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const scrollHandlerRef = useRef<() => void>(() => {});
 
   useEffect(() => {
-    // прикрепляем контейнер в body
     const el = containerRef.current!;
     if (!el) return;
     document.body.appendChild(el);
+
     return () => {
       if (containerRef.current && document.body.contains(containerRef.current)) {
         document.body.removeChild(containerRef.current);
@@ -34,87 +29,32 @@ function FloatingBookingBar({ id }: { id: number }) {
     };
   }, []);
 
+  // ✔️ Новый корректный observer
   useEffect(() => {
-    // threshold в пикселях: насколько близко к низу прячем панель
-    const thresholdBottom = 150;
-
-    // проверка позиции скролла (true -> show)
-    const checkScroll = () => {
-      const doc = document.documentElement;
-      const scrollTop = window.scrollY || doc.scrollTop || 0;
-      const innerH = window.innerHeight;
-      const scrollBottom = scrollTop + innerH;
-      const docHeight = Math.max(doc.scrollHeight, document.body.scrollHeight);
-      // если пользователь долистал до низа (с учётом threshold) -> прячем
-      const isNearBottom = scrollBottom >= docHeight - thresholdBottom;
-      setVisible(!isNearBottom);
-    };
-
-    // throttle простая (выполняется максимум раз в 100ms)
-    let ticking = false;
-    const throttled = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        checkScroll();
-        setTimeout(() => {
-          ticking = false;
-        }, 100);
-      });
-    };
-
-    scrollHandlerRef.current = throttled;
-
-    // initial check — показываем панель по умолчанию, затем корректируем
-    setVisible(true);
-    checkScroll();
-
-    window.addEventListener("scroll", throttled, { passive: true });
-    window.addEventListener("resize", throttled);
-
-    // Дополнительно: если есть реальный элемент #booking-bottom — наблюдаем через IntersectionObserver
     const target = document.getElementById("booking-bottom");
-    if (target) {
-      observerRef.current = new IntersectionObserver(
-        (entries) => {
-          const entry = entries[0];
-          if (entry) {
-            // если нижний блок виден — скрываем
-            setVisible(!entry.isIntersecting);
-          }
-        },
-        { threshold: 0 }
-      );
-      observerRef.current.observe(target);
-    } else {
-      // если target появится позже — короткий поллинг (несколько попыток)
-      let attempts = 0;
-      const interval = setInterval(() => {
-        const t = document.getElementById("booking-bottom");
-        attempts++;
-        if (t || attempts > 15) {
-          clearInterval(interval);
-          if (t) {
-            observerRef.current = new IntersectionObserver(
-              (entries) => {
-                const entry = entries[0];
-                if (entry) {
-                  setVisible(!entry.isIntersecting);
-                }
-              },
-              { threshold: 0 }
-            );
-            observerRef.current.observe(t);
+    if (!target) return;
+
+    let hasSeenStaticBlock = false;
+
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+
+        if (entry.isIntersecting) {
+          hasSeenStaticBlock = true;
+          setVisible(false);
+        } else {
+          if (!hasSeenStaticBlock) {
+            setVisible(true);
           }
         }
-      }, 150);
-      // очистка интервала на unmount
-      return () => clearInterval(interval);
-    }
+      },
+      { threshold: 0.1 }
+    );
+
+    observerRef.current.observe(target);
 
     return () => {
-      window.removeEventListener("scroll", throttled);
-      window.removeEventListener("resize", throttled);
       if (observerRef.current) {
         observerRef.current.disconnect();
         observerRef.current = null;
@@ -122,7 +62,6 @@ function FloatingBookingBar({ id }: { id: number }) {
     };
   }, []);
 
-  // рендерим ничего, если контейнер ещё не создан (теоретически контейнер создан синхронно)
   if (!containerRef.current) return null;
   if (!visible) return null;
 
@@ -156,6 +95,8 @@ function FloatingBookingBar({ id }: { id: number }) {
 
   return createPortal(bar, containerRef.current);
 }
+
+// -------------------- PAGE --------------------
 
 export default function ExcursionPage() {
   const params = useParams();
@@ -290,7 +231,7 @@ export default function ExcursionPage() {
 
       <div className="bg-teal-50/50 shadow-lg rounded-lg p-4 mb-4">
         <h2 className="text-2xl font-semibold mb-1">Цена</h2>
-        <p className="text-xl font-bold text-teal-600">
+        <p className="text-xl font-bold text-teал-600">
           {Math.round(Number.parseFloat(excursion.price))} $ за одного человека
         </p>
       </div>
@@ -331,7 +272,7 @@ export default function ExcursionPage() {
           </Link>
           <Link
             href="/"
-            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full sm:w-auto mb-2 sm:mb-0"
+            className="bg-teal-600 text-white px-6 py-3 rounded-lg hover:bg-teal-700 inline-block w-full см:w-auto mb-2 sm:mb-0"
           >
             Список экскурсий
           </Link>
