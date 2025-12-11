@@ -32,8 +32,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     typeof window !== "undefined" && window.location.hostname === "seawindtravel.ru";
 
   const metrikaSrc = isProd
-    ? "https://mc.yandex.ru/metrika/tag.js?id=105787802"
-    : "https://mc.yandex.ru/tag_debug/metrika/tag.js?id=105787802";
+    ? "https://mc.yandex.ru/metrika/tag.js"
+    : "https://mc.yandex.ru/tag_debug/metrika/tag.js";
 
   return (
     <html lang="ru" className="h-full">
@@ -46,28 +46,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        {/* Yandex Metrika */}
+
+        {/* Правильный код Метрики */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
             (function(m,e,t,r,i,k,a){
-                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-                m[i].l=1*new Date();
-                for (var j = 0; j < document.scripts.length; j++) {
-                    if (document.scripts[j].src === r) return;
-                }
-                k=e.createElement(t),a=e.getElementsByTagName(t)[0];
-                k.async=1;
-                k.src='${metrikaSrc}';
+                m[i]=m[i]||function(){
+                    (m[i].a=m[i].a||[]).push(arguments)
+                };
+                m[i].l = 1 * new Date();
+                k=e.createElement(t), a=e.getElementsByTagName(t)[0];
+                k.async=1; k.src='${metrikaSrc}';
                 a.parentNode.insertBefore(k,a);
-            })(window, document, 'script', 'ym');
+            })(window, document, "script", "${metrikaSrc}", "ym");
 
-            ym(105787802, 'init', {
-                ssr:true,
-                webvisor:true,
+            ym(105787802, "init", {
                 clickmap:true,
-                ecommerce:"dataLayer",
+                trackLinks:true,
                 accurateTrackBounce:true,
-                trackLinks:true
+                webvisor:true
             });
           `}
         </Script>
