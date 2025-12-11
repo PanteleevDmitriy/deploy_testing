@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   const metrikaSrc = isProd
     ? "https://mc.yandex.ru/metrika/tag.js"
-    : "https://mc.yandex.ru/tag_debug/metrika/tag.js";
+    : "https://mc.yandex.ru/metrika/tag.js?debug=1";
 
   return (
     <html lang="ru" className="h-full">
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       <body className={`${inter.className} flex flex-col min-h-screen`}>
 
-        {/* Правильный код Метрики */}
+        {/* Яндекс Метрика — рабочая версия */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
             (function(m,e,t,r,i,k,a){
