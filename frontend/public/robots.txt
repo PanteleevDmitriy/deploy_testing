@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Запрет системных директорий Next.js (их нет в HTML)
+Disallow: /_next/
+Disallow: /api/
+Disallow: /draft/
+Disallow: /private/
+
+# Файл карты сайта
+Sitemap: https://seawindtravel.ru/sitemap.xml
