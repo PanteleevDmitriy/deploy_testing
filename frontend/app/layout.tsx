@@ -29,7 +29,6 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const isProd = process.env.NODE_ENV === "production";
-
   const metrikaSrc = isProd
     ? "https://mc.yandex.ru/metrika/tag.js"
     : "https://mc.yandex.ru/metrika/tag.js?debug=1";
@@ -47,7 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preload" as="image" href="/bg.png" />
       </head>
 
-      <body className="flex flex-col">
+      <body className="flex flex-col min-h-screen">
         {/* Фиксированный фон */}
         <div id="bg-fixed"></div>
 
@@ -85,8 +84,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </noscript>
 
+        {/* Основной контент */}
         <ClientLayout>
-          <main className="min-h-screen">{children}</main>
+          <main className="flex-1">{children}</main>
         </ClientLayout>
       </body>
     </html>

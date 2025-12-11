@@ -4,7 +4,7 @@
 
 :root {
   --foreground: #000000;
-  --bg-opacity: 0.5;
+  --bg-opacity: 0.5; /* прозрачность фона */
 }
 
 body {
