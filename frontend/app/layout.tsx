@@ -58,6 +58,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className={`${inter.className} flex flex-col`}>
+        {/* НЕПОДВИЖНЫЙ ФОН */}
+        <div id="__background" />
+
         {/* Метрика */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
