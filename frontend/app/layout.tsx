@@ -9,14 +9,14 @@ const inter = Inter({ subsets: ["latin", "cyrillic"] });
 export const metadata: Metadata = {
   title: "SEA Wind travel - экскурсии Нячанг и Фукуок - Вьетнам",
   description: "Экскурсии Нячанг Фукуок во Вьетнаме с SEA Wind Travel",
+  metadataBase: new URL("https://seawindtravel.ru"), // <-- добавлено
   openGraph: {
     title: "SEA Wind travel",
     description: "Экскурсии Нячанг/Фукуок - Вьетнам",
-    url: "https://seawindtravel.ru",
     siteName: "SEA Wind travel",
     images: [
       {
-        url: "/og_image.jpg",
+        url: "/og_image.jpg", // теперь Next.js автоматически подставит https://seawindtravel.ru/og_image.jpg
         width: 1200,
         height: 630,
         alt: "SEA Wind travel – экскурсии Нячанг Фукуок",
@@ -31,10 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className="h-full">
       <head>
-        {/* Кодировка */}
         <meta charSet="UTF-8" />
-
-        {/* Метаописание для SEO */}
         <meta
           name="description"
           content="Экскурсии Нячанг и Фукуок с SEA Wind Travel. Комфорт, опытные русские гиды, все направления."
@@ -76,7 +73,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        {/* Основной контент оборачиваем в <main> для семантики */}
         <ClientLayout>
           <main>{children}</main>
         </ClientLayout>
