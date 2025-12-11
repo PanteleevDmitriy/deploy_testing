@@ -43,10 +43,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           name="description"
           content="Экскурсии Нячанг и Фукуок с SEA Wind Travel. Комфорт, опытные русские гиды, все направления."
         />
+      </head>
 
-        {/* Preload глобального CSS */}
-        <link rel="preload" href="/globals.css" as="style" />
-
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
         {/* Yandex Metrika */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
@@ -82,9 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             />
           </div>
         </noscript>
-      </head>
 
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
         <ClientLayout>
           <main>{children}</main>
         </ClientLayout>
