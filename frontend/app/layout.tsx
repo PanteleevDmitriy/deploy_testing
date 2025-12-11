@@ -31,6 +31,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ru" className="h-full">
       <head>
+        {/* Кодировка */}
+        <meta charSet="UTF-8" />
+
+        {/* Метаописание для SEO */}
+        <meta
+          name="description"
+          content="Экскурсии Нячанг и Фукуок с SEA Wind Travel. Комфорт, опытные русские гиды, все направления."
+        />
+
         {/* Yandex Metrika */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
@@ -67,7 +76,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
 
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-        <ClientLayout>{children}</ClientLayout>
+        {/* Основной контент оборачиваем в <main> для семантики */}
+        <ClientLayout>
+          <main>{children}</main>
+        </ClientLayout>
       </body>
     </html>
   );
