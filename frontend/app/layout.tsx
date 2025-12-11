@@ -9,14 +9,14 @@ const inter = Inter({ subsets: ["latin", "cyrillic"] });
 export const metadata: Metadata = {
   title: "SEA Wind travel - экскурсии Нячанг и Фукуок - Вьетнам",
   description: "Экскурсии Нячанг Фукуок во Вьетнаме с SEA Wind Travel",
-  metadataBase: new URL("https://seawindtravel.ru"), // <-- добавлено
+  metadataBase: new URL("https://seawindtravel.ru"),
   openGraph: {
     title: "SEA Wind travel",
     description: "Экскурсии Нячанг/Фукуок - Вьетнам",
     siteName: "SEA Wind travel",
     images: [
       {
-        url: "/og_image.jpg", // теперь Next.js автоматически подставит https://seawindtravel.ru/og_image.jpg
+        url: "/og_image.jpg",
         width: 1200,
         height: 630,
         alt: "SEA Wind travel – экскурсии Нячанг Фукуок",
@@ -28,6 +28,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // определяем, продакшен это или нет по hostname
+  const isProd = typeof window !== "undefined" && window.location.hostname === "seawindtravel.ru";
+
   return (
     <html lang="ru" className="h-full">
       <head>
@@ -47,8 +50,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     if (document.scripts[j].src === r) return;
                 }
                 k=e.createElement(t),a=e.getElementsByTagName(t)[0],
-                k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-            })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=105787802', 'ym');
+                k.async=1;
+                k.src=r;
+                a.parentNode.insertBefore(k,a)
+            })(window, document, 'script', 'https://mc.yandex.${isProd ? "ru" : "ru/tag_debug"}/metrika/tag.js?id=105787802', 'ym');
 
             ym(105787802, 'init', {
                 ssr:true,
