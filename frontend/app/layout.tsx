@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
 
-      <body className={`${inter.className} flex flex-col min-h-screen`}>
+      <body className={`${inter.className} flex flex-col`}>
         {/* Метрика */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
@@ -92,7 +92,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
 
         <ClientLayout>
-          <main>{children}</main>
+          <main className="min-h-screen">
+          {children}
+          </main>
         </ClientLayout>
       </body>
     </html>
