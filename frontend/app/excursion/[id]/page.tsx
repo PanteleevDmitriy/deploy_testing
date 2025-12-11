@@ -163,7 +163,7 @@ export default function ExcursionPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 pt-28 bg-teal-50/20 shadow-xl rounded-xl backdrop-blur-sm p-4">
+    <div className="container mx-auto px-4 pt-10 md:pt-28 bg-teal-50/20 shadow-xl rounded-xl backdrop-blur-sm p-4">
       <h1 className="text-3xl font-bold mb-4 text-center">{excursion.name}</h1>
       <p className="text-lg text-center mb-4">{excursion.shortDescription}</p>
 
