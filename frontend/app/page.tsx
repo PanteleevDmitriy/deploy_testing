@@ -24,6 +24,23 @@ export default function Home() {
     fetchExcursions();
   }, []);
 
+  // --- Динамическая подстройка высоты фона ---
+  useEffect(() => {
+    const updateBg = () => {
+      const bg = document.getElementById("bg-fixed");
+      if (bg) {
+        bg.style.height = `${Math.max(window.innerHeight, document.body.scrollHeight)}px`;
+      }
+    };
+    updateBg();
+    window.addEventListener("resize", updateBg);
+    window.addEventListener("scroll", updateBg);
+    return () => {
+      window.removeEventListener("resize", updateBg);
+      window.removeEventListener("scroll", updateBg);
+    };
+  }, []);
+
   return (
     <div className="pt-28">
       <section className="bg-teal-50/20 backdrop-blur-sm py-4 sm:py-4 rounded-xl mx-2 shadow-xl">
@@ -35,11 +52,7 @@ export default function Home() {
             С нами ваш отдых будет незабываемым!
           </p>
           <p className="mb-2 text-center">
-            Экскурсии в городе Нячанг и на острове Фукуок
-            Мы предлагаем экскурсии по всем направлениям. 
-            Мы гарантируем комфорт и качество. 
-            У нас компетентные русские гиды 
-            и большой опыт в туризме.
+            Экскурсии в городе Нячанг и на острове Фукуок. Мы предлагаем экскурсии по всем направлениям. Мы гарантируем комфорт и качество. У нас компетентные русские гиды и большой опыт в туризме.
           </p>
         </div>
       </section>
