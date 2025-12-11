@@ -29,75 +29,45 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const isProd = process.env.NODE_ENV === "production";
-
   const metrikaSrc = isProd
     ? "https://mc.yandex.ru/metrika/tag.js"
     : "https://mc.yandex.ru/metrika/tag.js?debug=1";
 
   return (
-    <html lang="ru">
+    <html lang="ru" className={inter.className}>
       <head>
         <meta charSet="UTF-8" />
-        <meta
-          name="description"
-          content="Экскурсии Нячанг и Фукуок с SEA Wind Travel."
-        />
-
-        {/* Оптимизация загрузки */}
+        <meta name="description" content="Экскурсии Нячанг и Фукуок с SEA Wind Travel." />
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
-
-        {/* Preload фоновой картинки */}
-        <link
-          rel="preload"
-          as="image"
-          href="/bg.png"
-          imageSrcSet="/bg.png"
-          imageSizes="100vw"
-        />
+        <link rel="preload" as="image" href="/bg.png" />
       </head>
-
-      <body className={`${inter.className} flex flex-col`}>
-        {/* НЕПОДВИЖНЫЙ ФОН */}
+      <body className="flex flex-col min-h-screen">
+        {/* Фиксированный фон */}
         <div id="__background" />
 
         {/* Метрика */}
-        <Script id="yandex-metrika" strategy="afterInteractive">
-          {`
-            (function(m,e,t,r,i,k,a){
-                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-                m[i].l = 1 * new Date();
-                k=e.createElement(t), a=e.getElementsByTagName(t)[0];
-                k.async=1; k.src='${metrikaSrc}';
-                a.parentNode.insertBefore(k,a);
-            })(window, document, "script", "${metrikaSrc}", "ym");
+        <Script id="yandex-metrika" strategy="afterInteractive">{`
+          (function(m,e,t,r,i,k,a){
+              m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+              m[i].l = 1 * new Date();
+              k=e.createElement(t), a=e.getElementsByTagName(t)[0];
+              k.async=1; k.src='${metrikaSrc}';
+              a.parentNode.insertBefore(k,a);
+          })(window, document, "script", "${metrikaSrc}", "ym");
 
-            try {
-              ym(105787802, "init", {
-                clickmap:true,
-                trackLinks:true,
-                accurateTrackBounce:true,
-                webvisor:true
-              });
-            } catch (e) {
-              console.warn("Yandex.Metrika init failed:", e);
-            }
-          `}
-        </Script>
-
+          try {
+            ym(105787802, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
+          } catch(e){console.warn("Yandex.Metrika init failed:", e);}
+        `}</Script>
         <noscript>
           <div>
-            <img
-              src="https://mc.yandex.ru/watch/105787802"
-              style={{ position: "absolute", left: "-9999px" }}
-              alt=""
-            />
+            <img src="https://mc.yandex.ru/watch/105787802" style={{ position: "absolute", left: "-9999px" }} alt="" />
           </div>
         </noscript>
 
-        {/* Основной контент */}
         <ClientLayout>
-          <main className="min-h-screen">{children}</main>
+          <main className="min-h-[100dvh]">{children}</main>
         </ClientLayout>
       </body>
     </html>
