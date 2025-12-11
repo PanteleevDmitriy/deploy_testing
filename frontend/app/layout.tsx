@@ -1,4 +1,3 @@
-// app/rootlayout.tsx или app/layout.tsx (в зависимости от структуры проекта)
 import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";

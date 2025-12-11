@@ -81,7 +81,7 @@ function FloatingBookingBar({ id }: { id: number }) {
     <div
       className="
         fixed bottom-0 left-0 right-0 z-[9999]
-        bg-white/95 backdrop-blur-md shadow-xl
+        bg-white/20 backdrop-blur-sm shadow-xl
         px-4 py-3
         border-t border-teal-200
       "
@@ -177,6 +177,8 @@ export default function ExcursionPage() {
               height={0}
               sizes="100vw"
               className="h-[360px] w-auto rounded-lg object-contain"
+              priority={currentImageIndex === 0}
+              fetchPriority={currentImageIndex === 0 ? "high" : "auto"}
             />
             {imageUrls.length > 1 && (
               <>
