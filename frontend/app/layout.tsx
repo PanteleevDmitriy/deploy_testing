@@ -34,7 +34,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     : "https://mc.yandex.ru/metrika/tag.js?debug=1";
 
   return (
-    <html lang="ru" className={inter.className}>
+    <html lang="ru">
       <head>
         <meta charSet="UTF-8" />
         <meta name="description" content="Экскурсии Нячанг и Фукуок с SEA Wind Travel." />
@@ -42,32 +42,40 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
         <link rel="preload" as="image" href="/bg.png" />
       </head>
-      <body className="flex flex-col min-h-screen">
-        {/* Фиксированный фон */}
-        <div id="__background" />
+
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
+        {/* Фон */}
+        <div id="bg-fixed"></div>
 
         {/* Метрика */}
         <Script id="yandex-metrika" strategy="afterInteractive">{`
           (function(m,e,t,r,i,k,a){
-              m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-              m[i].l = 1 * new Date();
-              k=e.createElement(t), a=e.getElementsByTagName(t)[0];
-              k.async=1; k.src='${metrikaSrc}';
-              a.parentNode.insertBefore(k,a);
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l = 1 * new Date();
+            k=e.createElement(t), a=e.getElementsByTagName(t)[0];
+            k.async=1; k.src='${metrikaSrc}';
+            a.parentNode.insertBefore(k,a);
           })(window, document, "script", "${metrikaSrc}", "ym");
 
           try {
-            ym(105787802, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:true});
-          } catch(e){console.warn("Yandex.Metrika init failed:", e);}
+            ym(105787802, "init", {
+              clickmap:true,
+              trackLinks:true,
+              accurateTrackBounce:true,
+              webvisor:true
+            });
+          } catch (e) { console.warn("Yandex.Metrika init failed:", e); }
         `}</Script>
+
         <noscript>
           <div>
             <img src="https://mc.yandex.ru/watch/105787802" style={{ position: "absolute", left: "-9999px" }} alt="" />
           </div>
         </noscript>
 
+        {/* Контент */}
         <ClientLayout>
-          <main className="min-h-[100dvh]">{children}</main>
+          <main className="min-h-screen">{children}</main>
         </ClientLayout>
       </body>
     </html>

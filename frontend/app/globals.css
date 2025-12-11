@@ -11,19 +11,16 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
-  padding: 0;
-  min-height: 100%;
-  overflow-x: hidden;
+  min-height: 100vh;
   position: relative;
 }
 
-/* Фиксированный фон через отдельный div */
-#__background {
+#bg-fixed {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100dvh; /* правильная высота на мобилках */
+  width: 100vw;
+  height: 100dvh; /* динамическая высота viewport на мобилках */
   z-index: -1;
   pointer-events: none;
   background-image: url('/bg.png');
