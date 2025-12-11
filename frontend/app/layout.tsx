@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import ClientLayout from "./components/ClientLayout";
 import Script from "next/script";
-import Image from "next/image"; // ← добавлено
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -41,36 +40,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta charSet="UTF-8" />
         <meta
           name="description"
-          content="Экскурсии Нячанг и Фукуок с SEA Wind Travel. Комфорт, опытные русские гиды, все направления."
+          content="Экскурсии Нячанг и Фукуок с SEA Wind Travel."
         />
 
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
+
+        {/* 🔥 корректный preload фоновой картинки */}
+        <link
+          rel="preload"
+          as="image"
+          href="/bg.png"
+          imageSrcSet="/bg.png"
+          imageSizes="100vw"
+        />
       </head>
 
-      <body className={`${inter.className} flex flex-col min-h-screen relative overflow-x-hidden`}>
-
-        {/* --- ФОН ЧЕРЕЗ NEXT/IMAGE (ОПТИМИЗИРОВАННЫЙ) --- */}
-        <div className="fixed inset-0 -z-10">
-          <Image
-            src="/bg.png"
-            alt=""
-            fill
-            priority
-            fetchPriority="high"
-            quality={70}
-            sizes="100vw"
-            className="object-cover opacity-50"
-          />
-        </div>
-
-        {/* --- МЕТРИКА --- */}
+      <body className={`${inter.className} flex flex-col min-h-screen`}>
+        {/* Метрика */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
             (function(m,e,t,r,i,k,a){
-                m[i]=m[i]||function(){
-                    (m[i].a=m[i].a||[]).push(arguments)
-                };
+                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                 m[i].l = 1 * new Date();
                 k=e.createElement(t), a=e.getElementsByTagName(t)[0];
                 k.async=1; k.src='${metrikaSrc}';
@@ -100,11 +91,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </noscript>
 
-        {/* --- ОСНОВНОЙ КОНТЕНТ --- */}
         <ClientLayout>
           <main>{children}</main>
         </ClientLayout>
-
       </body>
     </html>
   );
