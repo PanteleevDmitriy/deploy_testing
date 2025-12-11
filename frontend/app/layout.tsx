@@ -1,3 +1,4 @@
+// app/rootlayout.tsx или app/layout.tsx (в зависимости от структуры проекта)
 import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
@@ -28,9 +29,10 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const isProd =
-    typeof window !== "undefined" && window.location.hostname === "seawindtravel.ru";
+  // Правильно определяем продакшен (Next заменит этот NODE_ENV при сборке)
+  const isProd = process.env.NODE_ENV === "production";
 
+  // В проде обычный tag.js; в деве можно включать debug параметр (локально)
   const metrikaSrc = isProd
     ? "https://mc.yandex.ru/metrika/tag.js"
     : "https://mc.yandex.ru/metrika/tag.js?debug=1";
@@ -43,11 +45,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           name="description"
           content="Экскурсии Нячанг и Фукуок с SEA Wind Travel. Комфорт, опытные русские гиды, все направления."
         />
+
+        {/* Предварительное соединение к Яндекс.Метрике (ускоряет загрузку стороннего скрипта) */}
+        <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://mc.yandex.ru" />
+
+        {/* Можно добавить другие preconnect при необходимости, например к CDN для шрифтов */}
       </head>
 
       <body className={`${inter.className} flex flex-col min-h-screen`}>
-
-        {/* Яндекс Метрика — рабочая версия */}
+        {/* Яндекс.Метрика (подгружается после интерактива, корректный IIFE) */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
             (function(m,e,t,r,i,k,a){
@@ -60,12 +67,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 a.parentNode.insertBefore(k,a);
             })(window, document, "script", "${metrikaSrc}", "ym");
 
-            ym(105787802, "init", {
+            try {
+              ym(105787802, "init", {
                 clickmap:true,
                 trackLinks:true,
                 accurateTrackBounce:true,
                 webvisor:true
-            });
+              });
+            } catch (e) {
+              // безопасный guard — если что-то пойдёт не так, не ломать страницу
+              console.warn("Yandex.Metrika init failed:", e);
+            }
           `}
         </Script>
 
