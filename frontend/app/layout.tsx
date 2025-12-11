@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     : "https://mc.yandex.ru/metrika/tag.js?debug=1";
 
   return (
-    <html lang="ru" className="h-full">
+    <html lang="ru">
       <head>
         <meta charSet="UTF-8" />
         <meta
@@ -43,10 +43,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           content="Экскурсии Нячанг и Фукуок с SEA Wind Travel."
         />
 
+        {/* Оптимизация загрузки */}
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
 
-        {/* 🔥 корректный preload фоновой картинки */}
+        {/* Preload фоновой картинки */}
         <link
           rel="preload"
           as="image"
@@ -91,10 +92,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </noscript>
 
+        {/* Основной контент */}
         <ClientLayout>
-          <main className="min-h-screen">
-          {children}
-          </main>
+          <main className="min-h-screen">{children}</main>
         </ClientLayout>
       </body>
     </html>

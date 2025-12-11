@@ -11,13 +11,12 @@ body {
   color: var(--foreground);
   background: transparent;
   font-family: Arial, Helvetica, sans-serif;
-  position: relative;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* --- ИДЕАЛЬНЫЙ ФОН ЧЕРЕЗ ПСЕВДОЭЛЕМЕНТ --- */
-body::before {
+/* --- СТАБИЛЬНЫЙ ФОН БЕЗ ПРЫЖКОВ — ПЕРЕНЕСЕНО НА HTML --- */
+html::before {
   content: "";
   position: fixed;
   inset: 0;
@@ -33,11 +32,11 @@ body::before {
   will-change: transform;
 }
 
-/* --- Мобильная адаптация, чтобы фон не прыгал --- */
+/* --- Мобильная адаптация --- */
 @media (max-width: 640px) {
-  body::before {
+  html::before {
     background-position: center top;
-    opacity: 0.45; /* можно менять */
+    opacity: 0.45;
     background-size: cover;
   }
 }
