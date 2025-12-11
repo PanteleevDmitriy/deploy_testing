@@ -28,8 +28,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // проверяем режим через переменную окружения
-  const isProd = process.env.NEXT_PUBLIC_PROD === "true";
+  const isProd =
+    typeof window !== "undefined" && window.location.hostname === "seawindtravel.ru";
+
+  const metrikaSrc = isProd
+    ? "https://mc.yandex.ru/metrika/tag.js?id=105787802"
+    : "https://mc.yandex.ru/tag_debug/metrika/tag.js?id=105787802";
 
   return (
     <html lang="ru" className="h-full">
@@ -40,6 +44,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           content="Экскурсии Нячанг и Фукуок с SEA Wind Travel. Комфорт, опытные русские гиды, все направления."
         />
 
+        {/* Preload глобального CSS */}
+        <link rel="preload" href="/globals.css" as="style" />
+
         {/* Yandex Metrika */}
         <Script id="yandex-metrika" strategy="afterInteractive">
           {`
@@ -49,11 +56,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 for (var j = 0; j < document.scripts.length; j++) {
                     if (document.scripts[j].src === r) return;
                 }
-                k=e.createElement(t), a=e.getElementsByTagName(t)[0];
+                k=e.createElement(t),a=e.getElementsByTagName(t)[0];
                 k.async=1;
-                k.src = 'https://mc.yandex.' + (${isProd} ? 'ru' : 'ru/tag_debug') + '/metrika/tag.js?id=105787802';
+                k.src='${metrikaSrc}';
                 a.parentNode.insertBefore(k,a);
-            })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=105787802', 'ym');
+            })(window, document, 'script', 'ym');
 
             ym(105787802, 'init', {
                 ssr:true,
