@@ -28,8 +28,8 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // определяем, продакшен это или нет по hostname
-  const isProd = typeof window !== "undefined" && window.location.hostname === "seawindtravel.ru";
+  // Определяем, в каком режиме: production или development
+  const isDev = process.env.NODE_ENV !== "production";
 
   return (
     <html lang="ru" className="h-full">
@@ -46,14 +46,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             (function(m,e,t,r,i,k,a){
                 m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                 m[i].l=1*new Date();
-                for (var j = 0; j < document.scripts.length; j++) {
-                    if (document.scripts[j].src === r) return;
-                }
                 k=e.createElement(t),a=e.getElementsByTagName(t)[0],
                 k.async=1;
                 k.src=r;
                 a.parentNode.insertBefore(k,a)
-            })(window, document, 'script', 'https://mc.yandex.${isProd ? "ru" : "ru/tag_debug"}/metrika/tag.js?id=105787802', 'ym');
+            })(
+              window, document, 'script',
+              '${isDev 
+                ? "https://mc.yandex.ru/metrika/tag_debug.js?id=105787802"
+                : "https://mc.yandex.ru/metrika/tag.js?id=105787802"}',
+              'ym'
+            );
 
             ym(105787802, 'init', {
                 ssr:true,
