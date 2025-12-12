@@ -13,6 +13,8 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - ./certbot/letsencrypt:/etc/letsencrypt:ro
       - ./certbot/www:/var/www/certbot:ro
+      - nginx_cache:/var/cache/nginx  # ← ДОБАВЛЕНО
+      - nginx_temp:/tmp  # ← ДОБАВЛЕНО
     ports:
       - "80:80"
       - "443:443"
@@ -22,16 +24,13 @@ services:
     networks:
       - dev
     restart: unless-stopped
-    user: "root"
+    user: "root"  # ← МОЖНО ВЕРНУТЬ nginx
     security_opt:
       - no-new-privileges:true
     cap_drop:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
-    #tmpfs:
-    #  - /var/cache/nginx:noexec,nosuid,size=100M
-    #  - /var/run:noexec,nosuid,size=10M
 
   certbot:
     image: certbot/certbot
@@ -111,3 +110,5 @@ services:
 volumes:
   pgdata:
     name: pgdata
+  nginx_cache:  # ← ДОБАВЛЕНО
+  nginx_temp:   # ← ДОБАВЛЕНО
