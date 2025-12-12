@@ -24,14 +24,16 @@ services:
     networks:
       - dev
     restart: unless-stopped
-    user: "root"
-    command: ["nginx", "-g", "daemon off;"]  # ← КЛЮЧЕВАЯ СТРОКА (Способ 1)
-    security_opt:
-      - no-new-privileges:true
-    cap_drop:
-      - ALL
+    user: "root"  # Оставляем root для максимальных прав
+    # УБРАНО: security_opt и cap_drop
+    # security_opt:
+    #   - no-new-privileges:true
+    # cap_drop:
+    #   - ALL
+    # ОСТАВЛЕНО:
     cap_add:
-      - NET_BIND_SERVICE
+      - NET_BIND_SERVICE  # Нужно для работы на портах 80/443
+    command: ["nginx", "-g", "daemon off;"]  # Прямой запуск nginx
 
   certbot:
     image: certbot/certbot
