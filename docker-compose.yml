@@ -22,7 +22,7 @@ services:
     networks:
       - dev
     restart: unless-stopped
-    user: "nginx"
+    user: "root"
     # read_only: true  ← УБРАНО
     security_opt:
       - no-new-privileges:true
