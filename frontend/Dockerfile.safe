@@ -2,7 +2,7 @@
 FROM node:20-alpine3.18 AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install --ignore-scripts --no-audit --no-fund
+RUN npm install --only=production --ignore-scripts --no-audit --no-fund
 
 # Копируем оставшиеся файлы
 COPY . .
@@ -16,14 +16,11 @@ WORKDIR /app
 # Копируем файлы
 COPY --from=build /app ./
 
-# Устанавливаем pm2 для управления процессами
-RUN npm install -g pm2
-
 # Меняем владельца файлов
 RUN chown -R node:node /app
 
 # Переключаемся на непривилегированного пользователя
 USER node
 
-# Запускаем приложение
-CMD ["pm2-runtime", "npm", "--", "run", "start"]
+# Запускаем приложение БЕЗ PM2
+CMD ["npm", "start"]
