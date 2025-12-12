@@ -1,14 +1,18 @@
+version: '3.8'
+
 networks:
   dev:
+    driver: bridge
 
 services:
   nginx:
     image: nginx:stable-alpine
+    container_name: nginx
     volumes:
-      - ./frontend:/app  # Монтируем папку frontend в контейнер NGINX
+      - ./frontend:/app:ro
       - ./nginx.conf:/etc/nginx/nginx.conf
-      - ./certbot/letsencrypt:/etc/letsencrypt
-      - ./certbot/www:/var/www/certbot
+      - ./certbot/letsencrypt:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
     ports:
       - "80:80"
       - "443:443"
@@ -17,47 +21,91 @@ services:
       - frontend
     networks:
       - dev
+    restart: unless-stopped
+    user: "nginx"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
 
   certbot:
     image: certbot/certbot
+    container_name: certbot
     volumes:
       - ./certbot/letsencrypt:/etc/letsencrypt
       - ./certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do sleep 2073600; done'"
+    entrypoint: |
+      /bin/sh -c '
+      trap exit TERM;
+      while :; do
+        certbot renew --quiet;
+        sleep 604800;
+      done'
     networks:
       - dev
+    restart: unless-stopped
 
   postgres:
     image: postgres:16
+    container_name: postgres
     env_file:
       - ./backend/.development.env
-    environment:
-      PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5433:5432
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
       - dev
+    restart: unless-stopped
+    user: "postgres"
+    security_opt:
+      - no-new-privileges:true
 
   backend:
     build: 
       context: ./backend
+      dockerfile: Dockerfile.safe
+    container_name: backend
+    env_file:
+      - ./backend/.development.env
     depends_on:
       - postgres
     networks:
       - dev
-      
+    restart: unless-stopped
+    user: "node"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100M
+    volumes:
+      - ./backend/logs:/app/logs
+      - ./backend/uploads:/app/uploads
+
   frontend:
     build: 
       context: ./frontend
+      dockerfile: Dockerfile.safe
+    container_name: frontend
     depends_on:
       - backend
     networks:
       - dev
-      
+    restart: unless-stopped
+    user: "node"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100M
 
 volumes:
   pgdata:
-  
-  
+    name: pgdata
