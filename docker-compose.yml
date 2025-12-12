@@ -29,9 +29,9 @@ services:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
-    tmpfs:
-      - /var/cache/nginx:noexec,nosuid,size=100M
-      - /var/run:noexec,nosuid,size=10M
+    #tmpfs:
+    #  - /var/cache/nginx:noexec,nosuid,size=100M
+    #  - /var/run:noexec,nosuid,size=10M
 
   certbot:
     image: certbot/certbot
