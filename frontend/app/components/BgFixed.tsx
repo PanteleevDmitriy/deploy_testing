@@ -1,17 +1,23 @@
 "use client";
 
-import { useEffect } from "react";
+import Image from "next/image";
 
 export default function BgFixed() {
-  useEffect(() => {
-    const setBgHeight = () => {
-      const bg = document.getElementById("bg-fixed");
-      if (bg) bg.style.height = `${window.innerHeight}px`;
-    };
-    setBgHeight();
-    window.addEventListener("resize", setBgHeight);
-    return () => window.removeEventListener("resize", setBgHeight);
-  }, []);
-
-  return <div id="bg-fixed"></div>;
+  return (
+    <div className="bg-fixed-wrapper fixed inset-0 -z-10 pointer-events-none">
+      <Image
+        src="/bg.png"
+        alt=""
+        fill
+        priority
+        quality={85}
+        sizes="100vw"
+        style={{
+          objectFit: "cover",
+          objectPosition: "center top",
+          opacity: 0.5,
+        }}
+      />
+    </div>
+  );
 }

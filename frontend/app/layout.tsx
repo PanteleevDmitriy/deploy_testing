@@ -45,11 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
-        <link rel="preload" as="image" href="/bg.png" />
       </head>
 
       <body className="flex flex-col">
-        {/* Фиксированный фон */}
+        {/* Фиксированный фон через Next.js Image */}
         <BgFixed />
 
         {/* Метрика */}

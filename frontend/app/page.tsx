@@ -24,23 +24,6 @@ export default function Home() {
     fetchExcursions();
   }, []);
 
-  // --- Динамическая подстройка высоты фона ---
-  useEffect(() => {
-    const updateBg = () => {
-      const bg = document.getElementById("bg-fixed");
-      if (bg) {
-        bg.style.height = `${Math.max(window.innerHeight, document.body.scrollHeight)}px`;
-      }
-    };
-    updateBg();
-    window.addEventListener("resize", updateBg);
-    window.addEventListener("scroll", updateBg);
-    return () => {
-      window.removeEventListener("resize", updateBg);
-      window.removeEventListener("scroll", updateBg);
-    };
-  }, []);
-
   return (
     <div className="pt-28">
       <section className="bg-teal-50/20 backdrop-blur-sm py-4 sm:py-4 rounded-xl mx-2 shadow-xl">

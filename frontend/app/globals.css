@@ -4,7 +4,6 @@
 
 :root {
   --foreground: #000000;
-  --bg-opacity: 0.5; /* прозрачность фона */
 }
 
 body {
@@ -13,30 +12,11 @@ body {
   min-height: 100vh;
   overflow-x: hidden;
   margin: 0;
-  background: transparent;
 }
 
-/* --- Фон через фиксированный блок --- */
-#bg-fixed {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh; /* будет динамически подстраиваться через JS */
-  z-index: -1;
-  pointer-events: none;
-  background-image: url('/bg.png');
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  opacity: var(--bg-opacity);
-}
-
-/* --- Мобильная адаптация --- */
+/* Мобильная адаптация - уменьшаем прозрачность фона */
 @media (max-width: 640px) {
-  #bg-fixed {
-    background-position: center top;
-    background-size: cover;
-    opacity: 0.45;
+  .bg-fixed-wrapper img {
+    opacity: 0.45 !important;
   }
 }
