@@ -72,6 +72,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             } catch (e) {
               console.warn("Yandex.Metrika init failed:", e);
             }
+
+            // Подавляем ошибки блокировки метрики
+            window.onerror = function(msg, url) {
+              if (url && url.includes('mc.yandex.ru')) return true;
+            };
           `}
         </Script>
 

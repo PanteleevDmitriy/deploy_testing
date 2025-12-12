@@ -20,3 +20,26 @@ body {
     opacity: 0.45 !important;
   }
 }
+
+/* Фиксация фона - убираем прыжки */
+html, body {
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+div[class*="fixed"][class*="inset"] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+div[class*="fixed"][class*="inset"] img {
+  transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+}
