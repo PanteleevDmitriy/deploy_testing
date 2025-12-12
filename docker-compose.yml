@@ -23,13 +23,16 @@ services:
       - dev
     restart: unless-stopped
     user: "nginx"
-    read_only: true
+    # read_only: true  ← УБРАНО
     security_opt:
       - no-new-privileges:true
     cap_drop:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
+    tmpfs:  ← ДОБАВЛЕНО
+      - /var/cache/nginx:noexec,nosuid,size=100M
+      - /var/run:noexec,nosuid,size=10M
 
   certbot:
     image: certbot/certbot
