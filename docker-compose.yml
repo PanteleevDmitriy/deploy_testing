@@ -24,16 +24,10 @@ services:
     networks:
       - dev
     restart: unless-stopped
-    user: "root"  # Оставляем root для максимальных прав
-    # УБРАНО: security_opt и cap_drop
-    # security_opt:
-    #   - no-new-privileges:true
-    # cap_drop:
-    #   - ALL
-    # ОСТАВЛЕНО:
+    user: "root"
     cap_add:
-      - NET_BIND_SERVICE  # Нужно для работы на портах 80/443
-    command: ["nginx", "-g", "daemon off;"]  # Прямой запуск nginx
+      - NET_BIND_SERVICE
+    command: ["nginx", "-g", "daemon off;"]
 
   certbot:
     image: certbot/certbot
@@ -102,16 +96,22 @@ services:
       - dev
     restart: unless-stopped
     user: "node"
-    read_only: true
+    # 🔴 ИСПРАВЛЕНИЕ 1: Убираем read_only для кеша
+    # read_only: true  # КОММЕНТИРУЕМ ЭТУ СТРОКУ
     security_opt:
       - no-new-privileges:true
     cap_drop:
       - ALL
     tmpfs:
       - /tmp:noexec,nosuid,size=100M
+    # 🔴 ИСПРАВЛЕНИЕ 2: Добавляем volume для кеша Next.js
+    volumes:
+      - next-cache:/app/.next/cache
 
 volumes:
   pgdata:
     name: pgdata
   nginx_cache:
   nginx_temp:
+  # 🔴 ИСПРАВЛЕНИЕ 3: Добавляем volume для кеша Next.js
+  next-cache:
