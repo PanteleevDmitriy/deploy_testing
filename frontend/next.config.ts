@@ -28,6 +28,7 @@ const nextConfig: NextConfig = {
   compress: true,
 
   // Экспериментальные фичи для CSS оптимизации
+  // Если будет ошибка сборки - закомментируй следующую строку:
   experimental: {
     optimizeCss: true,  // Критический CSS
   },
