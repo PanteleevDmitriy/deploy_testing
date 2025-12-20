@@ -55,39 +55,42 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Фиксированный фон через Next.js Image */}
         <BgFixed />
 
-        {/* Яндекс.Метрика с оптимизированной загрузкой */}
+        {/* Яндекс.Метрика - БЕЗ onLoad и onError! */}
         <Script 
           id="yandex-metrika" 
           strategy="lazyOnload"
           src={metrikaSrc}
           crossOrigin="anonymous"
-          onLoad={() => {
-            // Используем утверждение типа для TypeScript
-            const ym = (window as any).ym;
-            
-            if (!ym) {
-              console.warn('Yandex.Metrika script loaded but ym function not found');
-              return;
-            }
-            
-            try {
-              // Инициализируем метрику с noindex для ботов
-              ym(105787802, "init", {
-                clickmap: true,
-                trackLinks: true,
-                accurateTrackBounce: true,
-                webvisor: true,
-                ut: "noindex" // Помечаем трафик от поисковых роботов
+          // УБРАЛ onLoad и onError - они вызывали ошибку в Next.js 15.1
+        />
+
+        {/* Скрипт инициализации метрики (работает в браузере) */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Инициализация после загрузки скрипта
+              document.getElementById('yandex-metrika')?.addEventListener('load', function() {
+                if (window.ym) {
+                  try {
+                    window.ym(105787802, "init", {
+                      clickmap: true,
+                      trackLinks: true,
+                      accurateTrackBounce: true,
+                      webvisor: true,
+                      ut: "noindex"
+                    });
+                    window.ym(105787802, "hit", window.location.pathname);
+                  } catch(e) {
+                    console.warn('Yandex.Metrika init error:', e);
+                  }
+                }
               });
               
-              // Отслеживаем просмотр страницы
-              ym(105787802, "hit", window.location.pathname);
-            } catch (e) {
-              console.warn("Yandex.Metrika init failed:", e);
-            }
-          }}
-          onError={() => {
-            console.error('Failed to load Yandex.Metrika script');
+              // Обработка ошибок
+              document.getElementById('yandex-metrika')?.addEventListener('error', function() {
+                console.error('Failed to load Yandex.Metrika');
+              });
+            `
           }}
         />
 
