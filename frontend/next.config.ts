@@ -1,59 +1,40 @@
+// next.config.ts
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'sun9-78.userapi.com',
-        pathname: '/impg/**',  // Можно уточнить путь, если необходимо
-      },
-      {
-        protocol: 'https',
-        hostname: 'sun9-37.userapi.com',
-        pathname: '/impg/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'sun6-23.userapi.com',
-        pathname: '/impg/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'sun9-61.userapi.com',
-        pathname: '/impg/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'sun9-43.userapi.com',
-        pathname: '/impg/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'vk.com',
-        pathname: '/**',
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",  // Добавляем домен
-        pathname: '/s/v1/d/**',        // Указываем путь, который будет разрешен
-      },
-      {
-        protocol: 'https',
-        hostname: 'biznes-lanch.com',  // Добавляем домен
-        pathname: '/**',        // Указываем путь, который будет разрешен
-      },
-      {
-        protocol: 'https',
-        hostname: 'disk.yandex.ru',  // Добавляем домен
-        pathname: '/**',        // Указываем путь, который будет разрешен
-      },
-      {
-        protocol: 'https',
-        hostname: 'downloader.disk.yandex.ru',  // Добавляем домен
-        pathname: '/**',        // Указываем путь, который будет разрешен
-      },
-    ],
+    // Только webp
+    formats: ['image/webp'],
+    
+    // Оптимальные размеры для вашего сайта (без 1920px)
+    deviceSizes: [360, 640, 750, 828, 1080, 1200],
+    
+    // Размеры для иконок и мелких изображений
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    
+    // Год кеша для оптимизированных изображений
+    minimumCacheTTL: 31536000,
+    
+    // Безопасность - запрещаем SVG
+    dangerouslyAllowSVG: false,
+    
+    // Показывать картинки, а не скачивать
+    contentDispositionType: 'inline',
+    
+    // Только локальные изображения
+    remotePatterns: [], // Пустой массив = только свои картинки с сервера
   },
+
+  // Включаем сжатие
+  compress: true,
+
+  // Экспериментальные фичи для CSS оптимизации
+  experimental: {
+    optimizeCss: true,  // Критический CSS
+  },
+  
+  // Убираем заголовок "X-Powered-By"
+  poweredByHeader: false,
 };
+
 export default nextConfig;
