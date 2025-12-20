@@ -2,7 +2,6 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import ClientLayout from "./components/ClientLayout";
-import Script from "next/script";
 import BgFixed from "./components/BgFixed";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
@@ -55,42 +54,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Фиксированный фон через Next.js Image */}
         <BgFixed />
 
-        {/* Яндекс.Метрика - БЕЗ onLoad и onError! */}
-        <Script 
-          id="yandex-metrika" 
-          strategy="lazyOnload"
-          src={metrikaSrc}
-          crossOrigin="anonymous"
-          // УБРАЛ onLoad и onError - они вызывали ошибку в Next.js 15.1
-        />
-
-        {/* Скрипт инициализации метрики (работает в браузере) */}
+        {/* Яндекс.Метрика - ПРОСТОЙ РАБОЧИЙ КОД */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              // Инициализация после загрузки скрипта
-              document.getElementById('yandex-metrika')?.addEventListener('load', function() {
-                if (window.ym) {
-                  try {
-                    window.ym(105787802, "init", {
-                      clickmap: true,
-                      trackLinks: true,
-                      accurateTrackBounce: true,
-                      webvisor: true,
-                      ut: "noindex"
-                    });
-                    window.ym(105787802, "hit", window.location.pathname);
-                  } catch(e) {
-                    console.warn('Yandex.Metrika init error:', e);
-                  }
-                }
+              <!-- Yandex.Metrika counter -->
+              (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+              m[i].l=1*new Date();
+              for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+              k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+              (window, document, "script", "${metrikaSrc}", "ym");
+            
+              ym(105787802, "init", {
+                clickmap: true,
+                trackLinks: true,
+                accurateTrackBounce: true,
+                webvisor: true,
+                ut: "noindex"
               });
-              
-              // Обработка ошибок
-              document.getElementById('yandex-metrika')?.addEventListener('error', function() {
-                console.error('Failed to load Yandex.Metrika');
-              });
-            `
+              <!-- /Yandex.Metrika counter -->
+            `.replace(/<!--/g, '<'+'!--').replace(/-->/g, '--'+'>')
           }}
         />
 
