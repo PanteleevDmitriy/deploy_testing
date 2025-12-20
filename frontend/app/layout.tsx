@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const metrikaSrc = "/metrika/tag.js";
+  const metrikaSrc = "https://mc.yandex.ru/metrika/tag.js";
 
   return (
     <html lang="ru" className={inter.className}>
