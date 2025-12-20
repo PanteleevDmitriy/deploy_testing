@@ -29,10 +29,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const isProd = process.env.NODE_ENV === "production";
-  const metrikaSrc = isProd
-    ? "https://mc.yandex.ru/metrika/tag.js"
-    : "https://mc.yandex.ru/metrika/tag.js?debug=1";
+  const metrikaSrc = "https://mc.yandex.ru/metrika/tag.js";
 
   return (
     <html lang="ru" className={inter.className}>
@@ -43,6 +40,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           content="Экскурсии Нячанг и Фукуок с SEA Wind Travel."
         />
 
+        {/* Предзагрузка и предподключение для Яндекс.Метрики */}
+        <link 
+          rel="preload" 
+          href={metrikaSrc}
+          as="script"
+          crossOrigin="anonymous"
+        />
         <link rel="preconnect" href="https://mc.yandex.ru" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://mc.yandex.ru" />
       </head>
@@ -51,35 +55,43 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Фиксированный фон через Next.js Image */}
         <BgFixed />
 
-        {/* Метрика */}
-        <Script id="yandex-metrika" strategy="lazyOnload">
-          {`
-            (function(m,e,t,r,i,k,a){
-                m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-                m[i].l = 1 * new Date();
-                k=e.createElement(t), a=e.getElementsByTagName(t)[0];
-                k.async=1; k.src='${metrikaSrc}';
-                a.parentNode.insertBefore(k,a);
-            })(window, document, "script", "${metrikaSrc}", "ym");
-
+        {/* Яндекс.Метрика с оптимизированной загрузкой */}
+        <Script 
+          id="yandex-metrika" 
+          strategy="lazyOnload"
+          src={metrikaSrc}
+          crossOrigin="anonymous"
+          onLoad={() => {
+            // Используем утверждение типа для TypeScript
+            const ym = (window as any).ym;
+            
+            if (!ym) {
+              console.warn('Yandex.Metrika script loaded but ym function not found');
+              return;
+            }
+            
             try {
+              // Инициализируем метрику с noindex для ботов
               ym(105787802, "init", {
-                clickmap:true,
-                trackLinks:true,
-                accurateTrackBounce:true,
-                webvisor:true
+                clickmap: true,
+                trackLinks: true,
+                accurateTrackBounce: true,
+                webvisor: true,
+                ut: "noindex" // Помечаем трафик от поисковых роботов
               });
+              
+              // Отслеживаем просмотр страницы
+              ym(105787802, "hit", window.location.pathname);
             } catch (e) {
               console.warn("Yandex.Metrika init failed:", e);
             }
+          }}
+          onError={() => {
+            console.error('Failed to load Yandex.Metrika script');
+          }}
+        />
 
-            // Подавляем ошибки блокировки метрики
-            window.onerror = function(msg, url) {
-              if (url && url.includes('mc.yandex.ru')) return true;
-            };
-          `}
-        </Script>
-
+        {/* Fallback для пользователей с отключенным JavaScript */}
         <noscript>
           <div>
             <img

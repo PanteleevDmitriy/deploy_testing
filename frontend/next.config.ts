@@ -1,4 +1,3 @@
-// next.config.ts
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
@@ -6,7 +5,7 @@ const nextConfig: NextConfig = {
     // Только webp
     formats: ['image/webp'],
     
-    // Оптимальные размеры для вашего сайта (без 1920px)
+    // Оптимальные размеры для вашего сайта
     deviceSizes: [360, 640, 750, 828, 1080, 1200],
     
     // Размеры для иконок и мелких изображений
@@ -22,7 +21,7 @@ const nextConfig: NextConfig = {
     contentDispositionType: 'inline',
     
     // Только локальные изображения
-    remotePatterns: [], // Пустой массив = только свои картинки с сервера
+    remotePatterns: [],
   },
 
   // Включаем сжатие
@@ -35,6 +34,9 @@ const nextConfig: NextConfig = {
   
   // Убираем заголовок "X-Powered-By"
   poweredByHeader: false,
+  
+  // Отключаем source maps в продакшене для уменьшения размера билда
+  productionBrowserSourceMaps: false,
 };
 
 export default nextConfig;
